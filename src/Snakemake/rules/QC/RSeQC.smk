@@ -2,7 +2,7 @@
 rule bam_stat:
     input:
         #bam = "RNA_TST170/bam_files/{sample}.bam"
-        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam"
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam"
     output:
         stats = "Results/RNA/{sample}/QC/RSeQC_bam_stat.txt"
     singularity:
@@ -20,7 +20,7 @@ rule collect_bam_stat:
 
 rule clipping_profile:
     input:
-        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam"
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam"
     output:
         R_script = "Results/RNA/{sample}/QC/RSeQC.clipping_profile.r",
         pdf_R1 = "Results/RNA/{sample}/QC/RSeQC.clipping_profile.R1.pdf",
@@ -36,7 +36,7 @@ rule clipping_profile:
 rule deletion_profile:
     input:
         #bam = "RNA_TST170/bam_files/{sample}.bam"
-        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam"
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam"
     output:
         pdf = "Results/RNA/{sample}/QC/RSeQC.deletion_profile.pdf",
         R_script = "Results/RNA/{sample}/QC/RSeQC.deletion_profile.r",
@@ -51,7 +51,7 @@ rule deletion_profile:
 rule insertion_profile:
     input:
         #bam = "RNA_TST170/bam_files/{sample}.bam"
-        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam"
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam"
     output:
         R_script = "Results/RNA/{sample}/QC/RSeQC.insertion_profile.r",
         pdf_R1 = "Results/RNA/{sample}/QC/RSeQC.insertion_profile.R1.pdf",
@@ -67,7 +67,7 @@ rule insertion_profile:
 rule read_duplication:
     input:
         #bam = "RNA_TST170/bam_files/{sample}.bam"
-        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam"
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam"
     output:
         R_script = "Results/RNA/{sample}/QC/RSeQC.DupRate_plot.r",
         pdf = "Results/RNA/{sample}/QC/RSeQC.DupRate_plot.pdf",
@@ -83,7 +83,7 @@ rule read_duplication:
 rule read_GC:
     input:
         #bam = "RNA_TST170/bam_files/{sample}.bam"
-        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam"
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam"
     output:
         R_script = "Results/RNA/{sample}/QC/RSeQC.GC_plot.r",
         pdf = "Results/RNA/{sample}/QC/RSeQC.GC_plot.pdf",
@@ -98,7 +98,7 @@ rule read_GC:
 rule inner_distance:
     input:
         #bam = "RNA_TST170/bam_files/{sample}.bam",
-        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam",
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam",
         bed = "DATA/hg19_RefSeq.bed"
     output:
         R_script = "Results/RNA/{sample}/QC/RSeQC.inner_distance_plot.r",
@@ -117,7 +117,7 @@ rule inner_distance:
 rule read_distribution:
     input:
         #bam = "RNA_TST170/bam_files/{sample}.bam",
-        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam",
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam",
         bed = "DATA/hg19_RefSeq.bed"
     output:
         stats = "Results/RNA/{sample}/QC/RSeQC_read_distribution.txt"
@@ -128,7 +128,7 @@ rule read_distribution:
 
 rule junction_annotation:
     input:
-        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam",
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam",
         bed = "DATA/hg19_RefSeq.bed"
     output:
         bed = "Results/RNA/{sample}/QC/RSeQC.junction.bed.gz",
@@ -152,7 +152,7 @@ rule junction_annotation:
 rule geneBody_coverage:
     input:
         #bam = "RNA_TST170/bam_files/{sample}.bam",
-        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam",
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam",
         bed = "DATA/hg19.HouseKeepingGenes.bed"
     output:
         R_script = "Results/RNA/{sample}/QC/RSeQC.geneBodyCoverage.r",
@@ -169,7 +169,7 @@ rule geneBody_coverage:
 rule FPKM_count:
     input:
         #bam = "RNA_TST170/bam_files/{sample}.bam",
-        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam",
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam",
         bed = "DATA/hg19_RefSeq.bed"
     output:
         xls = "Results/RNA/{sample}/QC/RSeQC.FPKM.xls"

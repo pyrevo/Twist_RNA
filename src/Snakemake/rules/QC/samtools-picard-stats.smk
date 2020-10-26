@@ -2,7 +2,8 @@ localrules: touchBatch
 
 rule samtools_stats:
     input:
-        bam = "DNA_bam/{sample}-ready.bam",
+        #bam = "DNA_bam/{sample}-ready.bam"
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam"
     output:
         "qc/{sample}/{sample}.samtools-stats.txt"
     params:
@@ -19,7 +20,8 @@ rule samtools_stats:
 
 rule picardHsMetrics:
     input:
-        bam = "DNA_bam/{sample}-ready.bam",
+        #bam = "DNA_bam/{sample}-ready.bam",
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam",
         intervals = config["bed"]["intervals"]
     output:
         "qc/{sample}/{sample}.HsMetrics.txt"
@@ -32,7 +34,8 @@ rule picardHsMetrics:
 
 rule touchBatch:
     input:
-        expand("DNA_bam/{sample}-ready.bam", sample = config["DNA_Samples"])
+        #expand("DNA_bam/{sample}-ready.bam", sample = config["DNA_Samples"])
+        expand("STAR2/{sample}Aligned.sortedByCoord.out.bam", sample = config["RNA_Samples"])
     output:
          temp("qc/batchQC_stats_unsorted.csv")
     log:

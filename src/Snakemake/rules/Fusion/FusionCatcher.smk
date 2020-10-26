@@ -9,8 +9,10 @@ rule FusionCatcher:
         fusions = "fusioncatcher_{sample}/final-list_candidate-fusion-genes.hg19.txt"
     params:
         output_dir = "fusioncatcher_{sample}/",
-        params = "-p 20 --visualization-sam"
+        params = "--visualization-sam"
+    threads:
+        10
     singularity:
         "/projects/wp4/nobackup/workspace/somatic_dev/singularity/fusioncatcher_1.2.0.simg"
     shell:
-        "/opt/fusioncatcher/v1.20/bin/fusioncatcher.py -d {input.ref} -i {input.fastq1},{input.fastq2} -o {params.output_dir} {params.params}"
+        "/opt/fusioncatcher/v1.20/bin/fusioncatcher.py -d {input.ref} -i {input.fastq1},{input.fastq2} -o {params.output_dir} -p {threads} {params.params}"
