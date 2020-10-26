@@ -1,24 +1,24 @@
 
-localrules: all, Create_TSO500_yaml
+localrules: all, Create_Twist_RNA_yaml
 
 rule all:
     input:
-        TSO500_yaml = "TSO500.yaml",
+        Twist_RNA_yaml = "Twist_RNA.yaml",
         TC = "DATA/Pathological_purity_BMS_validation.txt"
 
 
-rule Create_TSO500_yaml:
+rule Create_Twist_RNA_yaml:
     input:
         run_info = "RunParameters.xml",
         config = "Config/Pipeline/configdefaults201012.yaml"
     output:
-        TSO500_yaml = "TSO500.yaml",
+        Twist_RNA_yaml = "Twist_RNA.yaml",
         TC = "DATA/Pathological_purity_BMS_validation.txt"
     run:
         import glob
         import os
         import subprocess
-        subprocess.call("cp " + input.config + " " + output.TSO500_yaml, shell=True)
+        subprocess.call("cp " + input.config + " " + output.Twist_RNA_yaml, shell=True)
         run_folder_name = ""
         run_info_file = open(input.run_info)
         for line in run_info_file :
