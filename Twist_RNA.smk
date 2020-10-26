@@ -3,9 +3,6 @@ configfile: "Twist_RNA.yaml"
 
 def get_input():
     input_list = []
-        '''QC'''
-
-
     if config["RNA_Samples"] != "No RNA" :
         '''Demultiplexning'''
         input_list.append(["fastq/RNA/" + s + "_R1.fastq.gz" for s in config["RNA_Samples"]])
