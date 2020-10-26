@@ -58,7 +58,7 @@ rule Create_Twist_RNA_yaml:
                     print("Error: wrong sample type: " + sample_type)
                     quit()
                 i += 1
-        outfile = open(output.TSO500_yaml, "a")
+        outfile = open(output.Twist_RNA_yaml, "a")
         outfile2 = open(output.TC, "w")
         #outfile.write("Runfolder: /projects/wp1/nobackup/ngs/klinik/INBOX/" + KG_runname + "/\n\n")
         outfile.write("Runfolder: /projects/wp1/nobackup/ngs/klinik/INBOX/" + run_folder_name + "/\n\n")
