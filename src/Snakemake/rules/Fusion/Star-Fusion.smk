@@ -42,15 +42,19 @@ rule STAR_Fusion:
         alignment = "STAR2/{sample}Chimeric.out.junction"
     output:
         fusion1 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
-        fusion2 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv"
+        fusion2 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam",
+        bai = "STAR2/{sample}Aligned.sortedByCoord.out.bam.bai"
     threads: 5
     shell:
-        "singularity exec -B /projects/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg "
+        "singularity exec -B /projects/ -B /scratch/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg "
         "/usr/local/src/STAR-Fusion/STAR-Fusion "
         "--genome_lib_dir /projects/wp4/nobackup/workspace/jonas_test/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Apr032020.plug-n-play/ctat_genome_lib_build_dir/ "
         "-J {input.alignment} "
         "--output_dir STAR_fusion/{wildcards.sample}/Fusions/ "
-        "--CPU {threads}"
+        "--CPU {threads} && "
+        "singularity exec -B /projects/ -B /scratch/ /projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg "
+        "samtools index {output.bam}"
 
 rule Copy_to_results:
     input:
