@@ -9,7 +9,7 @@ rule STAR:
         bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam",
         bai = "STAR2/{sample}Aligned.sortedByCoord.out.bam.bai"
     params:
-        index = config["references"]["STAR"],
+        index = config["reference"]["STAR"],
         star_fusion_singularity = "singularity exec -B /projects/ -B /scratch/ " + config["singularity"]["STAR_fusion"],
         samtools_singularity = "singularity exec -B /projects/ -B /scratch/ "  + config["singularity"]["samtools"]
     threads: 5
@@ -22,6 +22,7 @@ rule STAR:
         "--readFilesCommand \"gunzip -c\" "
         "--outSAMstrandField intronMotif "  # include for potential use with StringTie for assembly
         "--outSAMtype BAM SortedByCoordinate "
+        "--outSAMattrRGline ID:Twist_RNA SM:{wildcards.sample} PL:ILLUMINA"
         "--outSAMunmapped Within "
         "--chimSegmentMin 12 "  # ** essential to invoke chimeric read detection & reporting **
         "--chimJunctionOverhangMin 12 "

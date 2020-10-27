@@ -6,8 +6,8 @@ rule fastqc_bam:
         #"bam/{sample}-sort.bam"
         bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam"
     output:
-        html="qc/{sample}/{sample}-sort_fastqc.html",
-        zip="qc/{sample}/{sample}-sort_fastqc.zip" # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
+        html="qc/{sample}/{sample}Aligned.sortedByCoord.out_fastqc.html",
+        zip="qc/{sample}/{sample}Aligned.sortedByCoord.out_fastqc.zip" # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename
     params:
         outdir = "qc/{sample}/"
     log:

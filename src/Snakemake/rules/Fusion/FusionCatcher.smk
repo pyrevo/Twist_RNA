@@ -5,9 +5,9 @@ rule FusionCatcher:
         fastq1 = "fastq/RNA/{sample}_R1.fastq.gz",
         fastq2 = "fastq/RNA/{sample}_R2.fastq.gz"
     output:
-        fusions = "fusioncatcher_{sample}/final-list_candidate-fusion-genes.hg19.txt"
+        fusions = "fusioncatcher/{sample}/final-list_candidate-fusion-genes.hg19.txt"
     params:
-        output_dir = "fusioncatcher_{sample}/",
+        output_dir = "fusioncatcher/{sample}/",
         ref = config["reference"]["Fusion_catcher"],
         params = "--visualization-sam"
     threads:

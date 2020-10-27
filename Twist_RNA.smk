@@ -15,7 +15,7 @@ def get_input():
         input_list.append(["STAR2/" + s + "Chimeric.out.junction" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/Fusions/star-fusion.fusion_predictions.tsv" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/Fusions/star-fusion.fusion_predictions.abridged.tsv" for s in config["RNA_Samples"]])
-        input_list.append(["fusioncatcher_" + s + "/final-list_candidate-fusion-genes.hg19.txt" for s in config["RNA_Samples"]])
+        input_list.append(["fusioncatcher/" + s + "/final-list_candidate-fusion-genes.hg19.txt" for s in config["RNA_Samples"]])
 
         '''Imbalance'''
         input_list.append("Results/RNA/Imbalance/imbalance_all_gene.txt")
@@ -41,8 +41,8 @@ def get_input():
 
         '''QC2'''
         input_list.append(["qc/" + s + "/" + s + "_Stat_table.csv" for s in config["RNA_Samples"]])
-        input_list.append(["qc/" + s + "/" + s + "-sort_fastqc.html" for s in config["RNA_Samples"]])
-        input_list.append(["qc/" + s + "/" + s + "-sort_fastqc.zip" for s in config["RNA_Samples"]])
+        input_list.append(["qc/" + s + "/" + s + "Aligned.sortedByCoord.out_fastqc.html" for s in config["RNA_Samples"]])
+        input_list.append(["qc/" + s + "/" + s + "Aligned.sortedByCoord.out_fastqc.zip" for s in config["RNA_Samples"]])
         input_list.append(["qc/" + s + "/" + s + ".samtools-stats.txt" for s in config["RNA_Samples"]])
         #input_list.append(["qc/" + s + "/" + s + ".HsMetrics.txt" for s in config["RNA_Samples"]])
         input_list.append(["qc/" + s + "/" + s + "_stats_mqc.csv" for s in config["RNA_Samples"]])

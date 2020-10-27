@@ -10,12 +10,12 @@ rule STAR_arrbia:
         bais = "STAR/{sample}Aligned.sortedByCoord.out.bam.bai",
         junctions = "STAR/{sample}SJ.out.tab"
     params:
-        Arriba_singularity = "singularity exec -B /projects/ -B /scratch/" + config["singularity"]["Arriba"],
+        Arriba_singularity = "singularity exec -B /projects/ -B /scratch/ " + config["singularity"]["Arriba"],
         samtools_singularity = "singularity exec -B /projects/ -B /scratch/ " + config["singularity"]["samtools"],
         index = config["reference"]["Arriba_index"]
     threads: 5
     shell:
-        "{Arriba_singularity} STAR "
+        "{params.Arriba_singularity} STAR "
     	"--runThreadN {threads} "
     	"--genomeDir {params.index} "
         "--genomeLoad NoSharedMemory "
