@@ -40,12 +40,12 @@ def get_input():
         input_list.append("Results/RNA/Bam_stats.txt")
 
         '''QC2'''
-        #input_list.append(["qc/" + s + "/" + s + "_Stat_table.csv" for s in config["DNA_Samples"]])
-        #input_list.append(["qc/" + s + "/" + s + "-sort_fastqc.html" for s in config["DNA_Samples"]])
-        #input_list.append(["qc/" + s + "/" + s + "-sort_fastqc.zip" for s in config["DNA_Samples"]])
-        #input_list.append(["qc/" + s + "/" + s + ".samtools-stats.txt" for s in config["DNA_Samples"]])
-        #input_list.append(["qc/" + s + "/" + s + ".HsMetrics.txt" for s in config["DNA_Samples"]])
-        #input_list.append(["qc/" + s + "/" + s + "_stats_mqc.csv" for s in config["DNA_Samples"]])
+        input_list.append(["qc/" + s + "/" + s + "_Stat_table.csv" for s in config["RNA_Samples"]])
+        input_list.append(["qc/" + s + "/" + s + "-sort_fastqc.html" for s in config["RNA_Samples"]])
+        input_list.append(["qc/" + s + "/" + s + "-sort_fastqc.zip" for s in config["RNA_Samples"]])
+        input_list.append(["qc/" + s + "/" + s + ".samtools-stats.txt" for s in config["RNA_Samples"]])
+        #input_list.append(["qc/" + s + "/" + s + ".HsMetrics.txt" for s in config["RNA_Samples"]])
+        input_list.append(["qc/" + s + "/" + s + "_stats_mqc.csv" for s in config["RNA_Samples"]])
         #input_list.append("qc/batchQC_stats_mqc.json")
         #input_list.append("qc/batchQC_stats_unsorted.csv")
         #input_list.append("Results/DNA/MultiQC.html")

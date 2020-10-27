@@ -3,9 +3,11 @@
 
 rule cartool:
     input:
-        bam = "DNA_bam/{sample}-ready.bam",
+        #bam = "DNA_bam/{sample}-ready.bam",
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam",
         bed = config["bed"]["bedfile"],
-        bai = "DNA_bam/{sample}-ready.bam.bai"
+        #bai = "DNA_bam/{sample}-ready.bam.bai"
+        bai = "STAR2/{sample}Aligned.sortedByCoord.out.bam.bai"
     output:
         statstable = "qc/{sample}/{sample}_Stat_table.csv",
         cartoollog =  "qc/{sample}/{sample}_Log.csv",

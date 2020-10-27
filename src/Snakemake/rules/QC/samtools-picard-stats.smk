@@ -18,7 +18,7 @@ rule samtools_stats:
     # wrapper:
     #     "0.38.0/bio/samtools/stats"
 
-rule picardHsMetrics:
+rule picardHsMetrics: #@RG line missing SM tag
     input:
         #bam = "DNA_bam/{sample}-ready.bam",
         bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam",

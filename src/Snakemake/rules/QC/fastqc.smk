@@ -3,7 +3,8 @@ rule fastqc_bam:
     input:
         #"fastq/{sample}_R1-fastq.gz" ##one for each R1 and one for R2 should be from a samples.yaml file
         #"DNA_bam/{sample}-ready.bam"
-        "bam/{sample}-sort.bam"
+        #"bam/{sample}-sort.bam"
+        bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam"
     output:
         html="qc/{sample}/{sample}-sort_fastqc.html",
         zip="qc/{sample}/{sample}-sort_fastqc.zip" # the suffix _fastqc.zip is necessary for multiqc to find the file. If not using multiqc, you are free to choose an arbitrary filename

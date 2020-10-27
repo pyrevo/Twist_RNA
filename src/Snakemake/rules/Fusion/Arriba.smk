@@ -9,34 +9,33 @@ rule STAR_arrbia:
         bams = "STAR/{sample}Aligned.sortedByCoord.out.bam",
         bais = "STAR/{sample}Aligned.sortedByCoord.out.bam.bai",
         junctions = "STAR/{sample}SJ.out.tab"
+    params:
+        Arriba_singularity = "singularity exec -B /projects/ -B /scratch/" + config["singularity"]["Arriba"],
+        samtools_singularity = "singularity exec -B /projects/ -B /scratch/ " + config["singularity"]["samtools"],
+        index = config["reference"]["Arriba_index"]
     threads: 5
-    run:
-        import subprocess
-        #command = "singularity exec -B /projects/ -B /gluster-storage-volume/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/Arriba.simg "
-        command = "singularity exec -B /projects/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/Arriba.simg "
-        command += "STAR "
-    	command += "--runThreadN " + str(threads) + " "
-    	command += "--genomeDir /projects/wp4/nobackup/workspace/jonas_test/Arriba/references/STAR_index_hs37d5_GENCODE19/ "
-        command += "--genomeLoad NoSharedMemory "
-    	command += "--readFilesIn " + input.fastq1 + " " + input.fastq2 + " "
-        command += "--readFilesCommand zcat "
-        command += "--outSAMtype BAM SortedByCoordinate "
-        command += "--outSAMunmapped Within "
-    	command += "--outFilterMultimapNmax 1 "
-        command += "--outFilterMismatchNmax 3 "
-    	command += "--chimSegmentMin 10 "
-        command += "--chimOutType WithinBAM SoftClip "
-        command += "--chimJunctionOverhangMin 10 "
-        command += "--chimScoreMin 1 "
-        command += "--chimScoreDropMax 30 "
-        command += "--chimScoreJunctionNonGTAG 0 "
-        command += "--chimScoreSeparation 1 "
-        command += "--alignSJstitchMismatchNmax 5 -1 5 5 "
-        command += "--chimSegmentReadGapMax 3 "
-        command += "--outFileNamePrefix STAR/" + wildcards.sample
-        print(command)
-        subprocess.call(command, shell=True)
-        subprocess.call("samtools index " + output.bams, shell=True)
+    shell:
+        "{Arriba_singularity} STAR "
+    	"--runThreadN {threads} "
+    	"--genomeDir {params.index} "
+        "--genomeLoad NoSharedMemory "
+    	"--readFilesIn {input.fastq1} {input.fastq2} "
+        "--readFilesCommand zcat "
+        "--outSAMtype BAM SortedByCoordinate "
+        "--outSAMunmapped Within "
+    	"--outFilterMultimapNmax 1 "
+        "--outFilterMismatchNmax 3 "
+    	"--chimSegmentMin 10 "
+        "--chimOutType WithinBAM SoftClip "
+        "--chimJunctionOverhangMin 10 "
+        "--chimScoreMin 1 "
+        "--chimScoreDropMax 30 "
+        "--chimScoreJunctionNonGTAG 0 "
+        "--chimScoreSeparation 1 "
+        "--alignSJstitchMismatchNmax 5 -1 5 5 "
+        "--chimSegmentReadGapMax 3 "
+        "--outFileNamePrefix STAR/{wildcards.sample} && "
+        "{params.samtools_singularity} samtools index {output.bams}"
 
 
 rule Arriba:
@@ -45,15 +44,20 @@ rule Arriba:
     output:
         fusions1 = "Arriba_results/{sample}.fusions.tsv",
         fusions2 = "Arriba_results/{sample}.fusions.discarded.tsv"
-    singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/Arriba.simg"
+    params:
+        ref = config["reference"]["Arriba_ref"],
+        gtf = config["reference"]["Arriba_gtf"],
+        blacklist = config["reference"]["Arriba_blacklist"]
+    singularity:
+        config["singularity"]["Arriba"]
     shell:
         "/arriba_v1.1.0/arriba "
     	"-x {input.bams} "
     	"-o {output.fusions1} "
         "-O {output.fusions2} "
-    	"-a /projects/wp4/nobackup/workspace/jonas_test/Arriba/references/hs37d5.fa "
-        "-g /projects/wp4/nobackup/workspace/jonas_test/Arriba/references/GENCODE19.gtf "
-        "-b /projects/wp4/nobackup/workspace/jonas_test/Arriba/references/blacklist_hg19_hs37d5_GRCh37_2018-11-04.tsv "
+    	"-a {params.ref} "
+        "-g {params.gtf} "
+        "-b {params.blacklist} "
     	"-T "
         "-P "
 
@@ -66,7 +70,7 @@ rule Arriba_HC:
     shell:
         "head -n 1 {input.fusions} > {output.fusions} && "
         "grep 'high' {input.fusions} >> {output.fusions} || true && "
-        "python src/Add_fusion_exon_name.py {input.refseq} {output.fusions}"
+        "python2.7 src/Add_fusion_exon_name.py {input.refseq} {output.fusions}"
 
 
 rule Arriba_image:
@@ -77,16 +81,18 @@ rule Arriba_image:
     output:
         image = "Results/RNA/{sample}/Fusions/{sample}.Arriba.fusions.pdf"
     params:
-        image_out_path = "Results/RNA/{sample}/Fusions/"
+        image_out_path = "Results/RNA/{sample}/Fusions/",
+        Arriba_singularity = config["singularity"]["Arriba"],
+        ref = config["reference"]["Arriba_refdir"]
     run:
         import subprocess
         command = "singularity exec "
         command += "-B " + params.image_out_path + ":/output "
-        command += "-B /projects/wp4/nobackup/workspace/jonas_test/Arriba/references:/references:ro "
+        command += "-B " + params.ref + ":/references:ro "
         command += "-B " + input.fusion + ":/fusions.tsv:ro "
         command += "-B " + input.bam + ":/Aligned.sortedByCoord.out.bam:ro "
         command += "-B " + input.bai + ":/Aligned.sortedByCoord.out.bam.bai:ro "
-        command += "/projects/wp4/nobackup/workspace/somatic_dev/singularity/Arriba.simg "
+        command += params.Arriba_singularity + " "
         command += "draw_fusions.sh"
         print(command)
         subprocess.call(command, shell=True)

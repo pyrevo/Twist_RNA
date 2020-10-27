@@ -8,38 +8,38 @@ rule STAR:
         alignment = "STAR2/{sample}Chimeric.out.junction",
         bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam",
         bai = "STAR2/{sample}Aligned.sortedByCoord.out.bam.bai"
+    params:
+        index = config["references"]["STAR"],
+        star_fusion_singularity = "singularity exec -B /projects/ -B /scratch/ " + config["singularity"]["STAR_fusion"],
+        samtools_singularity = "singularity exec -B /projects/ -B /scratch/ "  + config["singularity"]["samtools"]
     threads: 5
-    run:
-        import subprocess
-        command = "singularity exec -B /projects/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg "
-        command += "STAR --genomeDir /projects/wp4/nobackup/workspace/jonas_test/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Apr032020.plug-n-play/ctat_genome_lib_build_dir/ref_genome.fa.star.idx/ "
-        command += "--readFilesIn " + input.fq1 + " " + input.fq2 + " "
-        command += "--outReadsUnmapped None "
-        command += "--twopassMode Basic "
-        command += "--readFilesCommand \"gunzip -c\" "
-        command += "--outSAMstrandField intronMotif "  # include for potential use with StringTie for assembly
-        command += "--outSAMtype BAM SortedByCoordinate "
-        command += "--outSAMunmapped Within "
-        command += "--chimSegmentMin 12 "  # ** essential to invoke chimeric read detection & reporting **
-        command += "--chimJunctionOverhangMin 12 "
-        command += "--chimOutJunctionFormat 1 "   # **essential** includes required metadata in Chimeric.junction.out file.
-        command += "--alignSJDBoverhangMin 10 "
-        command += "--alignMatesGapMax 100000 "   # avoid readthru fusions within 100k
-        command += "--alignIntronMax 100000 "
-        command += "--alignSJstitchMismatchNmax 5 -1 5 5 "   # settings improved certain chimera detections
-        command += "--outSAMattrRGline ID:GRPundef "
-        command += "--chimMultimapScoreRange 3 "
-        command += "--chimScoreJunctionNonGTAG -4 "
-        command += "--chimMultimapNmax 20 "
-        command += "--chimNonchimScoreDropMin 10 "
-        command += "--peOverlapNbasesMin 12 "
-        command += "--peOverlapMMp 0.1 "
-        command += "--runThreadN " + str(threads) + " "
-        command += "--outFileNamePrefix STAR2/" + wildcards.sample
-        print(command)
-        subprocess.call(command, shell=True)
-        command2 = "singularity exec -B /projects/ -B /scratch/ /projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg samtools index {output.bam}"
-        subprocess.call(command2, shell=True)
+    shell:
+        "{params.star_fusion_singularity} STAR "
+        "--genomeDir {params.index} "
+        "--readFilesIn {input.fq1} {input.fq2} "
+        "--outReadsUnmapped None "
+        "--twopassMode Basic "
+        "--readFilesCommand \"gunzip -c\" "
+        "--outSAMstrandField intronMotif "  # include for potential use with StringTie for assembly
+        "--outSAMtype BAM SortedByCoordinate "
+        "--outSAMunmapped Within "
+        "--chimSegmentMin 12 "  # ** essential to invoke chimeric read detection & reporting **
+        "--chimJunctionOverhangMin 12 "
+        "--chimOutJunctionFormat 1 "   # **essential** includes required metadata in Chimeric.junction.out file.
+        "--alignSJDBoverhangMin 10 "
+        "--alignMatesGapMax 100000 "   # avoid readthru fusions within 100k
+        "--alignIntronMax 100000 "
+        "--alignSJstitchMismatchNmax 5 -1 5 5 "   # settings improved certain chimera detections
+        "--outSAMattrRGline ID:GRPundef "
+        "--chimMultimapScoreRange 3 "
+        "--chimScoreJunctionNonGTAG -4 "
+        "--chimMultimapNmax 20 "
+        "--chimNonchimScoreDropMin 10 "
+        "--peOverlapNbasesMin 12 "
+        "--peOverlapMMp 0.1 "
+        "--runThreadN {threads} "
+        "--outFileNamePrefix STAR2/{wildcards.sample} && "
+        "{params.samtools_singularity} samtools index {output.bam}"
 
 rule STAR_Fusion:
     input:
@@ -47,14 +47,18 @@ rule STAR_Fusion:
     output:
         fusion1 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
         fusion2 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv"
+    params:
+        ref = config["reference"]["STAR_fusion"],
+    singularity:
+        config["singularity"]["STAR_fusion"],
     threads: 5
     shell:
-        "singularity exec -B /projects/ -B /scratch/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg "
+        #"singularity exec -B /projects/ -B /scratch/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg "
         "/usr/local/src/STAR-Fusion/STAR-Fusion "
-        "--genome_lib_dir /projects/wp4/nobackup/workspace/jonas_test/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Apr032020.plug-n-play/ctat_genome_lib_build_dir/ "
+        "--genome_lib_dir {params.ref} "
         "-J {input.alignment} "
         "--output_dir STAR_fusion/{wildcards.sample}/Fusions/ "
-        "--CPU {threads}""
+        "--CPU {threads}"
 
 rule Copy_to_results:
     input:
