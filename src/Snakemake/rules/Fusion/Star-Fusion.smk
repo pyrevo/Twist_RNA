@@ -22,7 +22,7 @@ rule STAR:
         "--readFilesCommand \"gunzip -c\" "
         "--outSAMstrandField intronMotif "  # include for potential use with StringTie for assembly
         "--outSAMtype BAM SortedByCoordinate "
-        "--outSAMattrRGline ID:Twist_RNA SM:{wildcards.sample} PL:ILLUMINA"
+        "--outSAMattrRGline ID:Twist_RNA SM:{wildcards.sample} PL:ILLUMINA "
         "--outSAMunmapped Within "
         "--chimSegmentMin 12 "  # ** essential to invoke chimeric read detection & reporting **
         "--chimJunctionOverhangMin 12 "
@@ -31,7 +31,6 @@ rule STAR:
         "--alignMatesGapMax 100000 "   # avoid readthru fusions within 100k
         "--alignIntronMax 100000 "
         "--alignSJstitchMismatchNmax 5 -1 5 5 "   # settings improved certain chimera detections
-        "--outSAMattrRGline ID:GRPundef "
         "--chimMultimapScoreRange 3 "
         "--chimScoreJunctionNonGTAG -4 "
         "--chimMultimapNmax 20 "

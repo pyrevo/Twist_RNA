@@ -1,11 +1,11 @@
 
 rule multiqcBatch:
     input:
-        qc1 = expand("qc/{sample}/{sample}-sort_fastqc.zip", sample=config["DNA_Samples"]),
-        qc2 = expand("qc/{sample}/{sample}.samtools-stats.txt", sample=config["DNA_Samples"]),
-        qc3 = expand("qc/{sample}/{sample}.HsMetrics.txt", sample=config["DNA_Samples"]),
+        qc1 = expand("qc/{sample}/{sample}-sort_fastqc.zip", sample=config["RNA_Samples"]),
+        qc2 = expand("qc/{sample}/{sample}.samtools-stats.txt", sample=config["RNA_Samples"]),
+        qc3 = expand("qc/{sample}/{sample}.HsMetrics.txt", sample=config["RNA_Samples"]),
         #"qc/batchQC_stats_mqc.json",
-        qc4 = expand("qc/{sample}/{sample}_batchStats.done", sample=config["DNA_Samples"]), #Wait until all in table
+        qc4 = expand("qc/{sample}/{sample}_batchStats.done", sample=config["RNA_Samples"]), #Wait until all in table
     output:
         "Results/DNA/MultiQC.html"
     params:
@@ -19,4 +19,4 @@ rule multiqcBatch:
         config["singularity"]["multiqc"]
     shell:
         "( multiqc {params.extra} --force -o {params.output_dir} -n {params.output_name} {params.input_dir} ) &> {log} && "
-        "cp qc/MultiQC.html Results/DNA/MultiQC.html"
+        "cp qc/MultiQC.html Results/RNA/MultiQC.html"

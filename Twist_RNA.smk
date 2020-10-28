@@ -44,11 +44,11 @@ def get_input():
         input_list.append(["qc/" + s + "/" + s + "Aligned.sortedByCoord.out_fastqc.html" for s in config["RNA_Samples"]])
         input_list.append(["qc/" + s + "/" + s + "Aligned.sortedByCoord.out_fastqc.zip" for s in config["RNA_Samples"]])
         input_list.append(["qc/" + s + "/" + s + ".samtools-stats.txt" for s in config["RNA_Samples"]])
-        #input_list.append(["qc/" + s + "/" + s + ".HsMetrics.txt" for s in config["RNA_Samples"]])
+        input_list.append(["qc/" + s + "/" + s + ".HsMetrics.txt" for s in config["RNA_Samples"]])
         input_list.append(["qc/" + s + "/" + s + "_stats_mqc.csv" for s in config["RNA_Samples"]])
-        #input_list.append("qc/batchQC_stats_mqc.json")
-        #input_list.append("qc/batchQC_stats_unsorted.csv")
-        #input_list.append("Results/DNA/MultiQC.html")
+        input_list.append("qc/batchQC_stats_mqc.json")
+        input_list.append("qc/batchQC_stats_unsorted.csv")
+        input_list.append("Results/RNA/MultiQC.html")
 
     return input_list
 

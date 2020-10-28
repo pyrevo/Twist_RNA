@@ -14,7 +14,7 @@ configfiles:
 
 bed:
     bedfile: "DATA/TST500C_manifest.bed"
-    intervals: "DATA/TST500C_manifest.interval_list"
+    intervals: "DATA/TST500C_manifest.interval_list2"
 
 singularity:
     execute: "singularity exec -B /data -B /projects -B /scratch "
