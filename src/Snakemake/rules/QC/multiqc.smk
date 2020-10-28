@@ -4,8 +4,8 @@ rule multiqcBatch:
         qc1 = expand("qc/{sample}/{sample}Aligned.sortedByCoord.out_fastqc.zip", sample=config["RNA_Samples"]),
         qc2 = expand("qc/{sample}/{sample}.samtools-stats.txt", sample=config["RNA_Samples"]),
         qc3 = expand("qc/{sample}/{sample}.HsMetrics.txt", sample=config["RNA_Samples"]),
-        #"qc/batchQC_stats_mqc.json",
         qc4 = expand("qc/{sample}/{sample}_batchStats.done", sample=config["RNA_Samples"]), #Wait until all in table
+        qc5 = "qc/batchQC_stats_mqc.json"
     output:
         "Results/RNA/MultiQC.html"
     params:
