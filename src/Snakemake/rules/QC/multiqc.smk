@@ -7,7 +7,7 @@ rule multiqcBatch:
         #"qc/batchQC_stats_mqc.json",
         qc4 = expand("qc/{sample}/{sample}_batchStats.done", sample=config["RNA_Samples"]), #Wait until all in table
     output:
-        "Results/DNA/MultiQC.html"
+        "Results/RNA/MultiQC.html"
     params:
         extra = "-c src/Snakemake/rules/QC/multiqc_config.yaml --ignore *_stats_mqc.csv", # --ignore *HsMetrics.txt --ignore *samtools-stats.txt",
         input_dir = "qc",
