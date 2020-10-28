@@ -1,4 +1,4 @@
-decimalPoint_format: ','
+#decimalPoint_format: ','
 extra_fn_clean_exts: ##from this until end
     - '-ready'
     - '-sort'
