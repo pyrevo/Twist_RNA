@@ -103,7 +103,7 @@ with open(outFile, 'w') as file:
     file.write("      \"title\": \"Insert size s.d.\",\n")
     file.write("      \"description\": \"Insert size standard deviation from Picard\"\n")
     file.write("    },\n")
-    file.write("    \"Average quality\": {\n")
+    file.write("    \"Average Quality\": {\n")
     file.write("      \"title\": \"Average quality\",\n")
     file.write("      \"description\": \"Average mapping quality from Samtools\",\n")
     file.write("      \"min\": 0,\n")
