@@ -11,7 +11,7 @@ rule fastqc_bam:
     params:
         outdir = "qc/{sample}/"
     log:
-        "logs/qc/fastqc/{sample}-sort.log"
+        "logs/qc/fastqc/{sample}Aligned.sortedByCoord.log"
     threads: 10
     singularity:
         config["singularity"]["fastqc"]

@@ -1,7 +1,7 @@
 
 rule multiqcBatch:
     input:
-        qc1 = expand("qc/{sample}/{sample}-sort_fastqc.zip", sample=config["RNA_Samples"]),
+        qc1 = expand("qc/{sample}/{sample}Aligned.sortedByCoord.out_fastqc.zip", sample=config["RNA_Samples"]),
         qc2 = expand("qc/{sample}/{sample}.samtools-stats.txt", sample=config["RNA_Samples"]),
         qc3 = expand("qc/{sample}/{sample}.HsMetrics.txt", sample=config["RNA_Samples"]),
         #"qc/batchQC_stats_mqc.json",

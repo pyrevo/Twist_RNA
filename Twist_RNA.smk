@@ -15,7 +15,7 @@ def get_input():
         input_list.append(["STAR2/" + s + "Chimeric.out.junction" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/Fusions/star-fusion.fusion_predictions.tsv" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/Fusions/star-fusion.fusion_predictions.abridged.tsv" for s in config["RNA_Samples"]])
-        input_list.append(["fusioncatcher/" + s + "/final-list_candidate-fusion-genes.hg19.txt" for s in config["RNA_Samples"]])
+        input_list.append(["Results/RNA/" + s + "/Fusions/FusionCatcher_summary_candidate_fusions.txt" for s in config["RNA_Samples"]])
 
         '''Imbalance'''
         input_list.append("Results/RNA/Imbalance/imbalance_all_gene.txt")
