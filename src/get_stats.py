@@ -4,13 +4,15 @@ import subprocess
 import csv
 
 #picardDup = sys.argv[1]
-picardMet = sys.argv[1]
-samtools = sys.argv[2]
-multiQCheader = sys.argv[3]
-cartoolLog = sys.argv[4]
-sample = sys.argv[5]
-outFile = sys.argv[6]
-batchFile = sys.argv[7]
+picardMet1 = sys.argv[1]
+picardMet2 = sys.argv[2]
+picardMet3 = sys.argv[3]
+samtools = sys.argv[4]
+multiQCheader = sys.argv[5]
+cartoolLog = sys.argv[6]
+sample = sys.argv[7]
+outFile = sys.argv[8]
+batchFile = sys.argv[9]
 
 # sample = samtools.split('/')[1]
 
@@ -22,11 +24,22 @@ batchFile = sys.argv[7]
 dupliPerc = "0"
 ##picardMet
 # insert?, bases on target, coverage 50,100,500x,
-metCmd='grep -A1 BAIT_SET '+picardMet
+metCmd='grep -A1 BAIT_SET '+picardMet1
 met = subprocess.run(metCmd, stdout=subprocess.PIPE,shell = 'TRUE').stdout.decode('utf-8')
 metrics=met.split('\n')
 zipObject = zip(metrics[0].split('\t'),metrics[1].split('\t'))
-metricsDict = dict(zipObject)
+metricsDict1 = dict(zipObject)
+metCmd='grep -A1 MEDIAN_INSERT_SIZE '+picardMet2
+met = subprocess.run(metCmd, stdout=subprocess.PIPE,shell = 'TRUE').stdout.decode('utf-8')
+metrics=met.split('\n')
+zipObject = zip(metrics[0].split('\t'),metrics[1].split('\t'))
+metricsDict2 = dict(zipObject)
+metCmd='grep -A1 CATEGORY '+picardMet3
+met = subprocess.run(metCmd, stdout=subprocess.PIPE,shell = 'TRUE').stdout.decode('utf-8')
+metrics=met.split('\n')
+zipObject = zip(metrics[0].split('\t'),metrics[3].split('\t'))
+metricsDict3 = dict(zipObject)
+
 # metricsDict['PCT_SELECTED_BASES'] ##bases on target
 # metricsDict['PCT_TARGET_BASES_50X'] #
 # metricsDict['PCT_TARGET_BASES_100X']
@@ -50,8 +63,8 @@ avgCov = subprocess.run(avgCovCmd, stdout=subprocess.PIPE,shell = 'TRUE').stdout
 breadth500Cmd = 'grep "Mean Coverage Breadth:" '+cartoolLog + ' | cut -f3 -d"," '
 breadth500 = subprocess.run(breadth500Cmd, stdout=subprocess.PIPE,shell = 'TRUE').stdout.decode('utf-8')
 
-header = ['Sample','Tot seq','Reads mapped','Avg Coverage','Breadth 500x','Reads paired [%]','Insert size','Insert size s.d.','Average Quality','Duplicates [%]','Target bases 50x','Target bases 100x','Bases on target']
-line = [sample, samDict['raw total sequences'], samDict['reads mapped'], avgCov.strip(), breadth500.strip(), samDict['percentage of properly paired reads (%)'], samDict['insert size average'], samDict['insert size standard deviation'], samDict['average quality'], dupliPerc,metricsDict['PCT_TARGET_BASES_50X'], metricsDict['PCT_TARGET_BASES_100X'], metricsDict['PCT_SELECTED_BASES']]
+header = ['Sample','Total reads','Reads mapped [%]','HQ aligned reads','Mean Coverage', 'Median coverage', 'Reads paired [%]','Chimereic reads [%]', 'Adapter [%]','Median insert size','Insert size s.d.','Average Quality','Fraction bases on target']
+line = [sample, metricsDict3['TOTAL_READS'], metricsDict3['PCT_PF_READS_ALIGNED'], metricsDict3['PF_HQ_ALIGNED_READS'], metricsDict1['MEAN_TARGET_COVERAGE'], metricsDict1['MEDIAN_TARGET_COVERAGE'], metricsDict3['PCT_READS_ALIGNED_IN_PAIRS'], metricsDict3['PCT_CHIMERAS'], metricsDict3['PCT_ADAPTER'], metricsDict2['MEDIAN_INSERT_SIZE'], metricsDict2['STANDARD_DEVIATION'], samDict['average quality'], metricsDict['PCT_SELECTED_BASES']]
 
 ##append to Batch file and write sampleFile
 with open(batchFile, 'a') as file:

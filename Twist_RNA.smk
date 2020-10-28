@@ -49,6 +49,9 @@ def get_input():
         input_list.append("qc/batchQC_stats_mqc.json")
         input_list.append("qc/batchQC_stats_unsorted.csv")
         input_list.append("Results/RNA/MultiQC.html")
+        input_list.append(["qc/" + s + "/" + s + ".insert_size_metrics.txt" for s in config["RNA_Samples"]])
+        input_list.append(["qc/" + s + "/" + s + ".alignment_summary_metrics.txt" for s in config["RNA_Samples"]])
+
 
     return input_list
 

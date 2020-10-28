@@ -18,4 +18,4 @@ rule FusionCatcher:
     shell:
         "/opt/fusioncatcher/v1.20/bin/fusioncatcher.py -d {params.ref} -i {input.fastq1},{input.fastq2} -o {params.output_dir} -p {threads} {params.params} && "
         "cp fusioncatcher/{wildcards.sample}/final-list_candidate-fusion-genes.hg19.txt Results/RNA/{wildcards.ample}/Fusions/FusionCatcher_final-list_candidate-fusion-genes.hg19.txt && "
-        "cp fusioncatcher/{wildcards.sample}/summary_candidate_fusions.txt Results/RNA/{wildcards.ample}/Fusions/FusionCatcher_summary_candidate_fusions.txt"
+        "cp fusioncatcher/{wildcards.sample}/summary_candidate_fusions.txt Results/RNA/{wildcards.sample}/Fusions/FusionCatcher_summary_candidate_fusions.txt"

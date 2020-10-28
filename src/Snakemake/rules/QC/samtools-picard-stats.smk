@@ -26,7 +26,7 @@ rule picardHsMetrics:
     output:
         "qc/{sample}/{sample}.HsMetrics.txt"
     log:
-        "logs/qc/picardHsMetrics/{sample}.log"
+        "logs/qc/picard/HsMetrics/{sample}.log"
     singularity:
         config["singularity"]["picard"]
     shell:
@@ -40,7 +40,7 @@ rule picardInsertSize:
         txt = "qc/{sample}/{sample}.insert_size_metrics.txt",
         pdf = "qc/{sample}/{sample}.insert_size_histogram.pdf"
     log:
-        "logs/qc/picardInsertSize/{sample}.log"
+        "logs/qc/picard/InsertSize/{sample}.log"
     singularity:
         config["singularity"]["picard"]
     shell:
@@ -56,7 +56,7 @@ rule PicardAlignmentSummaryMetrics:
     output:
         "qc/{sample}/{sample}.alignment_summary_metrics.txt"
     log:
-        "logs/qc/picardAlignmentSummaryMetrics/{sample}.log"
+        "logs/qc/picard/AlignmentSummaryMetrics/{sample}.log"
     singularity:
         config["singularity"]["picard"]
     shell:
@@ -79,7 +79,9 @@ rule touchBatch:
 rule getStatsforMqc:
     input:
         #picardDup = "qc/{sample}/{sample}_DuplicationMetrics.txt", #Not running this step in picard
-        picardMet = "qc/{sample}/{sample}.HsMetrics.txt",
+        picardMet1 = "qc/{sample}/{sample}.HsMetrics.txt",
+        picardMet2 = "qc/{sample}/{sample}.insert_size_metrics.txt",
+        picardMet3 = "qc/{sample}/{sample}.alignment_summary_metrics.txt",
         samtools = "qc/{sample}/{sample}.samtools-stats.txt",
         #multiQCheader = config["programdir"]["dir"]+"src/qc/multiqc-header.txt",
         multiQCheader = "DATA/multiqc-header.txt",
@@ -87,6 +89,7 @@ rule getStatsforMqc:
         batch =  "qc/batchQC_stats_unsorted.csv"
     output:
         batchTmp = temp("qc/{sample}/{sample}_batchStats.done"),
+        #batchTmp = "qc/{sample}/{sample}_batchStats.done",
         # batch = "qc/{seqID}_stats_mqc.tsv",
         sample = "qc/{sample}/{sample}_stats_mqc.csv"
     #params:
@@ -97,7 +100,7 @@ rule getStatsforMqc:
         config["singularity"]["python"]
     shell:
         #"(python3.6 get_stats.py {input.picardDup} {input.picardMet} {input.samtools} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
-        "(python3.6 src/get_stats.py {input.picardMet} {input.samtools} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
+        "(python3.6 src/get_stats.py {input.picardMet1} {input.picardMet2} {input.picardMet3} {input.samtools} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
 
 rule sortBatchStats:
     input:
