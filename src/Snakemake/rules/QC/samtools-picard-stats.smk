@@ -46,8 +46,6 @@ rule picardInsertSize:
     shell:
         "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar CollectInsertSizeMetrics INPUT={input.bam} O={output.txt} H={output.pdf}) &> {log}"
 
-#singularity exec -B /beegfs-scratch /projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar CollectInsertSizeMetrics  VALIDATION_STRINGENCY=LENIENT INPUT=../STAR2/R20-246Aligned.sortedByCoord.out.bam OUTPUT=R20-246.insert_size_metrics.txt H=R20-246.insert_size_histogram.pdf
-
 
 rule PicardAlignmentSummaryMetrics:
     input:
@@ -62,7 +60,16 @@ rule PicardAlignmentSummaryMetrics:
     shell:
         "(java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar CollectAlignmentSummaryMetrics INPUT={input.bam} R={input.ref} OUTPUT={output}) &> {log}"
 
-#singularity exec -B /beegfs-scratch -B /data -B /projects /projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg java -Xmx4g -jar /opt/conda/share/picard-2.20.1-0/picard.jar CollectAlignmentSummaryMetrics  VALIDATION_STRINGENCY=LENIENT INPUT=../STAR2/R20-246Aligned.sortedByCoord.out.bam R=/projects/wp4/nobackup/workspace/jonas_test/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Apr032020.plug-n-play/ctat_genome_lib_build_dir/ref_genome.fa OUTPUT=R20-246.alignment_summary_metrics.txt
+rule Coverage_CV :
+    input:
+        bed = config["bed"]["exonbed"],
+        coverage = "qc/{sample}/{sample}_coverage.tsv"
+    output:
+        CV = "qc/{sample}/{sample}_avg_CV_genes_over_500X.txt"
+    singularity:
+        config["singularity"]["python"]
+    shell:
+        "python3.6 src/Coverage_CV.py {input.bed} {intput.coverage} {output.CV}"
 
 
 rule touchBatch:
@@ -83,6 +90,7 @@ rule getStatsforMqc:
         picardMet2 = "qc/{sample}/{sample}.insert_size_metrics.txt",
         picardMet3 = "qc/{sample}/{sample}.alignment_summary_metrics.txt",
         samtools = "qc/{sample}/{sample}.samtools-stats.txt",
+        CV = "qc/{sample}/{sample}_avg_CV_genes_over_500X.txt",
         #multiQCheader = config["programdir"]["dir"]+"src/qc/multiqc-header.txt",
         multiQCheader = "DATA/multiqc-header.txt",
         cartool = "qc/{sample}/{sample}_Log.csv",
@@ -100,7 +108,7 @@ rule getStatsforMqc:
         config["singularity"]["python"]
     shell:
         #"(python3.6 get_stats.py {input.picardDup} {input.picardMet} {input.samtools} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
-        "(python3.6 src/get_stats.py {input.picardMet1} {input.picardMet2} {input.picardMet3} {input.samtools} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
+        "(python3.6 src/get_stats.py {input.picardMet1} {input.picardMet2} {input.picardMet3} {input.samtools} {input.CV} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
 
 rule sortBatchStats:
     input:

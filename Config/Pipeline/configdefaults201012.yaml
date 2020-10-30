@@ -13,8 +13,11 @@ configfiles:
     multiqc: "DATA/multiqc_config.yaml"
 
 bed:
-    bedfile: "DATA/TST500C_manifest.bed"
+    #bedfile: "DATA/TST500C_manifest.bed"
+    bedfile: "DATA/Twist_RNA_pool1_2.bed"
     intervals: "DATA/TST500C_manifest.interval_list2"
+    #exonbed: "DATA/TSO500_exon_regions.txt"
+    exonbed: "DATA/Twist_RNA_pool1_2.bed"
 
 singularity:
     execute: "singularity exec -B /data -B /projects -B /scratch "
