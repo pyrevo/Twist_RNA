@@ -18,7 +18,7 @@ bed:
     #intervals: "DATA/TST500C_manifest.interval_list2"
     intervals: "DATA/Twist_RNA_pool1_2.interval_list"
     #exonbed: "DATA/TSO500_exon_regions.txt"
-    exonbed: "DATA/Twist_RNA_pool1_2.bed"
+    exonbed: "DATA/Twist_RNA_pool1_2_annotated.bed"
 
 singularity:
     execute: "singularity exec -B /data -B /projects -B /scratch "
