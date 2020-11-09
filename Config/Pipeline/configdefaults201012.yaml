@@ -14,7 +14,7 @@ configfiles:
 
 bed:
     #bedfile: "DATA/TST500C_manifest.bed"
-    bedfile: "DATA/Twist_RNA_pool1_2.bed"
+    bedfile: "DATA/Twist_RNA_pool1_2_annotated.bed"
     #intervals: "DATA/TST500C_manifest.interval_list2"
     intervals: "DATA/Twist_RNA_pool1_2.interval_list"
     #exonbed: "DATA/TSO500_exon_regions.txt"

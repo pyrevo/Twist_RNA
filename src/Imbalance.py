@@ -4,8 +4,7 @@ import sys
 
 bam_files = sys.argv[1:]
 
-gene_files = ["ALK", "NRG1", "RET", "NTRK3", "NTRK1", "NTRK2", "ROS1"]
-#gene_files = ["ALK", "NRG1", "RET", "NTRK3"]
+gene_files = ["ALK", "NRG1", "RET", "NTRK3", "ROS1"]
 outfile = open("Results/RNA/Imbalance/imbalance_all_gene.txt", "w")
 outfile2 = open("Results/RNA/Imbalance/imbalance_called_gene.txt", "w")
 outfile.write("Sample\tgene\t3'/5'-ratio\tCoverage\tNorm_Coverage\tImbalance\n")
@@ -73,20 +72,20 @@ for bam in bam_files :
         '''ALK'''
         if gene == "ALK" :
             for d in avg_depth_list :
-                if i <= 2 :
+                if i <= 6 :
                     gene_start += d / bam_dict[bam]
-                elif i > 18 :
+                elif i >= 7 :
                     gene_end += d / bam_dict[bam]
-                if i > 18 :
+                if i >= 7 :
                     coverage += d / bam_dict[bam]
                 i += 1
-            gene_end /= 10.0
-            gene_start /= 3.0
-            coverage /= 10.0
+            gene_start /= 7.0
+            gene_end /= 9.0
+            coverage /= 9.0
             imbalance = gene_end / gene_start
             outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
-            #if imbalance > 3.0 and coverage > 40.0 :
-            if imbalance > 25.0 and coverage > 40.0 :
+            if imbalance > 3.0 and coverage > 0.0 :
+            #if imbalance > 25.0 and coverage > 40.0 :
                 outfile.write("Imbalance" + "\n")
                 outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
             else :
@@ -94,19 +93,19 @@ for bam in bam_files :
         '''NRG1'''
         if gene == "NRG1" :
             for d in avg_depth_list :
-                if i <= 2 :
+                if i <= 6 :
                     gene_start += d / bam_dict[bam]
-                elif i >= 5 :
+                elif i >= 7 :
                     gene_end += d / bam_dict[bam]
-                if i >= 5 :
+                if i >= 7 :
                     coverage += d / bam_dict[bam]
                 i += 1
-            gene_end /= 8.0
-            gene_start /= 3.0
-            coverage /= 8.0
+            gene_start /= 7.0
+            gene_end /= 7.0
+            coverage /= 7.0
             imbalance = gene_end / gene_start
             outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
-            if imbalance > 3.0 and coverage > 40.0 :
+            if imbalance > 3.0 and coverage > 0.0 :
                 outfile.write("Imbalance" + "\n")
                 outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
             else :
@@ -114,19 +113,19 @@ for bam in bam_files :
         '''RET'''
         if gene == "RET" :
             for d in avg_depth_list :
-                if i <= 2 :
+                if i <= 7 :
                     gene_start += d / bam_dict[bam]
                 elif i >= 11 :
                     gene_end += d / bam_dict[bam]
                 if i >= 11 :
                     coverage += d / bam_dict[bam]
                 i += 1
-            gene_end /= 9.0
-            gene_start /= 3.0
-            coverage /= 9.0
+            gene_start /= 8.0
+            gene_end /= 7.0
+            coverage /= 7.0
             imbalance = gene_end / gene_start
             outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
-            if imbalance > 3.0 and coverage > 20.0 :
+            if imbalance > 3.0 and coverage > 0.0 :
                 outfile.write("Imbalance" + "\n")
                 outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
             else :
@@ -134,61 +133,20 @@ for bam in bam_files :
         '''NTRK3'''
         if gene == "NTRK3" :
             for d in avg_depth_list :
-                if i <= 2 :
+                if i <= 7 :
                     gene_start += d / bam_dict[bam]
-                elif i >= 14 :
+                elif i >= 11 :
                     gene_end += d / bam_dict[bam]
-                if i >= 14  :
-                    coverage += d / bam_dict[bam]
-                i += 1
-            gene_end /= 6.0
-            gene_start /= 3.0
-            coverage /= 6.0
-            imbalance = gene_end / gene_start
-            outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
-            #if imbalance > 3.0 and coverage > 40.0 :
-            if imbalance > 1.0 and coverage > 40.0 :
-                outfile.write("Imbalance" + "\n")
-                outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
-            else :
-                outfile.write("" + "\n")
-        '''NTRK1'''
-        if gene == "NTRK1" :
-            for d in avg_depth_list :
-                if i >= 11 :
-                    gene_end += d / bam_dict[bam]
-                elif i <= 2 :
-                    gene_start += d / bam_dict[bam]
                 if i >= 11  :
                     coverage += d / bam_dict[bam]
                 i += 1
-            gene_end /= 6.0
-            gene_start /= 3.0
-            coverage /= 6.0
+            gene_start /= 8.0
+            gene_end /= 5.0
+            coverage /= 5.0
             imbalance = gene_end / gene_start
             outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
-            if imbalance > 3.0 and coverage > 40.0 :
-                outfile.write("Imbalance" + "\n")
-                outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
-            else :
-                outfile.write("" + "\n")
-        '''NTRK2'''
-        if gene == "NTRK2" :
-            for d in avg_depth_list :
-                if i >= 14 :
-                    gene_end += d / bam_dict[bam]
-                elif i <= 2 :
-                    gene_start += d / bam_dict[bam]
-                if i >= 14  :
-                    coverage += d / bam_dict[bam]
-                i += 1
-            gene_end /= 7.0
-            gene_start /= 2.0
-            coverage /= 7.0
-            imbalance = gene_end / gene_start
-            outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
-            #if imbalance > 3.0 and coverage > 50.0 :
-            if imbalance > 1.0 and coverage > 40.0 :
+            if imbalance > 3.0 and coverage > 0.0 :
+            #if imbalance > 1.0 and coverage > 40.0 :
                 outfile.write("Imbalance" + "\n")
                 outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
             else :
@@ -196,19 +154,19 @@ for bam in bam_files :
         '''ROS1'''
         if gene == "ROS1" :
             for d in avg_depth_list :
-                if i <= 2 :
+                if i <= 6 :
                     gene_start += d / bam_dict[bam]
-                elif i >= 34 :
+                elif i >= 12 :
                     gene_end += d / bam_dict[bam]
-                if i >= 34  :
+                if i >= 12  :
                     coverage += d / bam_dict[bam]
                 i += 1
-            gene_end /= 9.0
-            gene_start /= 2.0
-            coverage /= 9.0
+            gene_start /= 7.0
+            gene_end /= 7.0
+            coverage /= 7.0
             imbalance = gene_end / gene_start
             outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
-            if imbalance > 1.1 and coverage > 40.0 :
+            if imbalance > 3.0 and coverage > 0.0 :
                 outfile.write("Imbalance" + "\n")
                 outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
             else :

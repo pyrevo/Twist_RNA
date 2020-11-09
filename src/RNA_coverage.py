@@ -2,7 +2,7 @@
 import subprocess
 import sys
 
-genes = ["PIK3CA", "MYC", "EML4"]
+genes = ["GAPDH", "GUSB", "OAZ1", "POLR2A"]
 
 bam_file = sys.argv[1]
 bedfilename = sys.argv[2]
@@ -14,7 +14,7 @@ for gene in genes :
     regions = []
     bedfile = open(bedfilename)
     for line in bedfile :
-        if line.find(gene + "_Exon") != -1 and not (line.find("Additional") != -1 or line.find("Fusion") != -1 or line.find("Amp") != -1) :
+        if line.find(gene) != -1:
             lline = line.strip().split("\t")
             regions.append([lline[0], lline[1], lline[2]])
     bedfile.close()
