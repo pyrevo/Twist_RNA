@@ -5,7 +5,7 @@ rule Collect_fusions:
         bed = config["bed"]["bedfile"],
         arriba = "Arriba_results/{sample}.fusions.tsv",
         starfusion = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
-        fusioncatcher = "fusioncatcher/{sample}/final-list_candidate-fusion-genes.hg19.txt"
+        fusioncatcher = "Results/RNA/{sample}/Fusions/FusionCatcher_final-list_candidate-fusion-genes.hg19.txt"
     output:
         fusions = "Results/RNA/{sample}/Fusions/Fusions.tsv"
     singularity:
