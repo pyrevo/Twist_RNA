@@ -69,7 +69,7 @@ rule Coverage_CV :
     singularity:
         config["singularity"]["python"]
     shell:
-        "python3.6 src/Coverage_CV.py {input.bed} {intput.coverage} {output.CV}"
+        "python3.6 src/Coverage_CV.py {input.bed} {input.coverage} {output.CV}"
 
 
 rule touchBatch:

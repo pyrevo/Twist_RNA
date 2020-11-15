@@ -10,7 +10,7 @@ output_CV = open(sys.argv[3], "w")
 #input_coverage = open("/home/jonas/Investigations/Twist_RNA/R20-246_coverage.tsv")
 #output_CV = open("/home/jonas/Investigations/Twist_RNA/R20-246_avg_CV_genes_over_500X.tsv", "w")
 
-output_CV.write("Average CV for gene over 500X coverage\n")
+#output_CV.write("Average CV for gene over 500X coverage\n")
 
 #Read in all exon regions in design
 chr_gene_dict = {}
