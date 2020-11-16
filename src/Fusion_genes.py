@@ -25,7 +25,6 @@ for line in input_bed :
 #Arriba fusions
 header = True
 for line in input_arriba :
-    print(line.strip())
     if header :
         header = False
         continue
@@ -52,7 +51,6 @@ for line in input_arriba :
 #Star-fusions
 header = True
 for line in input_starfusion :
-    print(line.strip())
     if header :
         header = False
         continue
@@ -79,7 +77,6 @@ for line in input_starfusion :
 #FusionCatcher
 header = True
 for line in input_fusioncatcher :
-    print(line.strip())
     if header :
         header = False
         continue
