@@ -25,6 +25,7 @@ for line in input_bed :
 #Arriba fusions
 header = True
 for line in input_arriba :
+    print(line.strip())
     if header :
         header = False
         continue
@@ -51,6 +52,7 @@ for line in input_arriba :
 #Star-fusions
 header = True
 for line in input_starfusion :
+    print(line.strip())
     if header :
         header = False
         continue
@@ -77,6 +79,7 @@ for line in input_starfusion :
 #FusionCatcher
 header = True
 for line in input_fusioncatcher :
+    print(line.strip())
     if header :
         header = False
         continue
@@ -97,7 +100,7 @@ for line in input_fusioncatcher :
     predicted_effect = lline[15]
     #Flag fusions with Spanning_reads_unique < 5
     confidence = ""
-    if int(Spanning_reads_unique) < 5 :
+    if int(Spanning_reads_unique) < 5 and int(Spanning_pairs) < 5:
         confidence = "Low support"
     #Flag fusions annotated that are fusions with very high probability
     fp_db = ["banned", "bodymap2", "cacg", "1000genomes", "conjoing", "cortex", "distance1000bp", "ensembl_fully_overlapping", "ensembl_same_strand_overlapping", "gtex", "hpa", "mt", "paralogs", "refseq_fully_overlapping", "refseq_same_strand_overlapping", "rrna", "similar_reads", "similar_symbols", "ucsc_fully_overlapping", "ucsc_same_strand_overlapping"]
@@ -105,6 +108,6 @@ for line in input_fusioncatcher :
     for fp in fp_db :
         if fp in fp_filters :
             fp_found = "FP"
-    output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + confidence + "\t\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t\t\t" + discordant_mates + "\t" + coverage1 + "\t" + coverage2 + "\t" + "\n")
-    output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + confidence + "\t\t" + DBs + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t" + Spanning_Frag_count + "\t\t" + Junction_read_count + "\t\t\t" + FFPM + "\n")
+    #output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + confidence + "\t\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t\t\t" + discordant_mates + "\t" + coverage1 + "\t" + coverage2 + "\t" + "\n")
+    #output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + confidence + "\t\t" + DBs + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t" + Spanning_Frag_count + "\t\t" + Junction_read_count + "\t\t\t" + FFPM + "\n")
     output_fusions.write("FusionCatcher\t" + gene1 + "\t" + gene2 + "\t" + confidence + "\t" + fp_found + "\t" + DBs + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t" + Spanning_reads_unique + "\t" + Spanning_pairs + "\t\t\t\n")
