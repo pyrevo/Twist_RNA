@@ -17,8 +17,8 @@ chr_gene_dict = {}
 for line in input_bed :
     lline = line.strip().split("\t")
     chrom = lline[0]
-    start_pos = int(lline[1]) + 22
-    end_pos = int(lline[2]) - 22
+    start_pos = int(lline[1])
+    end_pos = int(lline[2])
     exon = lline[3]
     gene = exon.split("_")[0]
     if chrom not in chr_gene_dict :
@@ -33,8 +33,6 @@ for line in input_bed :
 #Read coverage info created by cartools
 i = 0
 for line in input_coverage :
-    if i % 100000 == 0 :
-        print(i)
     i += 1
     lline = line.strip().split("\t")
     chrom = lline[0]
