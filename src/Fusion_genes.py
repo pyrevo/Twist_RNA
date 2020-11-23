@@ -55,18 +55,18 @@ for line in input_arriba :
     pos2 = breakpoint2.split(":")[1]
     cov1 = 0
     cov2 = 0
-    subprocess.call("samtools depth -d 50000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + bam_file + " > " + output_coverage_file_name, shell=True)
+    subprocess.call("samtools depth -d 50000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
         cov1 = int(line.strip())
     output_coverage.close()
-    subprocess.call("samtools depth -d 50000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + bam_file + " > " + output_coverage_file_name, shell=True)
+    subprocess.call("samtools depth -d 50000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
         cov2 = int(line.strip())
     output_coverage.close()
-    q1 = (cov1 / (float(split_reads1) + float(split_reads2))
-    q2 = (cov2 / (float(split_reads1) + float(split_reads2))
+    q1 = (cov1 / (float(split_reads1) + float(split_reads2)))
+    q2 = (cov2 / (float(split_reads1) + float(split_reads2)))
     output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t\t\t" + discordant_mates + "\t" + coverage1 + "\t" + coverage2 + "\t" + str(q1) + "\t" + str(q2) + "\t" + "\n")
 
 
@@ -102,18 +102,18 @@ for line in input_starfusion :
     pos2 = breakpoint2.split(":")[1]
     cov1 = 0
     cov2 = 0
-    subprocess.call("samtools depth -d 50000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + bam_file + " > " + output_coverage_file_name, shell=True)
+    subprocess.call("samtools depth -d 50000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
         cov1 = int(line.strip())
     output_coverage.close()
-    subprocess.call("samtools depth -d 50000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + bam_file + " > " + output_coverage_file_name, shell=True)
+    subprocess.call("samtools depth -d 50000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
         cov2 = int(line.strip())
     output_coverage.close()
-    q1 = (cov1 / (float(split_reads1) + float(split_reads2))
-    q2 = (cov2 / (float(split_reads1) + float(split_reads2))
+    q1 = (cov1 / (float(split_reads1) + float(split_reads2)))
+    q2 = (cov2 / (float(split_reads1) + float(split_reads2)))
     output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t" + Spanning_Frag_count + "\t\t" + Junction_read_count + "\t\t\t" + FFPM + "\t" + str(q1) + "\t" + str(q2) + "\t" + DBs + "\n")
 
 
@@ -160,16 +160,16 @@ for line in input_fusioncatcher :
     pos2 = breakpoint2.split(":")[1]
     cov1 = 0
     cov2 = 0
-    subprocess.call("samtools depth -d 50000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + bam_file + " > " + output_coverage_file_name, shell=True)
+    subprocess.call("samtools depth -d 50000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
         cov1 = int(line.strip())
     output_coverage.close()
-    subprocess.call("samtools depth -d 50000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + bam_file + " > " + output_coverage_file_name, shell=True)
+    subprocess.call("samtools depth -d 50000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
         cov2 = int(line.strip())
     output_coverage.close()
-    q1 = (cov1 / (float(split_reads1) + float(split_reads2))
-    q2 = (cov2 / (float(split_reads1) + float(split_reads2))
+    q1 = (cov1 / (float(split_reads1) + float(split_reads2)))
+    q2 = (cov2 / (float(split_reads1) + float(split_reads2)))
     output_fusions.write("FusionCatcher\t" + gene1 + "\t" + gene2 + "\t" + confidence + "\t" + fp_found + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t" + Spanning_reads_unique + "\t" + Spanning_pairs + "\t\t\t\t" + str(q1) + "\t" + str(q2) + "\t" + DBs + "\n")
