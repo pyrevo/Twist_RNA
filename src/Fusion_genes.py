@@ -58,12 +58,12 @@ for line in input_arriba :
     subprocess.call("samtools depth -d 50000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
-        cov1 = int(line.strip())
+        cov1 = int(line.strip().split("\t")[2])
     output_coverage.close()
     subprocess.call("samtools depth -d 50000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
-        cov2 = int(line.strip())
+        cov2 = int(line.strip().split("\t")[2])
     output_coverage.close()
     q1 = (cov1 / (float(split_reads1) + float(split_reads2)))
     q2 = (cov2 / (float(split_reads1) + float(split_reads2)))
@@ -105,12 +105,12 @@ for line in input_starfusion :
     subprocess.call("samtools depth -d 50000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
-        cov1 = int(line.strip())
+        cov1 = int(line.strip().split("\t")[2])
     output_coverage.close()
     subprocess.call("samtools depth -d 50000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
-        cov2 = int(line.strip())
+        cov2 = int(line.strip().split("\t")[2])
     output_coverage.close()
     q1 = (cov1 / (float(split_reads1) + float(split_reads2)))
     q2 = (cov2 / (float(split_reads1) + float(split_reads2)))
@@ -163,12 +163,12 @@ for line in input_fusioncatcher :
     subprocess.call("samtools depth -d 50000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
-        cov1 = int(line.strip())
+        cov1 = int(line.strip().split("\t")[2])
     output_coverage.close()
     subprocess.call("samtools depth -d 50000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
-        cov2 = int(line.strip())
+        cov2 = int(line.strip().split("\t")[2])
     output_coverage.close()
     q1 = (cov1 / (float(split_reads1) + float(split_reads2)))
     q2 = (cov2 / (float(split_reads1) + float(split_reads2)))
