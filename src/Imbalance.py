@@ -43,8 +43,8 @@ for bam in bam_files :
             exon = lline[3]
             exon_list.append([exon, chrom, start_pos, end_pos])
             #print(exon, chrom, start_pos, end_pos)
-            print("samtools depth -d 50000 -aa -r " + chrom + ":" + str(start_pos) + "-" + str(end_pos) + " " + bam + " > exon_coverage/" + exon + ".txt")
-            subprocess.call("samtools depth -d 50000 -aa -r " + chrom + ":" + str(start_pos) + "-" + str(end_pos) + " " + bam + " > exon_coverage/" + exon + ".txt", shell=True)
+            print("samtools depth -d 100000 -aa -r " + chrom + ":" + str(start_pos) + "-" + str(end_pos) + " " + bam + " > exon_coverage/" + exon + ".txt")
+            subprocess.call("samtools depth -d 100000 -aa -r " + chrom + ":" + str(start_pos) + "-" + str(end_pos) + " " + bam + " > exon_coverage/" + exon + ".txt", shell=True)
         exon_result_dict[bam][gene].append(exon_list)
         avg_depth_list = []
         i = 0
@@ -72,14 +72,14 @@ for bam in bam_files :
         '''ALK'''
         if gene == "ALK" :
             for d in avg_depth_list :
-                if i <= 4 :
+                if i <= 7 :
                     gene_start += d / bam_dict[bam]
                 elif i >= 8 :
                     gene_end += d / bam_dict[bam]
                 if i >= 8 :
                     coverage += d / bam_dict[bam]
                 i += 1
-            gene_start /= 5.0
+            gene_start /= 8.0
             gene_end /= 8.0
             coverage /= 8.0
             imbalance = gene_end / gene_start
