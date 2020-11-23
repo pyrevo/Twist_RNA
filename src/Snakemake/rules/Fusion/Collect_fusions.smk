@@ -11,7 +11,8 @@ rule Collect_fusions:
         fusions = "Results/RNA/{sample}/Fusions/Fusions.tsv"
     params:
         coverage = "exon_coverage/{sample}_coverage_breakpoint.txt"
-    singularity:
-        config["singularity"]["python"]
+    #singularity:
+        #config["singularity"]["python"]
     shell:
+        "module load samtools && "
         "python3.6 src/Fusion_genes.py {input.bed} {input.arriba} {input.starfusion} {input.fusioncatcher} {input.bam} {output.fusions} {params.coverage}"
