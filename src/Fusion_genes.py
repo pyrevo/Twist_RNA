@@ -112,8 +112,8 @@ for line in input_starfusion :
     for line in output_coverage :
         cov2 = int(line.strip().split("\t")[2])
     output_coverage.close()
-    q1 = (cov1 / (float(split_reads1) + float(split_reads2)))
-    q2 = (cov2 / (float(split_reads1) + float(split_reads2)))
+    q1 = (cov1 / (float(Junction_read_count)))
+    q2 = (cov2 / (float(Junction_read_count)))
     output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t" + Spanning_Frag_count + "\t\t" + Junction_read_count + "\t\t\t" + FFPM + "\t" + str(q1) + "\t" + str(q2) + "\t" + DBs + "\n")
 
 
@@ -145,8 +145,8 @@ for line in input_fusioncatcher :
         confidence = "Low support"
     #MAML2 have large number of FP, remove if low evidence
     if (gene1 == "MAML2" or gene2 == "MAML2") :
-            if int(Spanning_reads_unique) < 10 :
-                continue
+        if int(Spanning_reads_unique) < 10 :
+            continue
     #Flag fusions annotated that are fusions with very high probability
     fp_db = ["banned", "bodymap2", "cacg", "1000genomes", "conjoing", "cortex", "distance1000bp", "ensembl_fully_overlapping", "ensembl_same_strand_overlapping", "gtex", "hpa", "mt", "paralogs", "refseq_fully_overlapping", "refseq_same_strand_overlapping", "rrna", "similar_reads", "similar_symbols", "ucsc_fully_overlapping", "ucsc_same_strand_overlapping"]
     fp_found = ""
@@ -154,7 +154,7 @@ for line in input_fusioncatcher :
         if fp in fp_filters :
             fp_found = "FP"
     #Compare fusion coverage with coverage in breakpoints
-    if len(breakpoint1.split(":")) == 2 and len(breakpoint2.split(":")) == 2 :
+    if len(breakpoint1.split(":")) == 3 and len(breakpoint2.split(":")) == 3 :
         chrom1 = "chr" + breakpoint1.split(":")[0]
         pos1 = breakpoint1.split(":")[1]
         chrom2 = "chr" + breakpoint2.split(":")[0]
@@ -171,8 +171,8 @@ for line in input_fusioncatcher :
         for line in output_coverage :
             cov2 = int(line.strip().split("\t")[2])
         output_coverage.close()
-        q1 = (cov1 / (float(split_reads1) + float(split_reads2)))
-        q2 = (cov2 / (float(split_reads1) + float(split_reads2)))
+        q1 = (cov1 / (float(Spanning_reads_unique)))
+        q2 = (cov2 / (float(Spanning_reads_unique)))
     else :
         q1 = "NA"
         q2 = "NA"
