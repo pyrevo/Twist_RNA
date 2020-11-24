@@ -16,14 +16,23 @@ output_coverage_file_name = sys.argv[7]
 #input_fusioncatcher = open("fusioncatcher/R20-258/final-list_candidate-fusion-genes.hg19.txt")
 #output_fusions = open("Results/RNA/R20-258/Fusions/Fusions.tsv", "w")
 
+housekeeping_genes = ["GAPDH", "GUSB", "OAZ1", "POLR2A"]
+artefact_genes = ["MAML2"]
+
 output_fusions.write("Caller\tgene1\tgene2\tconfidence\tFP\tbreakpoint1\tbreakpoint2\tsplit_reads1\tsplit_reads2\tsplit_reads\tsplit_reads_unique\tSpanning_pairs\tcoverage1\tcoverage2\tFFPM\tFusion_quotient1\tFusion_quotient2\tAnnotation\n")
 
 #Only keep fusions with one gene that are in the design
+design_genes_pool1 = {}
+design_genes_pool2 = {}
 design_genes = {}
 for line in input_bed :
     gene = line.strip().split("\t")[3].split("_")[0]
-    if gene not in design_genes :
-        design_genes[gene] = ""
+    pool = line.strip().split("\t")[4]
+    design_genes[gene] = ""
+    if pool == 1 :
+        design_genes_pool1[gene] = ""
+    else :
+        design_genes_pool2[gene] = ""
 
 #Arriba fusions
 header = True
@@ -86,11 +95,17 @@ for line in input_starfusion :
     Spanning_Frag_count = lline[2]
     #Flag fusions with junction_read_count < 10 and Spanning_Frag_count < 2
     confidence = ""
-    if int(Junction_read_count) < 10 and int(Spanning_Frag_count) < 2 :
+    if int(Junction_read_count) < 15 :
         confidence = "Low support"
-    #Remove Fusions with very weak split read support
-    if int(Junction_read_count) <= 1 :
+    #Remove Fusions with very weak read support
+    if int(Junction_read_count) <= 1 and int(Spanning_Frag_count) < 10 :
         continue
+    #Higher demand of read support for genes with frequent FP, house keeping genes, and pool2 genes without fusion to pool1 gene
+    if (gene1 in artefact_genes or gene2 in artefact_genes or
+        gene1 in housekeeping_genes or gene2 in housekeeping_genes or
+        ((gene1 in design_genes_pool2 or gene2 in design_genes_pool2) and not (gene1 in design_genes_pool1 or gene2 in design_genes_pool1))) :
+        if int(Spanning_reads_unique) < 15 :
+            continue
     breakpoint1 = lline[5]
     breakpoint2 = lline[7]
     FFPM = lline[9]
@@ -141,11 +156,16 @@ for line in input_fusioncatcher :
     predicted_effect = lline[15]
     #Flag fusions with Spanning_reads_unique < 5
     confidence = ""
-    if int(Spanning_reads_unique) < 5 and int(Spanning_pairs) < 5:
+    if int(Spanning_reads_unique) < 15:
         confidence = "Low support"
-    #MAML2 have large number of FP, remove if low evidence
-    if (gene1 == "MAML2" or gene2 == "MAML2") :
-        if int(Spanning_reads_unique) < 10 :
+    #Filter fusions with very low support
+    if int(Spanning_reads_unique) <= 5:
+        continue
+    #Higher demand of read support for genes with frequent FP, house keeping genes, and pool2 genes without fusion to pool1 gene
+    if (gene1 in artefact_genes or gene2 in artefact_genes or
+        gene1 in housekeeping_genes or gene2 in housekeeping_genes or
+        ((gene1 in design_genes_pool2 or gene2 in design_genes_pool2) and not (gene1 in design_genes_pool1 or gene2 in design_genes_pool1))) :
+        if int(Spanning_reads_unique) < 15 :
             continue
     #Flag fusions annotated that are fusions with very high probability
     fp_db = ["banned", "bodymap2", "cacg", "1000genomes", "conjoing", "cortex", "distance1000bp", "ensembl_fully_overlapping", "ensembl_same_strand_overlapping", "gtex", "hpa", "mt", "paralogs", "refseq_fully_overlapping", "refseq_same_strand_overlapping", "rrna", "similar_reads", "similar_symbols", "ucsc_fully_overlapping", "ucsc_same_strand_overlapping"]

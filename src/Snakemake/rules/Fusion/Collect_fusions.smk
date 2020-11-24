@@ -8,7 +8,7 @@ rule Collect_fusions:
         fusioncatcher = "Results/RNA/{sample}/Fusions/FusionCatcher_final-list_candidate-fusion-genes.hg19.txt",
         bam = "STAR2/{sample}Aligned.sortedByCoord.out.bam"
     output:
-        fusions = "Results/RNA/{sample}/Fusions/Fusions.tsv"
+        fusions = "Results/RNA/{sample}/Fusions/Fusions_{sample}.tsv"
     params:
         coverage = "exon_coverage/{sample}_coverage_breakpoint.txt"
     #singularity:
