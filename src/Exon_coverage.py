@@ -3,7 +3,7 @@ import subprocess
 import sys
 
 bam_file = sys.argv[1]
-bedfilename = sys.argv[2]
+bedfil = open(sys.argv[2])
 outfile_all = open(sys.argv[3], "w")
 outfile_low = open(sys.argv[3], "w")
 outfile_all.write("Sample\tExon\tAverage_coverage(max_5000)\n")
