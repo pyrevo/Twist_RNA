@@ -7,6 +7,7 @@ bedfile = open(sys.argv[2])
 outfile_all = open(sys.argv[3], "w")
 outfile_low = open(sys.argv[3], "w")
 outfile_all.write("Sample\tExon\tAverage_coverage(max_5000)\n")
+outfile_low.write("Sample\tExon\tAverage_coverage\n")
 
 
 for line in bedfile :
@@ -35,3 +36,4 @@ for line in bedfile :
     if avg_coverage < 500 :
         outfile_low.write(sample + "\t" + exon + "\t" + str(round(avg_coverage,1)) + "\n")
 outfile_all.close()
+outfile_low.close()
