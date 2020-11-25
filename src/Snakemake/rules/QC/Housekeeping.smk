@@ -6,7 +6,8 @@ rule Housekeeping_coverage:
         bed = config["bed"]["bedfile"]
     output:
         coverage = "Results/RNA/{sample}/QC/Housekeeping_gene_coverage.txt"
-    singularity:
-        config["singularity"]["python"]
+    #singularity:
+    #    config["singularity"]["python"]
     shell:
+        "module load samtools && "
         "python3.6 src/HK_gene_coverage.py {input.bam} {input.bed} {output.coverage}"
