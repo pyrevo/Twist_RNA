@@ -19,16 +19,24 @@ output_coverage_file_name = sys.argv[7]
 housekeeping_genes = ["GAPDH", "GUSB", "OAZ1", "POLR2A"]
 artefact_genes = ["MAML2"]
 
-output_fusions.write("Caller\tgene1\tgene2\tconfidence\tFP\tbreakpoint1\tbreakpoint2\tsplit_reads1\tsplit_reads2\tsplit_reads\tsplit_reads_unique\tSpanning_pairs\tcoverage1\tcoverage2\tFFPM\tFusion_quotient1\tFusion_quotient2\tAnnotation\n")
+output_fusions.write("Caller\tgene1\tgene2\texon1\texon2\tconfidence\tFP\tbreakpoint1\tbreakpoint2\tsplit_reads1\tsplit_reads2\tsplit_reads\tsplit_reads_unique\tSpanning_pairs\tcoverage1\tcoverage2\tFFPM\tFusion_quotient1\tFusion_quotient2\tAnnotation\n")
 
 #Only keep fusions with one gene that are in the design
 design_genes_pool1 = {}
 design_genes_pool2 = {}
 design_genes = {}
 for line in input_bed :
-    gene = line.strip().split("\t")[3].split("_")[0]
-    pool = line.strip().split("\t")[4]
-    design_genes[gene] = ""
+    lline = line.strip().split("\t")
+    chrom = lline[0]
+    start = int(lline[1])
+    end = int(lline[2])
+    exon = lline[3]
+    gene = lline[3].split("_")[0]
+    pool = lline[4]
+    if gene in design_genes :
+        design_genes[gene].append([chrom, start, end, exon])
+    else :
+        design_genes[gene] = [[chrom, start, end, exon]]
     if pool == 1 :
         design_genes_pool1[gene] = ""
     else :
@@ -76,7 +84,18 @@ for line in input_arriba :
     output_coverage.close()
     q1 = (cov1 / (float(split_reads1) + float(split_reads2)))
     q2 = (cov2 / (float(split_reads1) + float(split_reads2)))
-    output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t\t\t" + discordant_mates + "\t" + coverage1 + "\t" + coverage2 + "\t" + str(q1) + "\t" + str(q2) + "\t" + "\n")
+    #Get exon name if it is in design
+    exon1 = ""
+    exon2 = ""
+    if gene1 in design_genes :
+        for region in design_genes[gene1] :
+            if int(pos1) >= region[1] and int(pos1) >= region[2] :
+                exon1 = region[3]
+    if gene2 in design_genes :
+        for region in design_genes[gene2] :
+            if int(pos2) >= region[1] and int(pos2) >= region[2] :
+                exon2 = region[3]
+    output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t\t\t" + discordant_mates + "\t" + coverage1 + "\t" + coverage2 + "\t" + str(q1) + "\t" + str(q2) + "\t" + "\n")
 
 
 #Star-fusions
@@ -129,7 +148,18 @@ for line in input_starfusion :
     output_coverage.close()
     q1 = (cov1 / (float(Junction_read_count)))
     q2 = (cov2 / (float(Junction_read_count)))
-    output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t" + Spanning_Frag_count + "\t\t" + Junction_read_count + "\t\t\t" + FFPM + "\t" + str(q1) + "\t" + str(q2) + "\t" + DBs + "\n")
+    #Get exon name if it is in design
+    exon1 = ""
+    exon2 = ""
+    if gene1 in design_genes :
+        for region in design_genes[gene1] :
+            if int(pos1) >= region[1] and int(pos1) >= region[2] :
+                exon1 = region[3]
+    if gene2 in design_genes :
+        for region in design_genes[gene2] :
+            if int(pos2) >= region[1] and int(pos2) >= region[2] :
+                exon2 = region[3]
+    output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t" + Spanning_Frag_count + "\t\t" + Junction_read_count + "\t\t\t" + FFPM + "\t" + str(q1) + "\t" + str(q2) + "\t" + DBs + "\n")
 
 
 
@@ -196,4 +226,15 @@ for line in input_fusioncatcher :
     else :
         q1 = "NA"
         q2 = "NA"
-    output_fusions.write("FusionCatcher\t" + gene1 + "\t" + gene2 + "\t" + confidence + "\t" + fp_found + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t" + Spanning_reads_unique + "\t" + Spanning_pairs + "\t\t\t\t" + str(q1) + "\t" + str(q2) + "\t" + DBs + "\n")
+    #Get exon name if it is in design
+    exon1 = ""
+    exon2 = ""
+    if gene1 in design_genes :
+        for region in design_genes[gene1] :
+            if int(pos1) >= region[1] and int(pos1) >= region[2] :
+                exon1 = region[3]
+    if gene2 in design_genes :
+        for region in design_genes[gene2] :
+            if int(pos2) >= region[1] and int(pos2) >= region[2] :
+                exon2 = region[3]
+    output_fusions.write("FusionCatcher\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + fp_found + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t" + Spanning_reads_unique + "\t" + Spanning_pairs + "\t\t\t\t" + str(q1) + "\t" + str(q2) + "\t" + DBs + "\n")

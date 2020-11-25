@@ -7,7 +7,7 @@ genes = ["GAPDH", "GUSB", "OAZ1", "POLR2A"]
 bam_file = sys.argv[1]
 bedfilename = sys.argv[2]
 outfile = open(sys.argv[3], "w")
-outfile.write("Sample\tGene\tAvg_coverage\t200bp_avg_bins\n")
+outfile.write("Sample\tGene\tAvg_coverage\n")
 
 
 for gene in genes :
@@ -34,21 +34,5 @@ for gene in genes :
             coverage_nr_pos += 1
             coverage_list.append(coverage)
         depthfile.close()
-    cov_bins = []
-    cov_bin = 0
-    i = 0
-    for cov in coverage_list :
-        if i > 0 and i % 200 == 0 :
-            cov_bins.append(cov_bin / 200.0)
-            cov_bin = 0
-        cov_bin += cov
-        i += 1
-    if i > 0 and i % 200 == 0 :
-        cov_bins.append(cov_bin / 200.0)
-    else :
-        cov_bins.append(cov_bin / float((i % 200)))
-    outfile.write(sample + "\t" + gene + "\t" + str(round(coverage_sum/float(coverage_nr_pos),1)))
-    for cov_bin in cov_bins :
-        outfile.write("\t" + str(round(cov_bin,1)))
-    outfile.write("\n")
+    outfile.write(sample + "\t" + gene + "\t" + str(round(coverage_sum/float(coverage_nr_pos),1)) + "\n")
 outfile.close()
