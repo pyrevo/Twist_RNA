@@ -19,7 +19,7 @@ output_coverage_file_name = sys.argv[7]
 housekeeping_genes = ["GAPDH", "GUSB", "OAZ1", "POLR2A"]
 artefact_genes = ["MAML2"]
 
-output_fusions.write("Caller\tgene1\tgene2\texon1\texon2\tconfidence\tFP\tbreakpoint1\tbreakpoint2\tsplit_reads1\tsplit_reads2\tsplit_reads\tsplit_reads_unique\tSpanning_pairs\tcoverage1\tcoverage2\tFFPM\tFusion_quotient1\tFusion_quotient2\tAnnotation\n")
+output_fusions.write("Caller\tgene1\tgene2\texon1\texon2\tconfidence\tpredicted_effect\tbreakpoint1\tbreakpoint2\tcoverage1\tcoverage2\tsplit_reads1\tsplit_reads2\tSpanning_pairs\tsplit_reads\tSpanning_unique_reads\tFusion_quotient1\tFusion_quotient2\n")
 
 #Only keep fusions with one gene that are in the design
 design_genes_pool1 = {}
@@ -65,6 +65,7 @@ for line in input_arriba :
     discordant_mates = lline[13]
     coverage1 = lline[14]
     coverage2 = lline[15]
+    predicted_effect = lline[21]
     #Compare fusion coverage with coverage in breakpoints
     chrom1 = "chr" + breakpoint1.split(":")[0]
     pos1 = breakpoint1.split(":")[1]
@@ -95,7 +96,7 @@ for line in input_arriba :
         for region in design_genes[gene2] :
             if int(pos2) >= region[1] and int(pos2) >= region[2] :
                 exon2 = region[3]
-    output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t\t\t" + discordant_mates + "\t" + coverage1 + "\t" + coverage2 + "\t" + str(q1) + "\t" + str(q2) + "\t" + "\n")
+    output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + coverage1 + "\t" + coverage2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t" + discordant_mates + "\t\t\t" + str(q1) + "\t" + str(q2) + "\n")
 
 
 #Star-fusions
@@ -117,7 +118,7 @@ for line in input_starfusion :
     if int(Junction_read_count) < 15 :
         confidence = "Low support"
     #Remove Fusions with very weak read support
-    if int(Junction_read_count) <= 1 and int(Spanning_Frag_count) < 10 :
+    if int(Junction_read_count) <= 2 and int(Spanning_Frag_count) < 10 :
         continue
     #Higher demand of read support for genes with frequent FP, house keeping genes, and pool2 genes without fusion to pool1 gene
     if (gene1 in artefact_genes or gene2 in artefact_genes or
@@ -159,7 +160,7 @@ for line in input_starfusion :
         for region in design_genes[gene2] :
             if int(pos2) >= region[1] and int(pos2) >= region[2] :
                 exon2 = region[3]
-    output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t" + Spanning_Frag_count + "\t\t" + Junction_read_count + "\t\t\t" + FFPM + "\t" + str(q1) + "\t" + str(q2) + "\t" + DBs + "\n")
+    output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t\t" + Spanning_Frag_count + "\t" + Junction_read_count + "\t\t" + str(q1) + "\t" + str(q2) + "\n")
 
 
 
@@ -237,4 +238,7 @@ for line in input_fusioncatcher :
         for region in design_genes[gene2] :
             if int(pos2) >= region[1] and int(pos2) >= region[2] :
                 exon2 = region[3]
-    output_fusions.write("FusionCatcher\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + fp_found + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t" + Spanning_reads_unique + "\t" + Spanning_pairs + "\t\t\t\t" + str(q1) + "\t" + str(q2) + "\t" + DBs + "\n")
+    #output_fusions.write("Caller\tgene1\tgene2\texon1\texon2\tconfidence\tpredicted_effect\tbreakpoint1\tbreakpoint2\tcoverage1\tcoverage2\tsplit_reads1\tsplit_reads2\tSpanning_pairs\tsplit_reads\tSpanning_unique_reads\tFusion_quotient1\tFusion_quotient2\n")
+    #output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + coverage1 + "\t" + coverage2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t" + discordant_mates + "\t\t\t" + str(q1) + "\t" + str(q2) + "\n")
+    #output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t\t" + Spanning_Frag_count + "\t" + Junction_read_count + "\t\t" + str(q1) + "\t" + str(q2) + "\n")
+    output_fusions.write("FusionCatcher\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t\t" + Spanning_pairs + "\t\t" + Spanning_reads_unique + "\t" + str(q1) + "\t" + str(q2) + "\n")

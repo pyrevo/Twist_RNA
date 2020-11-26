@@ -66,20 +66,22 @@ rule Arriba_HC:
         fusions = "Arriba_results/{sample}.fusions.tsv",
         refseq = "DATA/refseq_full_hg19.txt"
     output:
-        fusions = "Results/RNA/{sample}/Fusions/{sample}.Arriba.HighConfidence.fusions.tsv"
+        fusions1 = "Arriba_results/{sample}.Arriba.HighConfidence.fusions.tsv",
+        fusions2 = "Results/RNA/{sample}/Fusions/Arriba.fusions.tsv"
     shell:
-        "head -n 1 {input.fusions} > {output.fusions} && "
-        "grep 'high' {input.fusions} >> {output.fusions} || true && "
-        "python2.7 src/Add_fusion_exon_name.py {input.refseq} {output.fusions}"
+        "head -n 1 {input.fusions} > {output.fusions1} && "
+        "grep 'high' {input.fusions} >> {output.fusions1} || true && "
+        "python2.7 src/Add_fusion_exon_name.py {input.refseq} {output.fusions1} && "
+        "cp {input.fusions} {output.fusions2}"
 
 
 rule Arriba_image:
     input:
-        fusion = "Results/RNA/{sample}/Fusions/{sample}.Arriba.HighConfidence.fusions.tsv",
+        fusion = "Results/RNA/{sample}/Fusions/Arriba.fusions.tsv",
         bam = "STAR/{sample}Aligned.sortedByCoord.out.bam",
         bai = "STAR/{sample}Aligned.sortedByCoord.out.bam.bai"
     output:
-        image = "Results/RNA/{sample}/Fusions/{sample}.Arriba.fusions.pdf"
+        image = "Results/RNA/{sample}/Fusions/Arriba.fusions.pdf"
     params:
         image_out_path = "Results/RNA/{sample}/Fusions/",
         Arriba_singularity = config["singularity"]["Arriba"],
