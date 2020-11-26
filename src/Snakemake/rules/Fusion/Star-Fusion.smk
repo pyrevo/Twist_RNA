@@ -58,7 +58,9 @@ rule STAR_Fusion:
         "--genome_lib_dir {params.ref} "
         "-J {input.alignment} "
         "--output_dir STAR_fusion/{wildcards.sample}/Fusions/ "
-        "--CPU {threads}"
+        "--CPU {threads} "
+        "--examine_coding_effect "
+        "--FusionInspector inspect"
 
 
 rule Copy_STAR_to_results:
@@ -73,20 +75,20 @@ rule Copy_STAR_to_results:
         "cp {input.STAR_fusion2} {output.STAR_fusion2}"
 
 
-rule Star_fusion_validate:
-    input:
-        fusion = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
-        fq1 = "fastq/RNA/{sample}_R1.fastq.gz",
-        fq2 = "fastq/RNA/{sample}_R2.fastq.gz"
-    output:
-        #fusion = "Results/RNA/{sample}/Fusions/finspector.FusionInspector.fusions.abridged.tsv"
-        fusion = "FI/{sample}/inspector.FusionInspector.fusions.abridged.tsv"
-    singularity:
-        config["singularity"]["STAR_fusion"]
-    shell:
-        "/usr/local/src/STAR-Fusion/FusionInspector/FusionInspector --fusions {input.fusion} "
-        "--genome_lib /projects/wp4/nobackup/workspace/jonas_test/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Apr032020.plug-n-play/ctat_genome_lib_build_dir/ "
-        "--left_fq {input.fq1} "
-        "--right_fq {input.fq2} "
-        "--output_dir FI/{wildcards.sample} "
-        "--vis --examine_coding_effect --FusionInspector inspect"
+# rule Star_fusion_validate:
+#     input:
+#         fusion = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
+#         fq1 = "fastq/RNA/{sample}_R1.fastq.gz",
+#         fq2 = "fastq/RNA/{sample}_R2.fastq.gz"
+#     output:
+#         #fusion = "Results/RNA/{sample}/Fusions/finspector.FusionInspector.fusions.abridged.tsv"
+#         fusion = "FI/{sample}/inspector.FusionInspector.fusions.abridged.tsv"
+#     singularity:
+#         config["singularity"]["STAR_fusion"]
+#     shell:
+#         "/usr/local/src/STAR-Fusion/FusionInspector/FusionInspector --fusions {input.fusion} "
+#         "--genome_lib /projects/wp4/nobackup/workspace/jonas_test/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Apr032020.plug-n-play/ctat_genome_lib_build_dir/ "
+#         "--left_fq {input.fq1} "
+#         "--right_fq {input.fq2} "
+#         "--output_dir FI/{wildcards.sample} "
+#         "--vis --examine_coding_effect"
