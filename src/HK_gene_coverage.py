@@ -1,6 +1,7 @@
 
 import subprocess
 import sys
+import time
 
 genes = ["GAPDH", "GUSB", "OAZ1", "POLR2A"]
 
@@ -27,6 +28,7 @@ for gene in genes :
         cov_outfile_name = "DATA/RNA_gene_depth_" + sample + ".txt"
         print("samtools depth -d 50000 -a -r " + region + " " + bam_file + " > " + cov_outfile_name)
         subprocess.call("samtools depth -d 50000 -a -r " + region + " " + bam_file + " > " + cov_outfile_name, shell=True)
+        time.sleep(2)
         depthfile = open(cov_outfile_name)
         for line in depthfile :
             coverage = int(line.strip().split("\t")[2])

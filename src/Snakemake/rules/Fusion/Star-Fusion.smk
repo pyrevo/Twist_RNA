@@ -60,7 +60,8 @@ rule STAR_Fusion:
         "--output_dir STAR_fusion/{wildcards.sample}/Fusions/ "
         "--CPU {threads}"
 
-rule Copy_to_results:
+
+rule Copy_STAR_to_results:
     input:
         #STAR_fusion1 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
         STAR_fusion2 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv"
@@ -70,3 +71,25 @@ rule Copy_to_results:
     shell:
         #"cp {input.STAR_fusion1} {output.STAR_fusion1} && "
         "cp {input.STAR_fusion2} {output.STAR_fusion2}"
+
+
+rule Star_fusion_validate:
+    input:
+        fusion = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
+        fq1 = "fastq/RNA/{sample}_R1.fastq.gz",
+        fq2 = "fastq/RNA/{sample}_R2.fastq.gz"
+    output:
+        #fusion = "Results/RNA/{sample}/Fusions/finspector.FusionInspector.fusions.abridged.tsv"
+        fusion = "FI/{sample}/FI/finspector/inspector.FusionInspector.fusions.abridged.tsv"
+    run:
+        import subprocess
+        command = "singularity exec -B /projects/ -B /scratch /projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg "
+        command += "/usr/local/src/STAR-Fusion/FusionInspector/FusionInspector --fusions STAR_fusion/" + wildcards.sample + "/Fusions/star-fusion.fusion_predictions.abridged.tsv "
+        #command += "--genome_lib /projects/wp4/nobackup/workspace/jonas_test/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Aug152019.plug-n-play/ctat_genome_lib_build_dir/ "
+        command += "--genome_lib /projects/wp4/nobackup/workspace/jonas_test/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Apr032020.plug-n-play/ctat_genome_lib_build_dir/ "
+        command += "--left_fq " + input.fq1 + " "
+        command += "--right_fq " + input.fq2 + " "
+        command += "--output_dir FI/" + wildcards.sample + "/Fusions/FI/finspector "
+        command += "--vis --examine_coding_effect"
+        print(command)
+        subprocess.call(command, shell=True)
