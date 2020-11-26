@@ -19,7 +19,7 @@ def get_input():
         input_list.append(["Results/RNA/" + s + "/Fusions/star-fusion.fusion_predictions.abridged.tsv" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/Fusions/FusionCatcher_summary_candidate_fusions.txt" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/Fusions/Fusions_" + s + ".tsv" for s in config["RNA_Samples"]])
-        input_list.append(["FI/" + s + "/FI/finspector/inspector.FusionInspector.fusions.abridged.tsv" for s in config["RNA_Samples"]])
+        input_list.append(["FI/" + s + "/inspector.FusionInspector.fusions.abridged.tsv" for s in config["RNA_Samples"]])
 
         '''Imbalance'''
         input_list.append("Results/RNA/Imbalance/imbalance_all_gene.txt")
