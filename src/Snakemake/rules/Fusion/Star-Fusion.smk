@@ -89,4 +89,4 @@ rule Star_fusion_validate:
         "--left_fq {input.fq1} "
         "--right_fq {input.fq2} "
         "--output_dir FI/{wildcards.sample} "
-        "--vis --examine_coding_effect"
+        "--vis --examine_coding_effect --FusionInspector inspect"
