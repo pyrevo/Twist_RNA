@@ -43,7 +43,9 @@ rule STAR:
 
 rule STAR_Fusion:
     input:
-        alignment = "STAR2/{sample}Chimeric.out.junction"
+        alignment = "STAR2/{sample}Chimeric.out.junction",
+        fq1 = "fastq/RNA/{sample}_R1.fastq.gz",
+        fq2 = "fastq/RNA/{sample}_R2.fastq.gz"
     output:
         fusion1 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
         fusion2 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv"
@@ -59,6 +61,8 @@ rule STAR_Fusion:
         "-J {input.alignment} "
         "--output_dir STAR_fusion/{wildcards.sample}/Fusions/ "
         "--CPU {threads} "
+        "--left_fq {input.fq1} "
+        "--right_fq {input.fq2} "
         "--examine_coding_effect "
         "--FusionInspector inspect"
 
