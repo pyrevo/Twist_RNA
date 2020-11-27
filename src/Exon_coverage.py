@@ -31,7 +31,9 @@ for line in bedfile :
         coverage_sum += coverage
         coverage_nr_pos += 1
     depthfile.close()
-    avg_coverage = coverage_sum / float(coverage_nr_pos)
+    average_coverage = 0.0
+    if coverage_nr_pos != 0
+        avg_coverage = coverage_sum / float(coverage_nr_pos)
     outfile_all.write(sample + "\t" + exon + "\t" + str(round(avg_coverage,1)) + "\n")
     if avg_coverage < 500 :
         outfile_low.write(sample + "\t" + exon + "\t" + str(round(avg_coverage,1)) + "\n")
