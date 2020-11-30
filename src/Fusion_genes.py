@@ -130,6 +130,7 @@ for line in input_starfusion :
     breakpoint2 = lline[7]
     FFPM = lline[9]
     DBs = lline[14]
+    predicted_effect = lline[19]
     #Compare fusion coverage with coverage in breakpoints
     chrom1 = breakpoint1.split(":")[0]
     pos1 = breakpoint1.split(":")[1]
@@ -160,7 +161,7 @@ for line in input_starfusion :
         for region in design_genes[gene2] :
             if int(pos2) >= region[1] and int(pos2) >= region[2] :
                 exon2 = region[3]
-    output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t\t" + Spanning_Frag_count + "\t" + Junction_read_count + "\t\t" + str(q1) + "\t" + str(q2) + "\n")
+    output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t\t" + Spanning_Frag_count + "\t" + Junction_read_count + "\t\t" + str(q1) + "\t" + str(q2) + "\n")
 
 
 

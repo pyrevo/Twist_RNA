@@ -47,8 +47,8 @@ rule STAR_Fusion:
         fq1 = "fastq/RNA/{sample}_R1.fastq.gz",
         fq2 = "fastq/RNA/{sample}_R2.fastq.gz"
     output:
-        fusion1 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
-        fusion2 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv"
+        fusion = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
+        html = "STAR_fusion/{sample}/Fusions/FusionInspector-inspect/finspector.fusion_inspector_web.html"
     params:
         ref = config["reference"]["STAR_fusion"]
     singularity:
@@ -70,10 +70,12 @@ rule STAR_Fusion:
 rule Copy_STAR_to_results:
     input:
         #STAR_fusion1 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
-        STAR_fusion2 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv"
+        STAR_fusion2 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
+        html = "STAR_fusion/{sample}/Fusions/FusionInspector-inspect/finspector.fusion_inspector_web.html
     output:
         #STAR_fusion1 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
-        STAR_fusion2 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv"
+        STAR_fusion2 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
+        html = "Results/RNA/{sample}/Fusions/Fusion_inspector_web.html
     shell:
         #"cp {input.STAR_fusion1} {output.STAR_fusion1} && "
         "cp {input.STAR_fusion2} {output.STAR_fusion2}"
