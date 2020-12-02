@@ -83,8 +83,8 @@ for line in input_arriba :
     for line in output_coverage :
         cov2 = int(line.strip().split("\t")[2])
     output_coverage.close()
-    round(q1,1) = (cov1 / (float(split_reads1) + float(split_reads2)))
-    round(q2,1) = (cov2 / (float(split_reads1) + float(split_reads2)))
+    q1 = round((cov1 / (float(split_reads1) + float(split_reads2))),1)
+    q2 = round((cov2 / (float(split_reads1) + float(split_reads2))),1)
     #Get exon name if it is in design
     exon1 = ""
     exon2 = ""
@@ -148,8 +148,8 @@ for line in input_starfusion :
     for line in output_coverage :
         cov2 = int(line.strip().split("\t")[2])
     output_coverage.close()
-    round(q1,1) = (cov1 / (float(Junction_read_count)))
-    round(q2,1) = (cov2 / (float(Junction_read_count)))
+    q1 = round((cov1 / (float(Junction_read_count))),1)
+    q2 = round((cov2 / (float(Junction_read_count))),1)
     #Get exon name if it is in design
     exon1 = ""
     exon2 = ""
@@ -223,8 +223,8 @@ for line in input_fusioncatcher :
         for line in output_coverage :
             cov2 = int(line.strip().split("\t")[2])
         output_coverage.close()
-        round(q1,1) = (cov1 / (float(Spanning_reads_unique)))
-        round(q2,1) = (cov2 / (float(Spanning_reads_unique)))
+        q1 = round((cov1 / (float(Spanning_reads_unique))),1)
+        q2 = round((cov2 / (float(Spanning_reads_unique))),1)
     else :
         q1 = "NA"
         q2 = "NA"
