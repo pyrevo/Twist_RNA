@@ -75,7 +75,7 @@ rule Copy_STAR_to_results:
     output:
         #STAR_fusion1 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
         STAR_fusion2 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
-        html = "Results/RNA/{sample}/Fusions/Fusion_inspector_web.html
+        html = "Results/RNA/{sample}/Fusions/Fusion_inspector_web.html"
     shell:
         #"cp {input.STAR_fusion1} {output.STAR_fusion1} && "
         "cp {input.STAR_fusion2} {output.STAR_fusion2} && "
