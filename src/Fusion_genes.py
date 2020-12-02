@@ -19,7 +19,7 @@ output_coverage_file_name = sys.argv[7]
 housekeeping_genes = ["GAPDH", "GUSB", "OAZ1", "POLR2A"]
 artefact_genes = ["MAML2"]
 
-output_fusions.write("Caller\tgene1\tgene2\texon1\texon2\tconfidence\tpredicted_effect\tbreakpoint1\tbreakpoint2\tcoverage1\tcoverage2\tsplit_reads1\tsplit_reads2\tSpanning_pairs\tsplit_reads\tSpanning_unique_reads\tFusion_quotient1\tFusion_quotient2\n")
+output_fusions.write("Caller\tgene1\tgene2\texon1\texon2\tconfidence\tpredicted_effect\tbreakpoint1\tbreakpoint2\tcoverage1\tcoverage2\tsplit_reads1\tsplit_reads2\tSpanning_pairs\tsplit_reads\tBreakpoint1_covarage/SplitReads\tBreakpoint2_covarage/SplitReads\n")
 
 #Only keep fusions with one gene that are in the design
 design_genes_pool1 = {}
@@ -83,8 +83,8 @@ for line in input_arriba :
     for line in output_coverage :
         cov2 = int(line.strip().split("\t")[2])
     output_coverage.close()
-    q1 = (cov1 / (float(split_reads1) + float(split_reads2)))
-    q2 = (cov2 / (float(split_reads1) + float(split_reads2)))
+    round(q1,1) = (cov1 / (float(split_reads1) + float(split_reads2)))
+    round(q2,1) = (cov2 / (float(split_reads1) + float(split_reads2)))
     #Get exon name if it is in design
     exon1 = ""
     exon2 = ""
@@ -96,7 +96,7 @@ for line in input_arriba :
         for region in design_genes[gene2] :
             if int(pos2) >= region[1] and int(pos2) >= region[2] :
                 exon2 = region[3]
-    output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + coverage1 + "\t" + coverage2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t" + discordant_mates + "\t\t\t" + str(q1) + "\t" + str(q2) + "\n")
+    output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + coverage1 + "\t" + coverage2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t" + discordant_mates + "\t\t" + str(q1) + "\t" + str(q2) + "\n")
 
 
 #Star-fusions
@@ -118,7 +118,7 @@ for line in input_starfusion :
     if int(Junction_read_count) < 15 :
         confidence = "Low support"
     #Remove Fusions with very weak read support
-    if int(Junction_read_count) <= 2 and int(Spanning_Frag_count) < 10 :
+    if int(Junction_read_count) < 10 and int(Spanning_Frag_count) <= 2 :
         continue
     #Higher demand of read support for genes with frequent FP, house keeping genes, and pool2 genes without fusion to pool1 gene
     if (gene1 in artefact_genes or gene2 in artefact_genes or
@@ -148,8 +148,8 @@ for line in input_starfusion :
     for line in output_coverage :
         cov2 = int(line.strip().split("\t")[2])
     output_coverage.close()
-    q1 = (cov1 / (float(Junction_read_count)))
-    q2 = (cov2 / (float(Junction_read_count)))
+    round(q1,1) = (cov1 / (float(Junction_read_count)))
+    round(q2,1) = (cov2 / (float(Junction_read_count)))
     #Get exon name if it is in design
     exon1 = ""
     exon2 = ""
@@ -161,7 +161,7 @@ for line in input_starfusion :
         for region in design_genes[gene2] :
             if int(pos2) >= region[1] and int(pos2) >= region[2] :
                 exon2 = region[3]
-    output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t\t" + Spanning_Frag_count + "\t" + Junction_read_count + "\t\t" + str(q1) + "\t" + str(q2) + "\n")
+    output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t\t" + Spanning_Frag_count + "\t" + Junction_read_count + "\t" + str(q1) + "\t" + str(q2) + "\n")
 
 
 
@@ -223,8 +223,8 @@ for line in input_fusioncatcher :
         for line in output_coverage :
             cov2 = int(line.strip().split("\t")[2])
         output_coverage.close()
-        q1 = (cov1 / (float(Spanning_reads_unique)))
-        q2 = (cov2 / (float(Spanning_reads_unique)))
+        round(q1,1) = (cov1 / (float(Spanning_reads_unique)))
+        round(q2,1) = (cov2 / (float(Spanning_reads_unique)))
     else :
         q1 = "NA"
         q2 = "NA"
@@ -240,6 +240,6 @@ for line in input_fusioncatcher :
             if int(pos2) >= region[1] and int(pos2) >= region[2] :
                 exon2 = region[3]
     #output_fusions.write("Caller\tgene1\tgene2\texon1\texon2\tconfidence\tpredicted_effect\tbreakpoint1\tbreakpoint2\tcoverage1\tcoverage2\tsplit_reads1\tsplit_reads2\tSpanning_pairs\tsplit_reads\tSpanning_unique_reads\tFusion_quotient1\tFusion_quotient2\n")
-    #output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + coverage1 + "\t" + coverage2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t" + discordant_mates + "\t\t\t" + str(q1) + "\t" + str(q2) + "\n")
-    #output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t\t" + Spanning_Frag_count + "\t" + Junction_read_count + "\t\t" + str(q1) + "\t" + str(q2) + "\n")
-    output_fusions.write("FusionCatcher\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t\t" + Spanning_pairs + "\t\t" + Spanning_reads_unique + "\t" + str(q1) + "\t" + str(q2) + "\n")
+    #output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + coverage1 + "\t" + coverage2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t" + discordant_mates + "\t\t" + str(q1) + "\t" + str(q2) + "\n")
+    #output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t\t" + Spanning_Frag_count + "\t" + Junction_read_count + "\t" + str(q1) + "\t" + str(q2) + "\n")
+    output_fusions.write("FusionCatcher\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t\t" + Spanning_pairs + "\t" + Spanning_reads_unique + "\t" + str(q1) + "\t" + str(q2) + "\n")
