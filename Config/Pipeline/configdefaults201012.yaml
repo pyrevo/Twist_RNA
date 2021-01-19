@@ -13,9 +13,9 @@ configfiles:
     multiqc: "DATA/multiqc_config.yaml"
 
 bed:
-    bedfile: "DATA/Twist_RNA_pool1_2_annotated.bed"
-    intervals: "DATA/Twist_RNA_pool1_2.interval_list"
-    exonbed: "DATA/Twist_RNA_pool1_2_annotated.bed"
+    bedfile: "DATA/Twist_RNA_pool1_2_V4.bed"
+    intervals: "DATA/Twist_RNA_pool1_2_V4.interval_list"
+    exonbed: "DATA/Twist_RNA_pool1_2_V4.bed"
 
 singularity:
     execute: "singularity exec -B /data -B /projects -B /scratch "

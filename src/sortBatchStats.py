@@ -32,7 +32,7 @@ sampleSheetSamples = [string for string in samples if string != ""]#Remove empty
 #         sampleSheetSamples.pop(index)
 
 #header = ['Sample','Tot seq','Reads mapped','Avg Coverage','Breadth 500x','Reads paired [%]','Insert size','Insert size s.d.','Average quality','Duplicates [%]','Breadth 50x','Breadth 100x','Bases on target']
-header = ['Sample','raw total sequences','Total reads','Reads mapped [%]','HQ aligned reads','Mean Coverage','Chimeric reads [%]', 'Adapter [%]','Median insert size','Insert size s.d.','Average Quality','Fraction bases on target','Average CV']
+header = ['Sample','Total reads','Reads mapped [%]','HQ aligned reads','Mean Coverage','Chimeric reads [%]', 'Adapter [%]','Median insert size','Insert size s.d.','Average Quality','Fraction bases on target','Average CV']
 
 with open(outFile, 'w') as file:
  ##write all config for custom table
@@ -45,18 +45,13 @@ with open(outFile, 'w') as file:
     file.write("    \"namespace\": \"qc-table\"\n")
     file.write("  },\n")
     file.write("  \"headers\": {\n") ##All header configs
-    file.write('    \"raw total sequences\": {\n')
-    file.write("      \"title\": \"Total reads\",\n")
-    file.write("      \"description\": \"Number of reads in fastq from Samtools\",\n")
-    file.write("      \"format\": \"{:.0f}\"\n")
-    file.write('    },\n')
     file.write('    \"Total reads\": {\n')
     file.write("      \"title\": \"Aligned reads\",\n")
     file.write("      \"description\": \"Number of reads in bam from Picard\",\n")
     file.write("      \"format\": \"{:.0f}\"\n")
     file.write('    },\n')
-    file.write('    \"Reads aligned [%]\": {\n')
-    file.write("      \"title\": \"Reads Aligned\",\n")
+    file.write('    \"Reads mapped [%]\": {\n')
+    file.write("      \"title\": \"Fraction reads mapped\",\n")
     file.write("      \"description\": \"Fraction of reads mapped from Picard\",\n")
     file.write("      \"min\": 0.7,\n")
     file.write("      \"max\": 1,\n")
