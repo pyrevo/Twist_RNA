@@ -16,7 +16,7 @@
                     "time": "4:00:00"},
     "Arriba" : {"n" : 5},
     "FusionCatcher" : {"n" : 10,
-                       "time" : "8:00:00"},
+                       "time" : "24:00:00"},
     "demultiplex": {"n" : 20,
                     "time" : "4:00:00"}
 }
