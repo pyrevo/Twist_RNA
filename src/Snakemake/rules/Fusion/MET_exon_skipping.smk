@@ -5,7 +5,7 @@ rule MET_exon_skipping:
     output:
         results="Results/RNA/{sample}/Fusions/{sample}_MET_exon_skipping.txt",
     log:
-        "logs/Fusion/MET_exon_skipping.log"
+        "logs/Fusion/{sample}_MET_exon_skipping.log"
     singularity:
         config["singularity"]["python"]
     shell:
