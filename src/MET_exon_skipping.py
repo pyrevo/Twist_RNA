@@ -20,10 +20,10 @@ for line in junction_file :
 junction_file.close()
 
 result_file.write("Reads_exon13-14\tReads_exon13-15\tMET_exon_skipping? (10% read support)\n")
-result_file.write(str(result_file["116411902"]) + "\t" + str(result_file["116414934"]))
-if result_file["116414934"] > (result_file["116411902"] + result_file["116414934"]) * 0.1 :
+result_file.write(str(junction_reads["116411902"]) + "\t" + str(junction_reads["116414934"]))
+if junction_reads["116414934"] > (junction_reads["116411902"] + junction_reads["116414934"]) * 0.1 :
     result_file.write("\tMET exon skipping found!!!")
-elif result_file["116414934"] > 0 :
+elif junction_reads["116414934"] > 0 :
     result_file.write("\tSome evidence of exon skipping.")
 else :
     result_file.write("\tNo exon skipping.")
