@@ -1,7 +1,7 @@
 
 rule MET_exon_skipping:
     input:
-        Junction="STAR2/{sample}SJ.out.tab",
+        junction="STAR2/{sample}SJ.out.tab",
     output:
         results="Results/RNA/{sample}/Fusions/{sample}_MET_exon_skipping.txt",
     log:
@@ -9,4 +9,4 @@ rule MET_exon_skipping:
     singularity:
         config["singularity"]["python"]
     shell:
-        "(python3.6 src/MET_exon_skipping.py {input.Junction} {output.results}) &> {log}"
+        "(python3.6 src/MET_exon_skipping.py {input.junction} {output.results}) &> {log}"
