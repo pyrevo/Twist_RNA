@@ -58,10 +58,10 @@ for line in junction_file:
 result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\n")
 for unnormal_key in unnormal_junction :
     gene = pos_dict[unnormal_key]
-    nr_unnormal_reads = unnormal_junction[unnormal_key]
+    nr_unnormal_reads = unnormal_junction[unnormal_key][0]
     nr_normal_reads = 0
     if unnormal_key in normal_junction :
-        nr_normal_reads = normal_junction[unnormal_key]
+        nr_normal_reads = normal_junction[unnormal_key][0]
     i_start = unnormal_junction[unnormal_key][1]
     i_end = unnormal_junction[unnormal_key][2]
     if i_start != 100 :
