@@ -12,8 +12,8 @@ for line in bed_file :
     chrom = lline[0]
     start_pos = int(lline[1])
     end_pos = int(lline[2])
-    key1 = chrom + "_" + start_pos
-    key2 = chrom + "_" + start_pos
+    key1 = chrom + "_" + str(start_pos)
+    key2 = chrom + "_" + str(start_pos)
     region = lline[3]
     gene = region.split("_")[0]
     exon = region.split("_exon_")[1]
@@ -28,11 +28,11 @@ unnormal_junction = {}
 for line in junction_file:
     lline = line.strip().split("\t")
     chrom = lline[0]
-    start_pos = lline[1]
-    end_pos = lline[2]
+    start_pos = int(lline[1])
+    end_pos = int(lline[2])
     nr_reads = int(lline[6])
-    key1 = "chr" + chrom + "_" + start_pos
-    key2 = "chr" + chrom + "_" + end_pos
+    key1 = "chr" + chrom + "_" + str(start_pos)
+    key2 = "chr" + chrom + "_" + str(end_pos)
     if key1 not in pos_dict or key2 not in pos_dict :
         continue
     i = 0
@@ -55,14 +55,14 @@ for line in junction_file:
         elif i_end - i_start == 1 :
             normal_junction[key1] = [nr_reads, i_start, i_end]
 
-result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\n"
+result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\n")
 for unnormal_key in unnormal_junction :
     gene = pos_dict[unnormal_key]
     nr_unnormal_reads = unnormal_junction[unnormal_key]
     nr_normal_reads = normal_junction[unnormal_key]
     start_exon = gene_dict[gene][unnormal_junction[unnormal_key][1]][3]
     end_exon = gene_dict[gene][unnormal_junction[unnormal_key][2]][3]
-    if nr_unnormal_reads / (nr_unnormal_reads + nr_normal_reads) > 0.1 :
+    if int(nr_unnormal_reads) / float(int(nr_unnormal_reads) + int(nr_normal_reads)) > 0.1 :
         result_file.write(gene + "\t" + start_exon + "\t" + end_exon + "\t" + nr_unnormal_reads + "\t" + nr_normal_reads + "\n")
 
 result_file.close()
