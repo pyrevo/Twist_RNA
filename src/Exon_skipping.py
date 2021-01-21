@@ -28,11 +28,11 @@ unnormal_junction = {}
 for line in junction_file:
     lline = line.strip().split("\t")
     chrom = lline[0]
-    start_pos = int(lline[1])
-    end_pos = int(lline[2])
+    start_pos = int(lline[1])-1
+    end_pos = int(lline[2])+1
     nr_reads = int(lline[6])
-    key1 = "chr" + chrom + "_" + str(start_pos-1)
-    key2 = "chr" + chrom + "_" + str(end_pos+1)
+    key1 = "chr" + chrom + "_" + str(start_pos)
+    key2 = "chr" + chrom + "_" + str(end_pos)
     if key1 not in pos_dict or key2 not in pos_dict :
         continue
     i = 0
