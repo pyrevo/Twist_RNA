@@ -53,7 +53,7 @@ for line in junction_file:
         i += 1
     #if i_start != 100 and i_end != 100:
     if i_end - i_start > 1 or i_start == 100 or i_end == 100 :
-        if nr_reads > 5 :
+        if nr_reads >= 5 :
             if key1 in unnormal_junction :
                 if nr_reads > unnormal_junction[key1][0] :
                     unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
