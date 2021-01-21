@@ -72,7 +72,7 @@ for unnormal_key in unnormal_junction :
         end_exon = gene_dict[gene][i_end][3]
     else :
         end_exon = unnormal_junction[unnormal_key][3]
-    if int(nr_unnormal_reads) / float(int(nr_unnormal_reads) + int(nr_normal_reads)) > 0.1 :
-        result_file.write(gene + "\t" + start_exon + "\t" + end_exon + "\t" + nr_unnormal_reads + "\t" + nr_normal_reads + "\n")
+    if nr_unnormal_reads / float(nr_unnormal_reads + nr_normal_reads) > 0.1 :
+        result_file.write(gene + "\t" + start_exon + "\t" + end_exon + "\t" + str(nr_unnormal_reads) + "\t" + str(nr_normal_reads) + "\n")
 
 result_file.close()
