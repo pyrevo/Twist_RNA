@@ -62,14 +62,14 @@ for unnormal_key in unnormal_junction :
     nr_normal_reads = 0
     if unnormal_key in normal_junction :
         nr_normal_reads = normal_junction[unnormal_key]
-    i_start = unnormal_key[1]
-    i_end = unnormal_key[2]
+    i_start = unnormal_junction[unnormal_key][1]
+    i_end = unnormal_junction[unnormal_key][2]
     if i_start != 100 :
-        start_exon = gene_dict[gene][unnormal_junction[i_start]][3]
+        start_exon = gene_dict[gene][i_start][3]
     else :
         start_exon = key1
     if i_end != 100 :
-        end_exon = gene_dict[gene][unnormal_junction[i_end]][3]
+        end_exon = gene_dict[gene][i_end][3]
     else :
         end_exon = unnormal_junction[key1][3]
     if int(nr_unnormal_reads) / float(int(nr_unnormal_reads) + int(nr_normal_reads)) > 0.1 :
