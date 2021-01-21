@@ -59,8 +59,10 @@ for line in junction_file:
                     unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
             else :
                 unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
-    elif i_end - i_start == 1 :
-        normal_junction[key1] = [nr_reads, i_start, i_end, key2]
+    if key1 in normal_junction :
+        normal_junction[key1].append([nr_reads, i_start, i_end, key2])
+    else :
+        normal_junction[key1] = [[nr_reads, i_start, i_end, key2]]
 
 result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\tcomment\n")
 for unnormal_key in unnormal_junction :
@@ -68,7 +70,11 @@ for unnormal_key in unnormal_junction :
     nr_unnormal_reads = unnormal_junction[unnormal_key][0]
     nr_normal_reads = 0
     if unnormal_key in normal_junction :
-        nr_normal_reads = normal_junction[unnormal_key][0]
+        normal_junction[unnormal_key].sort()
+        if normal_junction[unnormal_key][0][0] == nr_unnormal_reads :
+            nr_normal_reads = normal_junction[unnormal_key][1][0]
+        else :
+            nr_normal_reads = normal_junction[unnormal_key][0][0]
     i_start = unnormal_junction[unnormal_key][1]
     i_end = unnormal_junction[unnormal_key][2]
     if i_start != 100 :
@@ -87,5 +93,6 @@ for unnormal_key in unnormal_junction :
         if key in normal_dict :
             comment = normal_dict[key]
         result_file.write(gene + "\t" + start_exon + "\t" + end_exon + "\t" + str(nr_unnormal_reads) + "\t" + str(nr_normal_reads) + "\t" + comment + "\n")
+
 
 result_file.close()
