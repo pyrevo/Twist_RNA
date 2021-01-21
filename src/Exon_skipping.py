@@ -72,7 +72,8 @@ for unnormal_key in unnormal_junction :
     if unnormal_key in normal_junction :
         normal_junction[unnormal_key].sort()
         if normal_junction[unnormal_key][0][0] == nr_unnormal_reads :
-            nr_normal_reads = normal_junction[unnormal_key][1][0]
+            if len(normal_junction[unnormal_key]) > 1 :
+                nr_normal_reads = normal_junction[unnormal_key][1][0]
         else :
             nr_normal_reads = normal_junction[unnormal_key][0][0]
     i_start = unnormal_junction[unnormal_key][1]
