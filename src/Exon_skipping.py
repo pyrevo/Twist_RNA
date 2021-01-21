@@ -5,6 +5,8 @@ bed_file = open(sys.argv[1])
 junction_file = open(sys.argv[2])
 result_file = open(sys.argv[3], "w")
 
+normal_dict = {"NTRK1_8_10" : "Normal", "MET_13_15" : "Normal with small number of reads", "NTRK2_14_16" : "Normal", "ETV6_4_6" : "Normal?"}
+
 gene_dict = {}
 pos_dict = {}
 for line in bed_file :
@@ -19,7 +21,7 @@ for line in bed_file :
     exon = region.split("_exon_")[1]
     if exon == "UTR" :
         exon = 0
-    if len(exon.split("part")) > 1 :
+    elif len(exon.split("part")) > 1 :
         exon = int(exon.split("part")[0])
     exon = int(exon)
     if gene not in gene_dict :
@@ -51,7 +53,7 @@ for line in junction_file:
         i += 1
     #if i_start != 100 and i_end != 100:
     if i_end - i_start > 1 or i_start == 100 or i_end == 100 :
-        if nr_reads > 0 :
+        if nr_reads > 5 :
             if key1 in unnormal_junction :
                 if nr_reads > unnormal_junction[key1][0] :
                     unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
@@ -60,7 +62,7 @@ for line in junction_file:
     elif i_end - i_start == 1 :
         normal_junction[key1] = [nr_reads, i_start, i_end, key2]
 
-result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\n")
+result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\tcomment\n")
 for unnormal_key in unnormal_junction :
     gene = pos_dict[unnormal_key]
     nr_unnormal_reads = unnormal_junction[unnormal_key][0]
@@ -78,6 +80,12 @@ for unnormal_key in unnormal_junction :
     else :
         end_exon = unnormal_junction[unnormal_key][3]
     if nr_unnormal_reads / float(nr_unnormal_reads + nr_normal_reads) > 0.1 :
-        result_file.write(gene + "\t" + start_exon + "\t" + end_exon + "\t" + str(nr_unnormal_reads) + "\t" + str(nr_normal_reads) + "\n")
+        if nr_normal_reads == 0 :
+            nr_normal_reads = "NA"
+        comment = ""
+        key = gene + "_" + start_exon + "_" + end_exon
+        if key in normal_dict :
+            comment = normal_dict[key]
+        result_file.write(gene + "\t" + start_exon + "\t" + end_exon + "\t" + str(nr_unnormal_reads) + "\t" + str(nr_normal_reads) + "\t" + comment + "\n")
 
 result_file.close()
