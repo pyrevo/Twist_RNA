@@ -42,7 +42,6 @@ for line in junction_file:
     key2 = "chr" + chrom + "_" + str(end_pos)
     if key1 not in pos_dict or key2 not in pos_dict :
         continue
-    i = 0
     i_start = 100
     i_end = 100
     for exon in gene_dict[pos_dict[key1]] :
@@ -50,7 +49,6 @@ for line in junction_file:
             i_start = exon[3]
         if exon[1] == end_pos :
             i_end = exon[3]
-        i += 1
     #if i_start != 100 and i_end != 100:
     if i_end - i_start > 1 or i_start == 100 or i_end == 100 :
         if nr_reads >= 5 :
@@ -63,6 +61,8 @@ for line in junction_file:
         normal_junction[key1].append([nr_reads, i_start, i_end, key2])
     else :
         normal_junction[key1] = [[nr_reads, i_start, i_end, key2]]
+    print(unnormal_junction[key1])
+    print(normal_junction[key1])
 
 result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\tcomment\n")
 for unnormal_key in unnormal_junction :
