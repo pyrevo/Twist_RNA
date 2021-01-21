@@ -4,7 +4,7 @@ rule Exon_skipping:
         bed=config["bed"]["bedfile"],
         junction="STAR/{sample}SJ.out.tab",
     output:
-        results="Results/RNA/{sample}/Fusions/{sample}_exon_skipping.txt"
+        results="Results/RNA/{sample}/Fusions/{sample}_exon_skipping.txt",
     log:
         "logs/Fusion/Exon_skipping.log"
     singularity:

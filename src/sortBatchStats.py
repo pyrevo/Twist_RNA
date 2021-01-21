@@ -101,7 +101,7 @@ with open(outFile, 'w') as file:
     file.write("      \"title\": \"Chimeric reads\",\n")
     file.write("      \"description\": \"Fraction of chimeric reads from Picard\",\n")
     file.write("      \"min\": 0,\n")
-    file.write("      \"max\": 0.002,\n")
+    file.write("      \"max\": 0.003,\n")
     file.write("      \"scale\": \"RdYlGn-rev\",\n")
     file.write("      \"format\": \"{:.4f}\"\n")
     file.write("    },\n")

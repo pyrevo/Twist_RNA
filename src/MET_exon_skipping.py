@@ -19,7 +19,7 @@ for line in junction_file :
         junction_reads[end_pos] = reads
 junction_file.close()
 
-result_file.write("Reads_exon13-14\tReads_exon13-15\tMET_exon_skipping? (10% read support)\n")
+result_file.write("Reads_exon13-14\tReads_exon13-15\tMET_exon_skipping? (>10% read support)\n")
 result_file.write(str(junction_reads["116411902"]) + "\t" + str(junction_reads["116414934"]))
 if junction_reads["116414934"] > (junction_reads["116411902"] + junction_reads["116414934"]) * 0.1 :
     result_file.write("\tMET exon skipping found!!!")
