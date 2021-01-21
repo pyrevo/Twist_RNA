@@ -39,7 +39,7 @@ for line in junction_file:
     i_start = 100
     i_end = 100
     for exon in gene_dict[pos_dict[key1]] :
-        if exon[1] == start_pos :
+        if exon[2] == start_pos :
             i_start = i
         if exon[1] == end_pos :
             i_end = i
