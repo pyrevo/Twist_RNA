@@ -53,17 +53,17 @@ for line in junction_file:
     if i_end - i_start > 1 or i_start == 100 or i_end == 100 :
         if nr_reads >= 5 :
             if key1 in unnormal_junction :
-                if nr_reads > unnormal_junction[key1][0] :
-                    unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
+                if nr_reads > unnormal_junction[key2][0] :
+                    unnormal_junction[key2] = [nr_reads, i_start, i_end, key1]
             else :
-                unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
+                unnormal_junction[key2] = [nr_reads, i_start, i_end, key1]
     if key1 in normal_junction :
-        normal_junction[key1].append([nr_reads, i_start, i_end, key2])
+        normal_junction[key2].append([nr_reads, i_start, i_end, key1])
     else :
-        normal_junction[key1] = [[nr_reads, i_start, i_end, key2]]
+        normal_junction[key2] = [[nr_reads, i_start, i_end, key1]]
     if key1 in unnormal_junction :
-        print("unnormal:", unnormal_junction[key1])
-    print("normal": normal_junction[key1])
+        print("unnormal:", unnormal_junction[key2])
+    print("normal:", normal_junction[key2])
 
 result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\tcomment\n")
 for unnormal_key in unnormal_junction :
