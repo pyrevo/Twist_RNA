@@ -89,7 +89,7 @@ for unnormal_key in unnormal_junction :
     else :
         continue
         #end_exon = unnormal_junction[unnormal_key][3]
-    if nr_unnormal_reads / float(nr_unnormal_reads + nr_normal_reads) > 0.1 :
+    if nr_unnormal_reads / float(nr_unnormal_reads + nr_normal_reads) > 0.05 :
         if nr_normal_reads == 0 :
             nr_normal_reads = "NA"
         comment = ""
