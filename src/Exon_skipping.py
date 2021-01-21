@@ -17,6 +17,11 @@ for line in bed_file :
     region = lline[3]
     gene = region.split("_")[0]
     exon = region.split("_exon_")[1]
+    if exon == "UTR" :
+        exon = 0
+    if len(exon.split("part")) > 1 :
+        exon = int(exon.split("part")[0])
+    exon = int(exon)
     if gene not in gene_dict :
         gene_dict[gene] = []
     gene_dict[gene].append([chrom, start_pos, end_pos, exon])
@@ -40,9 +45,9 @@ for line in junction_file:
     i_end = 100
     for exon in gene_dict[pos_dict[key1]] :
         if exon[2] == start_pos :
-            i_start = i
+            i_start = exon[3]
         if exon[1] == end_pos :
-            i_end = i
+            i_end = exon[3]
         i += 1
     #if i_start != 100 and i_end != 100:
     if i_end - i_start > 1 or i_start == 100 or i_end == 100 :
@@ -65,11 +70,11 @@ for unnormal_key in unnormal_junction :
     i_start = unnormal_junction[unnormal_key][1]
     i_end = unnormal_junction[unnormal_key][2]
     if i_start != 100 :
-        start_exon = gene_dict[gene][i_start][3]
+        start_exon = str(i_start)
     else :
         start_exon = unnormal_key
     if i_end != 100 :
-        end_exon = gene_dict[gene][i_end][3]
+        end_exon = str(i_end)
     else :
         end_exon = unnormal_junction[unnormal_key][3]
     if nr_unnormal_reads / float(nr_unnormal_reads + nr_normal_reads) > 0.1 :
