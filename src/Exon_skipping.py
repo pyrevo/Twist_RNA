@@ -40,7 +40,7 @@ for line in junction_file:
     nr_reads = int(lline[6])
     key1 = "chr" + chrom + "_" + str(start_pos)
     key2 = "chr" + chrom + "_" + str(end_pos)
-    if key1 not in pos_dict or key2 not in pos_dict :
+    if key1 not in pos_dict and key2 not in pos_dict :
         continue
     i_start = 100
     i_end = 100
@@ -53,17 +53,18 @@ for line in junction_file:
     if i_end - i_start > 1 or i_start == 100 or i_end == 100 :
         if nr_reads >= 5 :
             if key1 in unnormal_junction :
-                if nr_reads > unnormal_junction[key2][0] :
-                    unnormal_junction[key2] = [nr_reads, i_start, i_end, key1]
+                if nr_reads > unnormal_junction[key1][0] :
+                    unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
             else :
-                unnormal_junction[key2] = [nr_reads, i_start, i_end, key1]
+                unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
+    print("key1:", key1, "key2", key2)
     if key1 in normal_junction :
-        normal_junction[key2].append([nr_reads, i_start, i_end, key1])
+        normal_junction[key1].append([nr_reads, i_start, i_end, key2])
     else :
-        normal_junction[key2] = [[nr_reads, i_start, i_end, key1]]
+        normal_junction[key1] = [[nr_reads, i_start, i_end, key2]]
     if key1 in unnormal_junction :
-        print("unnormal:", unnormal_junction[key2])
-    print("normal:", normal_junction[key2])
+        print("unnormal:", unnormal_junction[key1])
+    print("normal:", normal_junction[key1])
 
 result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\tcomment\n")
 for unnormal_key in unnormal_junction :
