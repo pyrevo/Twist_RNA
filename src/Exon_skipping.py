@@ -61,8 +61,9 @@ for line in junction_file:
         normal_junction[key1].append([nr_reads, i_start, i_end, key2])
     else :
         normal_junction[key1] = [[nr_reads, i_start, i_end, key2]]
-    print(unnormal_junction[key1])
-    print(normal_junction[key1])
+    if key1 in unnormal_junction :
+        print("unnormal:", unnormal_junction[key1])
+    print("normal": normal_junction[key1])
 
 result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\tcomment\n")
 for unnormal_key in unnormal_junction :
