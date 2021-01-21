@@ -40,7 +40,7 @@ for line in junction_file:
     nr_reads = int(lline[6])
     key1 = "chr" + chrom + "_" + str(start_pos)
     key2 = "chr" + chrom + "_" + str(end_pos)
-    if key1 not in pos_dict and key2 not in pos_dict :
+    if key1 not in pos_dict :#and key2 not in pos_dict :
         continue
     i_start = 100
     i_end = 100
@@ -72,7 +72,7 @@ for unnormal_key in unnormal_junction :
     nr_unnormal_reads = unnormal_junction[unnormal_key][0]
     nr_normal_reads = 0
     if unnormal_key in normal_junction :
-        normal_junction[unnormal_key].sort()
+        normal_junction[unnormal_key].sort(reverse=True)
         if normal_junction[unnormal_key][0][0] == nr_unnormal_reads :
             if len(normal_junction[unnormal_key]) > 1 :
                 nr_normal_reads = normal_junction[unnormal_key][1][0]
@@ -87,8 +87,9 @@ for unnormal_key in unnormal_junction :
     if i_end != 100 :
         end_exon = str(i_end)
     else :
-        end_exon = unnormal_junction[unnormal_key][3]
-    if nr_unnormal_reads / float(nr_unnormal_reads + nr_normal_reads) > 0.0 :
+        continue
+        #end_exon = unnormal_junction[unnormal_key][3]
+    if nr_unnormal_reads / float(nr_unnormal_reads + nr_normal_reads) > 0.1 :
         if nr_normal_reads == 0 :
             nr_normal_reads = "NA"
         comment = ""
