@@ -45,31 +45,31 @@ for line in junction_file:
             i_end = i
         i += 1
     #if i_start != 100 and i_end != 100:
-        if i_end - i_start > 1 or i_start == 100 or i_end == 100 :
-            if nr_reads > 0 :
-                if key1 in unnormal_junction :
-                    if nr_reads > unnormal_junction[key1][0] :
-                        unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
-                else :
+    if i_end - i_start > 1 or i_start == 100 or i_end == 100 :
+        if nr_reads > 0 :
+            if key1 in unnormal_junction :
+                if nr_reads > unnormal_junction[key1][0] :
                     unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
-        elif i_end - i_start == 1 :
-            normal_junction[key1] = [nr_reads, i_start, i_end, key2]
+            else :
+                unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
+    elif i_end - i_start == 1 :
+        normal_junction[key1] = [nr_reads, i_start, i_end, key2]
 
 result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\n")
 for unnormal_key in unnormal_junction :
     gene = pos_dict[unnormal_key]
     nr_unnormal_reads = unnormal_junction[unnormal_key]
     nr_normal_reads = 0
-    if unnormal_key in nr_normal_reads :
+    if unnormal_key in normal_junction :
         nr_normal_reads = normal_junction[unnormal_key]
     i_start = unnormal_key[1]
     i_end = unnormal_key[2]
     if i_start != 100 :
-        start_exon = gene_dict[gene][unnormal_junction[unnormal_key][1]][3]
+        start_exon = gene_dict[gene][unnormal_junction[i_start]][3]
     else :
         start_exon = key1
     if i_end != 100 :
-        end_exon = gene_dict[gene][unnormal_junction[unnormal_key][2]][3]
+        end_exon = gene_dict[gene][unnormal_junction[i_end]][3]
     else :
         end_exon = unnormal_junction[key1][3]
     if int(nr_unnormal_reads) / float(int(nr_unnormal_reads) + int(nr_normal_reads)) > 0.1 :
