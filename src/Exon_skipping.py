@@ -5,7 +5,7 @@ bed_file = open(sys.argv[1])
 junction_file = open(sys.argv[2])
 result_file = open(sys.argv[3], "w")
 
-normal_dict = {"NTRK1_8_10" : "Normal", "MET_13_15" : "Normal with small number of reads", "NTRK2_14_16" : "Normal", "ETV6_4_6" : "Normal?"}
+normal_dict = {"NTRK1_8_10" : "Normal"}#, "MET_13_15" : "Normal with small number of reads", "NTRK2_14_16" : "Normal", "ETV6_4_6" : "Normal?"}
 
 gene_dict = {}
 pos_dict = {}
