@@ -28,7 +28,6 @@ def get_input():
 
         '''Exon skipping'''
         #input_list.append("Results/RNA/Exon_skipping/exon_skipping.txt")
-        input_list.append(["Results/RNA/" + s + "/Fusions/" + s + "_MET_exon_skipping.txt" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/Fusions/" + s + "_exon_skipping.txt" for s in config["RNA_Samples"]])
 
         '''QC'''
