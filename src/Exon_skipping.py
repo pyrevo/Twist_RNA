@@ -5,7 +5,7 @@ bed_file = open(sys.argv[1])
 junction_file = open(sys.argv[2])
 result_file = open(sys.argv[3], "w")
 
-normal_dict = {"NTRK1_8_10" : "Normal"}#, "MET_13_15" : "Normal with small number of reads", "NTRK2_14_16" : "Normal", "ETV6_4_6" : "Normal?"}
+normal_dict = {"NTRK1_8_10" : "Normal"}
 
 gene_dict = {}
 pos_dict = {}
@@ -61,16 +61,12 @@ for line in junction_file:
                     unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
             else :
                 unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
-    print("key1:", key1, "key2", key2)
     if key1 in normal_junction :
         normal_junction[key1].append([nr_reads, i_start, i_end, key2])
     else :
         normal_junction[key1] = [[nr_reads, i_start, i_end, key2]]
-    if key1 in unnormal_junction :
-        print("unnormal:", unnormal_junction[key1])
-    print("normal:", normal_junction[key1])
 
-result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\tcomment\n")
+result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\n")
 for unnormal_key in unnormal_junction :
     gene = pos_dict[unnormal_key]
     nr_unnormal_reads = unnormal_junction[unnormal_key][0]
@@ -94,13 +90,10 @@ for unnormal_key in unnormal_junction :
         continue
         #end_exon = unnormal_junction[unnormal_key][3]
     if nr_unnormal_reads / float(nr_unnormal_reads + nr_normal_reads) > 0.05 :
-        if nr_normal_reads == 0 :
-            nr_normal_reads = "NA"
-        comment = ""
         key = gene + "_" + start_exon + "_" + end_exon
         if key in normal_dict :
-            comment = normal_dict[key]
-        result_file.write(gene + "\t" + start_exon + "\t" + end_exon + "\t" + str(nr_unnormal_reads) + "\t" + str(nr_normal_reads) + "\t" + comment + "\n")
+            continue
+        result_file.write(gene + "\t" + start_exon + "\t" + end_exon + "\t" + str(nr_unnormal_reads) + "\t" + str(nr_normal_reads) + "\n")
 
 
 result_file.close()
