@@ -1,4 +1,4 @@
-name: gms_somatic_rna
+name: twist_rna
 channels:
   - bioconda
   - conda-forge
