@@ -10,11 +10,6 @@ input_bam = sys.argv[5]
 output_fusions = open(sys.argv[6], "w")
 output_coverage_file_name = sys.argv[7]
 
-#input_bed = open("DATA/Twist_RNA_pool1_2.bed")
-#input_arriba = open("Arriba_results/R20-258.fusions.tsv")
-#input_starfusion = open("Results/RNA/R20-258/Fusions/star-fusion.fusion_predictions.abridged.tsv")
-#input_fusioncatcher = open("fusioncatcher/R20-258/final-list_candidate-fusion-genes.hg19.txt")
-#output_fusions = open("Results/RNA/R20-258/Fusions/Fusions.tsv", "w")
 
 housekeeping_genes = ["GAPDH", "GUSB", "OAZ1", "POLR2A"]
 artefact_genes = ["MAML2"]

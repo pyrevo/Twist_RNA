@@ -4,18 +4,19 @@ localrules: Arriba_HC, Arriba_IGV_bat
 rule STAR_arrbia:
     input:
         fastq1 = "fastq/RNA/{sample}_R1.fastq.gz",
-        fastq2 = "fastq/RNA/{sample}_R2.fastq.gz"
+        fastq2 = "fastq/RNA/{sample}_R2.fastq.gz",
     output:
-        bams = "STAR/{sample}Aligned.sortedByCoord.out.bam",
-        bais = "STAR/{sample}Aligned.sortedByCoord.out.bam.bai",
-        junctions = "STAR/{sample}SJ.out.tab"
+        bam = "STAR/{sample}_Aligned.sortedByCoord.out.bam",
+        junctions = "STAR/{sample}_SJ.out.tab",
     params:
-        Arriba_singularity = "singularity exec -B /projects/ -B /scratch/ " + config["singularity"]["Arriba"],
-        samtools_singularity = "singularity exec -B /projects/ -B /scratch/ " + config["singularity"]["samtools"],
-        index = config["reference"]["Arriba_index"]
+        index = config["reference"]["Arriba_index"],
+    log:
+        "logs/Arriba/STAR/{sample}.log",
+    container:
+        config["singularity"].get("Arriba", config["singularity"].get("default", ""))
     threads: 5
     shell:
-        "{params.Arriba_singularity} STAR "
+        "(STAR "
     	"--runThreadN {threads} "
     	"--genomeDir {params.index} "
         "--genomeLoad NoSharedMemory "
@@ -34,45 +35,63 @@ rule STAR_arrbia:
         "--chimScoreSeparation 1 "
         "--alignSJstitchMismatchNmax 5 -1 5 5 "
         "--chimSegmentReadGapMax 3 "
-        "--outFileNamePrefix STAR/{wildcards.sample} && "
-        "{params.samtools_singularity} samtools index {output.bams}"
+        "--outFileNamePrefix STAR/{wildcards.sample}_) &> {log}"
+
+rule STAR_arrbia_index:
+    input:
+        bam = "STAR/{sample}_Aligned.sortedByCoord.out.bam",
+    output:
+        bai = "STAR/{sample}_Aligned.sortedByCoord.out.bam.bai",
+    log:
+        "logs/Arriba/bam_index/{sample}.log",
+    container:
+        config["singularity"].get("samtools", config["singularity"].get("default", ""))
+    shell:
+        "(samtools index {output.bam}) &> {log}"
 
 
 rule Arriba:
     input:
-        bams = "STAR/{sample}Aligned.sortedByCoord.out.bam"
+        bam = "STAR/{sample}_Aligned.sortedByCoord.out.bam",
+        bai = "STAR/{sample}_Aligned.sortedByCoord.out.bam.bai",
     output:
         fusions1 = "Arriba_results/{sample}.fusions.tsv",
-        fusions2 = "Arriba_results/{sample}.fusions.discarded.tsv"
+        fusions2 = "Arriba_results/{sample}.fusions.discarded.tsv",
     params:
         ref = config["reference"]["Arriba_ref"],
         gtf = config["reference"]["Arriba_gtf"],
-        blacklist = config["reference"]["Arriba_blacklist"]
-    singularity:
-        config["singularity"]["Arriba"]
+        blacklist = config["reference"]["Arriba_blacklist"],
+    log:
+        "logs/Arriba/Arriba/{sample}.log",
+    container:
+        config["singularity"].get("Arriba", config["singularity"].get("default", ""))
     shell:
-        "/arriba_v1.1.0/arriba "
-    	"-x {input.bams} "
+        "(arriba "
+    	"-x {input.bam} "
     	"-o {output.fusions1} "
         "-O {output.fusions2} "
     	"-a {params.ref} "
         "-g {params.gtf} "
         "-b {params.blacklist} "
     	"-T "
-        "-P "
+        "-P) &> {log}"
 
 rule Arriba_HC:
     input:
         fusions = "Arriba_results/{sample}.fusions.tsv",
-        refseq = "DATA/refseq_full_hg19.txt"
+        refseq = "DATA/refseq_full_hg19.txt",
     output:
         fusions1 = "Arriba_results/{sample}.Arriba.HighConfidence.fusions.tsv",
-        fusions2 = "Results/RNA/{sample}/Fusions/Arriba.fusions.tsv"
+        fusions2 = "Results/RNA/{sample}/Fusions/Arriba.fusions.tsv",
+    log:
+        "logs/Arriba/HC/{sample}.log",
+    container:
+        config["singularity"].get("python", config["singularity"].get("default", ""))
     shell:
-        "head -n 1 {input.fusions} > {output.fusions1} && "
+        "(head -n 1 {input.fusions} > {output.fusions1} && "
         "grep 'high' {input.fusions} >> {output.fusions1} || true && "
-        "python2.7 src/Add_fusion_exon_name.py {input.refseq} {output.fusions1} && "
-        "cp {input.fusions} {output.fusions2}"
+        "python src/Add_fusion_exon_name.py {input.refseq} {output.fusions1} && "
+        "cp {input.fusions} {output.fusions2}) &> {log}"
 
 
 rule Arriba_image:
@@ -84,8 +103,10 @@ rule Arriba_image:
         image = "Results/RNA/{sample}/Fusions/Arriba.fusions.pdf"
     params:
         image_out_path = "Results/RNA/{sample}/Fusions/",
-        Arriba_singularity = config["singularity"]["Arriba"],
+        Arriba_singularity = config["singularity"].get("Arriba", config["singularity"].get("default", ""))
         ref = config["reference"]["Arriba_refdir"]
+    log:
+        "logs/Arriba/image/{sample}.log",
     run:
         import subprocess
         command = "singularity exec "
