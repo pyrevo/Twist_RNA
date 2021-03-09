@@ -26,8 +26,8 @@ for gene in genes :
         region = region[0] + ":" + region[1] + "-" + region[2]
         sample = bam_file.split("/")[-1].split(".bam")[0]
         cov_outfile_name = "DATA/RNA_gene_depth_HK_" + sample + ".txt"
-        print("samtools depth -d 50000 -a -r " + region + " " + bam_file + " > " + cov_outfile_name)
-        subprocess.call("samtools depth -d 50000 -a -r " + region + " " + bam_file + " > " + cov_outfile_name, shell=True)
+        print("samtools depth -d 500000 -a -r " + region + " " + bam_file + " > " + cov_outfile_name)
+        subprocess.call("samtools depth -d 500000 -a -r " + region + " " + bam_file + " > " + cov_outfile_name, shell=True)
         time.sleep(2)
         depthfile = open(cov_outfile_name)
         for line in depthfile :
