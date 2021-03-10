@@ -5,7 +5,7 @@ channels:
 dependencies:
   - python=3.7
   - samtools=1.11
-  - arrbia=2.1.0
+  - arriba=2.1.0
   - star-fusion=1.9.1
   - fusioncatcher=1.30
   - fastqc=0.11.8
