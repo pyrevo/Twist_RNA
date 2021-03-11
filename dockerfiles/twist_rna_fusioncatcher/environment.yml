@@ -1,4 +1,4 @@
-name: twist_rna_fusioncathcer
+name: twist_rna_fusioncatcher
 channels:
   - bioconda
   - conda-forge
