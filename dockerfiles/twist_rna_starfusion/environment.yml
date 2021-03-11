@@ -1,4 +1,4 @@
-name: twist_rna
+name: twist_rna_starfusion
 channels:
   - bioconda
   - conda-forge
