@@ -128,7 +128,7 @@ for line in input_starfusion :
     if (gene1 in artefact_genes or gene2 in artefact_genes or
         gene1 in housekeeping_genes or gene2 in housekeeping_genes or
         ((gene1 in design_genes_pool2 or gene2 in design_genes_pool2) and not (gene1 in design_genes_pool1 or gene2 in design_genes_pool1))) :
-        if int(Junction_read_count) < 15 :
+        if int(Junction_read_count) < 20 :
             continue
     breakpoint1 = lline[5]
     breakpoint2 = lline[7]
