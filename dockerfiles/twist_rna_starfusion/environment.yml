@@ -3,15 +3,15 @@ channels:
   - bioconda
   - conda-forge
 dependencies:
-  - python=3.7
-  - samtools=1.9
+#  - python=3.6
+#  - samtools=1.9
 #  - arriba=2.1.0
-#  - star-fusion=1.9.1
+  - star-fusion=1.9.1
 #  - fusioncatcher=1.30
-  - fastqc=0.11.8
-  - multiqc=1.9
+#  - fastqc=0.11.8
+#  - multiqc=1.9
 #  - rseqc=4.0.0
-  - picard=2.25.0
+#  - picard=2.25.0
 #  - picard=2.10.6
 
 #  - bcftools=1.11

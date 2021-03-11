@@ -22,6 +22,9 @@ bed:
 
 singularity:
     default: "docker://gmsuppsala/somatic_rna:develop"
+    default_arriba: "docker://gmsuppsala/somatic_rna:develop"
+    default_starfusion: "docker://gmsuppsala/somatic_rna:develop"
+    default_fusioncatcher: "docker://gmsuppsala/somatic_rna:develop"
     cartool: "/projects/wp2/nobackup/Twist_Myeloid/Containers/CARTools-200206.simg"
     #execute: "singularity exec -B /data -B /projects -B /scratch "
     #multiqc: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/multiqc-1.9.simg"

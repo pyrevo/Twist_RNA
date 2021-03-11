@@ -13,7 +13,7 @@ rule STAR_arrbia:
     log:
         "logs/Arriba/STAR/{sample}.log",
     container:
-        config["singularity"].get("Arriba", config["singularity"].get("default", ""))
+        config["singularity"].get("Arriba", config["singularity"].get("default_arriba", ""))
     threads: 5
     shell:
         "(STAR "
@@ -45,7 +45,7 @@ rule STAR_arrbia_index:
     log:
         "logs/Arriba/bam_index/{sample}.log",
     container:
-        config["singularity"].get("samtools", config["singularity"].get("default", ""))
+        config["singularity"].get("samtools", config["singularity"].get("default_arriba", ""))
     shell:
         "(samtools index {output.bam}) &> {log}"
 
@@ -64,7 +64,7 @@ rule Arriba:
     log:
         "logs/Arriba/Arriba/{sample}.log",
     container:
-        config["singularity"].get("Arriba", config["singularity"].get("default", ""))
+        config["singularity"].get("Arriba", config["singularity"].get("default_arriba", ""))
     shell:
         "(arriba "
     	"-x {input.bam} "
@@ -103,7 +103,7 @@ rule Arriba_image:
         image = "Results/RNA/{sample}/Fusions/Arriba.fusions.pdf"
     params:
         image_out_path = "Results/RNA/{sample}/Fusions/",
-        Arriba_singularity = config["singularity"].get("Arriba", config["singularity"].get("default", ""))
+        Arriba_singularity = config["singularity"].get("Arriba", config["singularity"].get("default_arriba", ""))
         ref = config["reference"]["Arriba_refdir"]
     log:
         "logs/Arriba/image/{sample}.log",

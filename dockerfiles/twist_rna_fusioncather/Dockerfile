@@ -11,7 +11,7 @@ RUN conda install -c conda-forge conda-pack
 
 # Use conda-pack to create a standalone enviornment
 # in /venv:
-RUN conda-pack -n twist_rna -o /tmp/env.tar && \
+RUN conda-pack -n twist_rna_fusioncatcher -o /tmp/env.tar && \
   mkdir /venv && cd /venv && tar xf /tmp/env.tar && \
   rm /tmp/env.tar
 
@@ -26,8 +26,7 @@ FROM debian:buster-slim AS runtime
 
 ################## METADATA ######################
 
-LABEL python="3.7" samtools="1.9" fastqc="0.11.8"
-LABEL multiqc="1.9" picard="2.25.0"
+LABEL fusioncatcher="1.30"
 ################## MAINTAINER ######################
 MAINTAINER Jonas Almlöf <jonas.almlof@scilifelab.uu.se>
 

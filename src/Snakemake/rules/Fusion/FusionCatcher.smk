@@ -16,7 +16,7 @@ rule FusionCatcher:
     threads:
         10
     container:
-        config["singularity"].get("Fusion_catcher", config["singularity"].get("default", ""))
+        config["singularity"].get("Fusion_catcher", config["singularity"].get("default_fusioncatcher", ""))
     shell:
         "(fusioncatcher -d {params.ref} -i {input.fastq1},{input.fastq2} -o {params.output_dir} -p {threads} {params.params} && "
         "cp fusioncatcher/{wildcards.sample}/final-list_candidate-fusion-genes.hg19.txt Results/RNA/{wildcards.sample}/Fusions/FusionCatcher_final-list_candidate-fusion-genes.hg19.txt && "
