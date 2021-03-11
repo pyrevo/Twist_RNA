@@ -203,7 +203,7 @@ for line in input_fusioncatcher :
     if (gene1 in artefact_genes or gene2 in artefact_genes or
         gene1 in housekeeping_genes or gene2 in housekeeping_genes or
         ((gene1 in design_genes_pool2 or gene2 in design_genes_pool2) and not (gene1 in design_genes_pool1 or gene2 in design_genes_pool1))) :
-        if int(Spanning_reads_unique) < 15 :
+        if int(Spanning_reads_unique) < 20 :
             continue
     #Flag fusions annotated that are fusions with very high probability
     fp_db = ["banned", "bodymap2", "cacg", "1000genomes", "conjoing", "cortex", "distance1000bp", "ensembl_fully_overlapping", "ensembl_same_strand_overlapping", "gtex", "hpa", "mt", "paralogs", "refseq_fully_overlapping", "refseq_same_strand_overlapping", "rrna", "similar_reads", "similar_symbols", "ucsc_fully_overlapping", "ucsc_same_strand_overlapping"]
