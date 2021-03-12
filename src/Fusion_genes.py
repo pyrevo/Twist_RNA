@@ -99,7 +99,7 @@ for line in input_arriba :
             if int(pos2) >= region[1] and int(pos2) >= region[2] :
                 exon2 = region[3]
     #output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + coverage1 + "\t" + coverage2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t" + discordant_mates + "\t\t" + str(q1) + "\t" + str(q2) + "\n")
-    output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + coverage1 + "\t" + coverage2 + "\t" + total_split_reads + "\t" + discordant_mates + "\t" + str(q1) + "\t" + str(q2) + "\n")
+    output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + coverage1 + "\t" + coverage2 + "\t" + str(total_split_reads) + "\t" + discordant_mates + "\t" + str(q1) + "\t" + str(q2) + "\n")
 
 
 #Star-fusions
