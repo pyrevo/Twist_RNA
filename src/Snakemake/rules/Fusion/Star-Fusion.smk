@@ -1,6 +1,4 @@
 
-localrule: Copy_STAR_to_results
-
 rule STAR:
     input:
         fq1 = "fastq/RNA/{sample}_R1.fastq.gz",
@@ -52,7 +50,7 @@ rule STAR_index:
     container:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     shell:
-        "(samtools index {output.bam}) &> {log}"
+        "(samtools index {input.bam}) &> {log}"
 
 rule STAR_Fusion:
     input:

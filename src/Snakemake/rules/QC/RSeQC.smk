@@ -17,7 +17,7 @@ rule collect_bam_stat:
     output:
         stat_file = "Results/RNA/Bam_stats.txt",
     log:
-        "logs/QC/bam_stat_collect/{sample}.log",
+        "logs/QC/bam_stat_collect.log",
     container:
         config["singularity"].get("python", config["singularity"].get("default", ""))
     shell:

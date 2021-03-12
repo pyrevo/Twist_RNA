@@ -47,7 +47,7 @@ rule STAR_arrbia_index:
     container:
         config["singularity"].get("samtools", config["singularity"].get("default_arriba", ""))
     shell:
-        "(samtools index {output.bam}) &> {log}"
+        "(samtools index {input.bam}) &> {log}"
 
 
 rule Arriba:
@@ -97,14 +97,14 @@ rule Arriba_HC:
 rule Arriba_image:
     input:
         fusion = "Results/RNA/{sample}/Fusions/Arriba.fusions.tsv",
-        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam",
-        bai = "STAR/{sample}Aligned.sortedByCoord.out.bam.bai"
+        bam = "STAR/{sample}_Aligned.sortedByCoord.out.bam",
+        bai = "STAR/{sample}_Aligned.sortedByCoord.out.bam.bai",
     output:
-        image = "Results/RNA/{sample}/Fusions/Arriba.fusions.pdf"
+        image = "Results/RNA/{sample}/Fusions/Arriba.fusions.pdf",
     params:
         image_out_path = "Results/RNA/{sample}/Fusions/",
-        Arriba_singularity = config["singularity"].get("Arriba", config["singularity"].get("default_arriba", ""))
-        ref = config["reference"]["Arriba_refdir"]
+        Arriba_singularity = config["singularity"].get("Arriba", config["singularity"].get("default_arriba", "")),
+        ref = config["reference"]["Arriba_refdir"],
     log:
         "logs/Arriba/image/{sample}.log",
     run:
@@ -113,8 +113,8 @@ rule Arriba_image:
         command += "-B " + params.image_out_path + ":/output "
         command += "-B " + params.ref + ":/references:ro "
         command += "-B " + input.fusion + ":/fusions.tsv:ro "
-        command += "-B " + input.bam + ":/Aligned.sortedByCoord.out.bam:ro "
-        command += "-B " + input.bai + ":/Aligned.sortedByCoord.out.bam.bai:ro "
+        command += "-B " + input.bam + ":/_Aligned.sortedByCoord.out.bam:ro "
+        command += "-B " + input.bai + ":/_Aligned.sortedByCoord.out.bam.bai:ro "
         command += params.Arriba_singularity + " "
         command += "draw_fusions.sh"
         print(command)

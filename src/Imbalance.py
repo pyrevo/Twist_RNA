@@ -2,7 +2,7 @@
 import subprocess
 import sys
 
-bam_files = sys.argv[1:]
+bam_files = sys.argv[1]
 
 gene_files = ["ALK", "NRG1", "RET", "NTRK3", "ROS1"]
 outfile = open("Results/RNA/Imbalance/imbalance_all_gene.txt", "w")
