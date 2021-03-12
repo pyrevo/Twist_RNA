@@ -17,7 +17,7 @@ output_coverage_file_name = sys.argv[7]
 #output_fusions = open("Results/RNA/R20-258/Fusions/Fusions.tsv", "w")
 
 housekeeping_genes = ["GAPDH", "GUSB", "OAZ1", "POLR2A"]
-artefact_genes = ["FRMPD3"]
+artefact_genes = {"MAML2" : ["FRMPD3", "NCOA6", "ATXN3", "SRP14", "KMT2D", "CHD1", "NFAT5", "FOXP2", "NUMBL", "GLG1", "VEZF1", "AAK1", "NCOR2"]}
 
 #output_fusions.write("Caller\tgene1\tgene2\texon1\texon2\tconfidence\tpredicted_effect\tbreakpoint1\tbreakpoint2\tcoverage1\tcoverage2\tsplit_reads1\tsplit_reads2\tSpanning_pairs\tsplit_reads\tBreakpoint1_covarage/SplitReads\tBreakpoint2_covarage/SplitReads\n")
 output_fusions.write("Caller\tgene1\tgene2\texon1\texon2\tconfidence\tpredicted_effect\tbreakpoint1\tbreakpoint2\tcoverage1\tcoverage2\tsplit_reads\tSpanning_pairs\tBreakpoint1_covarage/SplitReads\tBreakpoint2_covarage/SplitReads\n")
@@ -38,10 +38,11 @@ for line in input_bed :
         design_genes[gene].append([chrom, start, end, exon])
     else :
         design_genes[gene] = [[chrom, start, end, exon]]
-    if pool == 1 :
+    if pool == "1" :
         design_genes_pool1[gene] = ""
     else :
         design_genes_pool2[gene] = ""
+
 
 #Arriba fusions
 header = True
@@ -122,10 +123,12 @@ for line in input_starfusion :
     if int(Junction_read_count) < 15 :
         confidence = "Low support"
     #Remove Fusions with very weak read support
-    if int(Junction_read_count) < 5 and int(Spanning_Frag_count) <= 2 and predicted_effect != "INFRAME" :
+    if int(Junction_read_count) <= 6 and predicted_effect != "INFRAME":
+        continue
+    if int(Junction_read_count) <= 2 :
         continue
     #Higher demand of read support for genes with frequent FP, house keeping genes, and pool2 genes without fusion to pool1 gene
-    if (gene1 in artefact_genes or gene2 in artefact_genes or
+    if (((gene1 in artefact_genes and gene2 in artefact_genes[gene1]) or (gene2 in artefact_genes and gene1 in artefact_genes[gene2])) or
         gene1 in housekeeping_genes or gene2 in housekeeping_genes or
         ((gene1 in design_genes_pool2 or gene2 in design_genes_pool2) and not (gene1 in design_genes_pool1 or gene2 in design_genes_pool1))) :
         if int(Junction_read_count) < 20 :
@@ -195,12 +198,12 @@ for line in input_fusioncatcher :
     if int(Spanning_reads_unique) < 15:
         confidence = "Low support"
     #Filter fusions with very low support
-    if int(Spanning_reads_unique) <= 5 and predicted_effect != "in-frame":
+    if int(Spanning_reads_unique) <= 6 and predicted_effect != "in-frame":
         continue
-    if int(Spanning_reads_unique) <= 2 :
+    if int(Spanning_reads_unique) <= 3 :
         continue
     #Higher demand of read support for genes with frequent FP, house keeping genes, and pool2 genes without fusion to pool1 gene
-    if (gene1 in artefact_genes or gene2 in artefact_genes or
+    if (((gene1 in artefact_genes and gene2 in artefact_genes[gene1]) or (gene2 in artefact_genes and gene1 in artefact_genes[gene2])) or
         gene1 in housekeeping_genes or gene2 in housekeeping_genes or
         ((gene1 in design_genes_pool2 or gene2 in design_genes_pool2) and not (gene1 in design_genes_pool1 or gene2 in design_genes_pool1))) :
         if int(Spanning_reads_unique) < 20 :
