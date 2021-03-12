@@ -65,7 +65,7 @@ rule STAR_Fusion:
     log:
         "logs/Star_fusion/Star_fusion/{sample}.log",
     container:
-        config["singularity"].get("STAR_fusion", config["singularity"].get("default", ""))
+        config["singularity"].get("STAR_fusion", config["singularity"].get("default_starfusion", ""))
     threads: 5
     shell:
         "(STAR-Fusion "
