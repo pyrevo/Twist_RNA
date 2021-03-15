@@ -7,7 +7,7 @@ reference:
     Arriba_index: "/projects/wp4/nobackup/workspace/jonas_test/Arriba/references2/STAR_index_GRCh37_RefSeq_hg19/"
     Arriba_ref: "/projects/wp4/nobackup/workspace/jonas_test/Arriba/references2/GRCh37.fa"
     Arriba_gtf: "/projects/wp4/nobackup/workspace/jonas_test/Arriba/references2/RefSeq_hg19.gtf"
-    Arriba_blacklist: "/projects/wp4/nobackup/workspace/jonas_test/Arriba/references2/blacklist_hg19_hs37d5_GRCh37_2018-11-04.tsv"
+    Arriba_blacklist: "/projects/wp4/nobackup/workspace/jonas_test/Arriba/references2/blacklist_hg19_hs37d5_GRCh37_v2.1.0.tsv"
     Arriba_refdir: "/projects/wp4/nobackup/workspace/jonas_test/Arriba/references2"
 
 

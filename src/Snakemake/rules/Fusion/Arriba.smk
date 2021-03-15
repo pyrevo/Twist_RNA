@@ -72,9 +72,10 @@ rule Arriba:
         "-O {output.fusions2} "
     	"-a {params.ref} "
         "-g {params.gtf} "
-        "-b {params.blacklist} "
-    	"-T "
-        "-P) &> {log}"
+        #"-b {params.blacklist} "
+    	#"-T "
+        #"-P) &> {log}"
+        "-b {params.blacklist}) &> {log}"
 
 rule Arriba_HC:
     input:

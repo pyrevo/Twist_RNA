@@ -3,6 +3,7 @@
 rule Housekeeping_coverage:
     input:
         bam = "STAR2/{sample}_Aligned.sortedByCoord.out.bam",
+        bai = "STAR2/{sample}_Aligned.sortedByCoord.out.bam.bai",
         bed = config["bed"]["bedfile"],
     output:
         coverage = "Results/RNA/{sample}/QC/Housekeeping_gene_coverage.txt",
