@@ -1,6 +1,7 @@
 
 localrules: Arriba_HC, Arriba_IGV_bat
 
+
 rule STAR_arrbia:
     input:
         fastq1 = "fastq/RNA/{sample}_R1.fastq.gz",
@@ -36,6 +37,7 @@ rule STAR_arrbia:
         "--alignSJstitchMismatchNmax 5 -1 5 5 "
         "--chimSegmentReadGapMax 3 "
         "--outFileNamePrefix STAR/{wildcards.sample}_) &> {log}"
+
 
 rule STAR_arrbia_index:
     input:
@@ -77,6 +79,7 @@ rule Arriba:
         #"-P) &> {log}"
         "-b {params.blacklist}) &> {log}"
 
+
 rule Arriba_HC:
     input:
         fusions = "Arriba_results/{sample}.fusions.tsv",
@@ -114,9 +117,10 @@ rule Arriba_image:
         command += "-B " + params.image_out_path + ":/output "
         command += "-B " + params.ref + ":/references:ro "
         command += "-B " + input.fusion + ":/fusions.tsv:ro "
-        command += "-B " + input.bam + ":/_Aligned.sortedByCoord.out.bam:ro "
-        command += "-B " + input.bai + ":/_Aligned.sortedByCoord.out.bam.bai:ro "
-        command += params.Arriba_singularity + " "
+        command += "-B " + input.bam + ":/Aligned.sortedByCoord.out.bam:ro "
+        command += "-B " + input.bai + ":/Aligned.sortedByCoord.out.bam.bai:ro "
+        # command += params.Arriba_singularity + " "
+        command += "docker://uhrigs/arriba:2.1.0 "
         command += "draw_fusions.sh"
         print(command)
         subprocess.call(command, shell=True)

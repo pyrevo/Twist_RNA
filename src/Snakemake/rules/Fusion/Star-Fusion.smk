@@ -40,6 +40,7 @@ rule STAR:
         "--runThreadN {threads} "
         "--outFileNamePrefix STAR2/{wildcards.sample}_) &> {log}"
 
+
 rule STAR_index:
     input:
         bam = "STAR2/{sample}_Aligned.sortedByCoord.out.bam",
@@ -51,6 +52,7 @@ rule STAR_index:
         config["singularity"].get("samtools", config["singularity"].get("default", ""))
     shell:
         "(samtools index {input.bam}) &> {log}"
+
 
 rule STAR_Fusion:
     input:
@@ -68,6 +70,7 @@ rule STAR_Fusion:
         config["singularity"].get("STAR_fusion", config["singularity"].get("default_starfusion", ""))
     threads: 5
     shell:
+        "set +e; "
         "(STAR-Fusion "
         "--genome_lib_dir {params.ref} "
         "-J {input.alignment} "
@@ -76,7 +79,9 @@ rule STAR_Fusion:
         "--left_fq {input.fq1} "
         "--right_fq {input.fq2} "
         "--examine_coding_effect "
-        "--FusionInspector inspect) &> {log}"
+        "--FusionInspector inspect) &> {log}; "
+        "exitcode=$?; "
+        "if [ $exitcode -eq 1 ]; then exit 1; else touch {output.html}; touch {output.fusion}; exit 0; fi "
 
 
 rule Copy_STAR_to_results:

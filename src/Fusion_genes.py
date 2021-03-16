@@ -12,9 +12,9 @@ output_coverage_file_name = sys.argv[7]
 
 
 housekeeping_genes = ["GAPDH", "GUSB", "OAZ1", "POLR2A"]
-artefact_genes = ["MAML2"]
+artefact_genes = {"MAML2" : ["FRMPD3", "NCOA6", "ATXN3", "SRP14", "KMT2D", "CHD1", "NFAT5", "FOXP2", "NUMBL", "GLG1", "VEZF1", "AAK1", "NCOR2"]}
 
-output_fusions.write("Caller\tgene1\tgene2\texon1\texon2\tconfidence\tpredicted_effect\tbreakpoint1\tbreakpoint2\tcoverage1\tcoverage2\tsplit_reads1\tsplit_reads2\tSpanning_pairs\tsplit_reads\tBreakpoint1_covarage/SplitReads\tBreakpoint2_covarage/SplitReads\n")
+output_fusions.write("Caller\tgene1\tgene2\texon1\texon2\tconfidence\tpredicted_effect\tbreakpoint1\tbreakpoint2\tcoverage1\tcoverage2\tsplit_reads\tSpanning_pairs\tBreakpoint1_covarage/SplitReads\tBreakpoint2_covarage/SplitReads\n")
 
 #Only keep fusions with one gene that are in the design
 design_genes_pool1 = {}
@@ -49,18 +49,19 @@ for line in input_arriba :
     #Only keep fusions with one gene that are in the design
     if (gene1 not in design_genes and gene2 not in design_genes) :
         continue
-    confidence = lline[16]
+    confidence = lline[14]
     #Only keep fusions with high or medium confidence
     #if confidence == "low" :
     #    continue
     breakpoint1 = lline[4]
     breakpoint2 = lline[5]
-    split_reads1 = lline[11]
-    split_reads2 = lline[12]
-    discordant_mates = lline[13]
-    coverage1 = lline[14]
-    coverage2 = lline[15]
-    predicted_effect = lline[21]
+    split_reads1 = lline[9]
+    split_reads2 = lline[10]
+    total_split_reads = int(split_reads1) + int(split_reads2)
+    discordant_mates = lline[11]
+    coverage1 = lline[12]
+    coverage2 = lline[13]
+    predicted_effect = lline[15]
     #Compare fusion coverage with coverage in breakpoints
     chrom1 = "chr" + breakpoint1.split(":")[0]
     pos1 = breakpoint1.split(":")[1]
@@ -68,18 +69,18 @@ for line in input_arriba :
     pos2 = breakpoint2.split(":")[1]
     cov1 = 0
     cov2 = 0
-    subprocess.call("samtools depth -d 50000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
+    subprocess.call("samtools depth -d 500000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
         cov1 = int(line.strip().split("\t")[2])
     output_coverage.close()
-    subprocess.call("samtools depth -d 50000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
+    subprocess.call("samtools depth -d 500000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
         cov2 = int(line.strip().split("\t")[2])
     output_coverage.close()
-    q1 = round((cov1 / (float(split_reads1) + float(split_reads2))),1)
-    q2 = round((cov2 / (float(split_reads1) + float(split_reads2))),1)
+    q1 = round((cov1 / (float(split_reads1) + float(split_reads2) + 0.01)),1)
+    q2 = round((cov2 / (float(split_reads1) + float(split_reads2) + 0.01)),1)
     #Get exon name if it is in design
     exon1 = ""
     exon2 = ""
@@ -91,7 +92,7 @@ for line in input_arriba :
         for region in design_genes[gene2] :
             if int(pos2) >= region[1] and int(pos2) >= region[2] :
                 exon2 = region[3]
-    output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + coverage1 + "\t" + coverage2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t" + discordant_mates + "\t\t" + str(q1) + "\t" + str(q2) + "\n")
+    output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + coverage1 + "\t" + coverage2 + "\t" + str(total_split_reads) + "\t" + discordant_mates + "\t" + str(q1) + "\t" + str(q2) + "\n")
 
 
 #Star-fusions
@@ -113,19 +114,21 @@ for line in input_starfusion :
     if int(Junction_read_count) < 15 :
         confidence = "Low support"
     #Remove Fusions with very weak read support
-    if int(Junction_read_count) < 10 and int(Spanning_Frag_count) <= 2 :
+    if int(Junction_read_count) <= 6 and predicted_effect != "INFRAME":
+        continue
+    if int(Junction_read_count) <= 2 :
         continue
     #Higher demand of read support for genes with frequent FP, house keeping genes, and pool2 genes without fusion to pool1 gene
-    if (gene1 in artefact_genes or gene2 in artefact_genes or
+    if (((gene1 in artefact_genes and gene2 in artefact_genes[gene1]) or (gene2 in artefact_genes and gene1 in artefact_genes[gene2])) or
         gene1 in housekeeping_genes or gene2 in housekeeping_genes or
         ((gene1 in design_genes_pool2 or gene2 in design_genes_pool2) and not (gene1 in design_genes_pool1 or gene2 in design_genes_pool1))) :
-        if int(Junction_read_count) < 15 :
+        if int(Junction_read_count) < 20 :
             continue
-    breakpoint1 = lline[5]
-    breakpoint2 = lline[7]
-    FFPM = lline[9]
-    DBs = lline[14]
-    predicted_effect = lline[19]
+    breakpoint1 = lline[7]
+    breakpoint2 = lline[9]
+    FFPM = lline[11]
+    DBs = lline[16]
+    predicted_effect = lline[21]
     #Compare fusion coverage with coverage in breakpoints
     chrom1 = breakpoint1.split(":")[0]
     pos1 = breakpoint1.split(":")[1]
@@ -133,18 +136,18 @@ for line in input_starfusion :
     pos2 = breakpoint2.split(":")[1]
     cov1 = 0
     cov2 = 0
-    subprocess.call("samtools depth -d 50000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
+    subprocess.call("samtools depth -d 500000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
         cov1 = int(line.strip().split("\t")[2])
     output_coverage.close()
-    subprocess.call("samtools depth -d 50000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
+    subprocess.call("samtools depth -d 500000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
     output_coverage = open(output_coverage_file_name)
     for line in output_coverage :
         cov2 = int(line.strip().split("\t")[2])
     output_coverage.close()
-    q1 = round((cov1 / (float(Junction_read_count))),1)
-    q2 = round((cov2 / (float(Junction_read_count))),1)
+    q1 = round((cov1 / (float(Junction_read_count) + 0.01)),1)
+    q2 = round((cov2 / (float(Junction_read_count) + 0.01)),1)
     #Get exon name if it is in design
     exon1 = ""
     exon2 = ""
@@ -156,7 +159,7 @@ for line in input_starfusion :
         for region in design_genes[gene2] :
             if int(pos2) >= region[1] and int(pos2) >= region[2] :
                 exon2 = region[3]
-    output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t\t" + Spanning_Frag_count + "\t" + Junction_read_count + "\t" + str(q1) + "\t" + str(q2) + "\n")
+    output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t" + Junction_read_count + "\t" + Spanning_Frag_count + "\t" + str(q1) + "\t" + str(q2) + "\n")
 
 
 
@@ -186,13 +189,15 @@ for line in input_fusioncatcher :
     if int(Spanning_reads_unique) < 15:
         confidence = "Low support"
     #Filter fusions with very low support
-    if int(Spanning_reads_unique) <= 5:
+    if int(Spanning_reads_unique) <= 6 and predicted_effect != "in-frame":
+        continue
+    if int(Spanning_reads_unique) <= 3 :
         continue
     #Higher demand of read support for genes with frequent FP, house keeping genes, and pool2 genes without fusion to pool1 gene
-    if (gene1 in artefact_genes or gene2 in artefact_genes or
+    if (((gene1 in artefact_genes and gene2 in artefact_genes[gene1]) or (gene2 in artefact_genes and gene1 in artefact_genes[gene2])) or
         gene1 in housekeeping_genes or gene2 in housekeeping_genes or
         ((gene1 in design_genes_pool2 or gene2 in design_genes_pool2) and not (gene1 in design_genes_pool1 or gene2 in design_genes_pool1))) :
-        if int(Spanning_reads_unique) < 15 :
+        if int(Spanning_reads_unique) < 20 :
             continue
     #Flag fusions annotated that are fusions with very high probability
     fp_db = ["banned", "bodymap2", "cacg", "1000genomes", "conjoing", "cortex", "distance1000bp", "ensembl_fully_overlapping", "ensembl_same_strand_overlapping", "gtex", "hpa", "mt", "paralogs", "refseq_fully_overlapping", "refseq_same_strand_overlapping", "rrna", "similar_reads", "similar_symbols", "ucsc_fully_overlapping", "ucsc_same_strand_overlapping"]
@@ -208,18 +213,18 @@ for line in input_fusioncatcher :
         pos2 = breakpoint2.split(":")[1]
         cov1 = 0
         cov2 = 0
-        subprocess.call("samtools depth -d 50000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
+        subprocess.call("samtools depth -d 500000 -a -r " + chrom1 + ":" + pos1 + "-" + pos1 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
         output_coverage = open(output_coverage_file_name)
         for line in output_coverage :
             cov1 = int(line.strip().split("\t")[2])
         output_coverage.close()
-        subprocess.call("samtools depth -d 50000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
+        subprocess.call("samtools depth -d 500000 -a -r " + chrom2 + ":" + pos2 + "-" + pos2 + " " + input_bam + " > " + output_coverage_file_name, shell=True)
         output_coverage = open(output_coverage_file_name)
         for line in output_coverage :
             cov2 = int(line.strip().split("\t")[2])
         output_coverage.close()
-        q1 = round((cov1 / (float(Spanning_reads_unique))),1)
-        q2 = round((cov2 / (float(Spanning_reads_unique))),1)
+        q1 = round((cov1 / (float(Spanning_reads_unique) + 0.01)),1)
+        q2 = round((cov2 / (float(Spanning_reads_unique) + 0.01)),1)
     else :
         q1 = "NA"
         q2 = "NA"
@@ -234,7 +239,4 @@ for line in input_fusioncatcher :
         for region in design_genes[gene2] :
             if int(pos2) >= region[1] and int(pos2) >= region[2] :
                 exon2 = region[3]
-    #output_fusions.write("Caller\tgene1\tgene2\texon1\texon2\tconfidence\tpredicted_effect\tbreakpoint1\tbreakpoint2\tcoverage1\tcoverage2\tsplit_reads1\tsplit_reads2\tSpanning_pairs\tsplit_reads\tSpanning_unique_reads\tFusion_quotient1\tFusion_quotient2\n")
-    #output_fusions.write("Arriba\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t" + coverage1 + "\t" + coverage2 + "\t" + split_reads1 + "\t" + split_reads2 + "\t" + discordant_mates + "\t\t" + str(q1) + "\t" + str(q2) + "\n")
-    #output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t\t" + Spanning_Frag_count + "\t" + Junction_read_count + "\t" + str(q1) + "\t" + str(q2) + "\n")
-    output_fusions.write("FusionCatcher\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t\t\t" + Spanning_pairs + "\t" + Spanning_reads_unique + "\t" + str(q1) + "\t" + str(q2) + "\n")
+    output_fusions.write("FusionCatcher\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t" + Spanning_reads_unique + "\t" + Spanning_pairs + "\t" + str(q1) + "\t" + str(q2) + "\n")
