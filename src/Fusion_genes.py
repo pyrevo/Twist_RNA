@@ -32,7 +32,7 @@ for line in input_bed :
         design_genes[gene].append([chrom, start, end, exon])
     else :
         design_genes[gene] = [[chrom, start, end, exon]]
-    if pool == 1 :
+    if pool == "1" :
         design_genes_pool1[gene] = ""
     else :
         design_genes_pool2[gene] = ""
@@ -109,6 +109,7 @@ for line in input_starfusion :
         continue
     Junction_read_count = lline[1]
     Spanning_Frag_count = lline[2]
+    predicted_effect = lline[21]
     #Flag fusions with junction_read_count < 10 and Spanning_Frag_count < 2
     confidence = ""
     if int(Junction_read_count) < 15 :
@@ -128,7 +129,6 @@ for line in input_starfusion :
     breakpoint2 = lline[9]
     FFPM = lline[11]
     DBs = lline[16]
-    predicted_effect = lline[21]
     #Compare fusion coverage with coverage in breakpoints
     chrom1 = breakpoint1.split(":")[0]
     pos1 = breakpoint1.split(":")[1]
