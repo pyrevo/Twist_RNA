@@ -206,6 +206,8 @@ for line in input_fusioncatcher :
         if fp in fp_filters :
             fp_found = "FP"
     #Compare fusion coverage with coverage in breakpoints
+    pos1 = "0"
+    pos2 = "0"
     if len(breakpoint1.split(":")) == 3 and len(breakpoint2.split(":")) == 3 :
         chrom1 = "chr" + breakpoint1.split(":")[0]
         pos1 = breakpoint1.split(":")[1]

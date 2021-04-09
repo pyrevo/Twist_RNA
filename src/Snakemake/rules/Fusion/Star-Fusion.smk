@@ -64,6 +64,7 @@ rule STAR_Fusion:
         html = "STAR_fusion/{sample}/Fusions/FusionInspector-inspect/finspector.fusion_inspector_web.html",
     params:
         ref = config["reference"]["STAR_fusion"],
+        out_FI_dir = "STAR_fusion/{sample}/Fusions/FusionInspector-inspect/",
     log:
         "logs/Star_fusion/Star_fusion/{sample}.log",
     container:
@@ -79,20 +80,22 @@ rule STAR_Fusion:
         "--left_fq {input.fq1} "
         "--right_fq {input.fq2} "
         "--examine_coding_effect "
-        "--FusionInspector inspect) &> {log}; "
-        "exitcode=$?; "
-        "if [ $exitcode -eq 1 ]; then exit 1; else touch {output.html}; touch {output.fusion}; exit 0; fi "
+        "--FusionInspector inspect "
+        " && mkdir -p {params.out_FI_dir}"
+        " && touch {output.html}) &> {log}; "
+        #"exitcode=$?; "
+        #"if [ $exitcode -eq 1 ]; then exit 1; else touch {output.html}; touch {output.fusion}; exit 0; fi "
 
 
 rule Copy_STAR_to_results:
     input:
         #STAR_fusion1 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
         STAR_fusion2 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.coding_effect.tsv",
-        html = "STAR_fusion/{sample}/Fusions/FusionInspector-inspect/finspector.fusion_inspector_web.html"
+        html = "STAR_fusion/{sample}/Fusions/FusionInspector-inspect/finspector.fusion_inspector_web.html",
     output:
         #STAR_fusion1 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
         STAR_fusion2 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.coding_effect.tsv",
-        html = "Results/RNA/{sample}/Fusions/Fusion_inspector_web.html"
+        html = "Results/RNA/{sample}/Fusions/Fusion_inspector_web.html",
     shell:
         #"cp {input.STAR_fusion1} {output.STAR_fusion1} && "
         "cp {input.STAR_fusion2} {output.STAR_fusion2} && "
