@@ -11,3 +11,11 @@ Download from: https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/__genom
 FusionCatcher:
 See instructions on Fusioncatcher github or follow commands in:
 https://github.com/ndaniel/fusioncatcher/blob/master/data/download-human-db.sh
+
+
+Run the pipeline in Uppsala:
+git clone  .
+module add snakemake
+module add slurm-drmaa
+module add singularity
+snakemake -p -j 80 --drmaa "-A wp1 -p core -n {cluster.n} -t {cluster.time}" -s ./Twist_RNA.smk --use-singularity --singularity-args "--bind /data --bind /beegfs-storage --bind /scratch " --cluster-config Config/Slurm/cluster.json
