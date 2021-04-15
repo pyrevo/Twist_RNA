@@ -14,7 +14,8 @@ https://github.com/ndaniel/fusioncatcher/blob/master/data/download-human-db.sh
 
 
 Run the pipeline in Uppsala: <br>
-git clone  . <br>
+git clone https://github.com/clinical-genomics-uppsala/Twist_RNA.git . <br>
+git checkout develop <br>
 module add snakemake<br>
 module add slurm-drmaa<br>
 module add singularity<br>
