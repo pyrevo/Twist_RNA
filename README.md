@@ -19,4 +19,5 @@ git checkout develop <br>
 module add snakemake<br>
 module add slurm-drmaa<br>
 module add singularity<br>
+snakemake -p -j 1 --drmaa "-A wp1 -p core -n 1 -t 2:00:00 "  -s ./src/Snakemake/rules/Twist_RNA/Twist_RNA_yaml.smk<br>
 snakemake -p -j 80 --drmaa "-A wp1 -p core -n {cluster.n} -t {cluster.time}" -s ./Twist_RNA.smk --use-singularity --singularity-args "--bind /data --bind /beegfs-storage --bind /scratch " --cluster-config Config/Slurm/cluster.json
