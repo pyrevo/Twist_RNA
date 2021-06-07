@@ -4,7 +4,7 @@ configfile: "Twist_RNA.yaml"
 def get_input():
     input_list = []
     if config["RNA_Samples"] != "No RNA" :
-        '''Demultiplexning'''
+        '''Demultiplexning / Fastq copy'''
         input_list.append(["fastq/RNA/" + s + "_R1.fastq.gz" for s in config["RNA_Samples"]])
         input_list.append(["fastq/RNA/" + s + "_R2.fastq.gz" for s in config["RNA_Samples"]])
 
@@ -30,9 +30,9 @@ def get_input():
         input_list.append(["Results/RNA/" + s + "/QC/Housekeeping_gene_coverage.txt" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/QC/Exon_gene_coverage_all.txt" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/QC/Exon_gene_coverage_low.txt" for s in config["RNA_Samples"]])
-        input_list.append(["Results/RNA/" + s + "/QC/RSeQC_bam_stat.txt" for s in config["RNA_Samples"]])
-        input_list.append("Results/RNA/Bam_stats.txt")
-        input_list.append(["Results/RNA/" + s + "/QC/RSeQC.FPKM.xls" for s in config["RNA_Samples"]])
+        #input_list.append(["Results/RNA/" + s + "/QC/RSeQC_bam_stat.txt" for s in config["RNA_Samples"]])
+        #input_list.append("Results/RNA/Bam_stats.txt")
+        #input_list.append(["Results/RNA/" + s + "/QC/RSeQC.FPKM.xls" for s in config["RNA_Samples"]])
 
         '''QC2'''
         input_list.append(["qc/" + s + "/" + s + "_Stat_table.csv" for s in config["RNA_Samples"]])

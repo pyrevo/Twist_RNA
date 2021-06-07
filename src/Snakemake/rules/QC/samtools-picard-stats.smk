@@ -106,7 +106,7 @@ rule getStatsforMqc:
 
 rule sortBatchStats:
     input:
-        SampleSheetUsed = config["Sample_sheet"],
+        SampleSheetUsed = "Twist_RNA.yaml",
         batchUnsorted = "qc/batchQC_stats_unsorted.csv",
         batchDone = expand("qc/{sample}/{sample}_batchStats.done", sample = config["RNA_Samples"]),
     output:
