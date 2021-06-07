@@ -10,7 +10,6 @@ reference:
     Arriba_blacklist: "/projects/wp4/nobackup/workspace/jonas_test/Arriba/references2/blacklist_hg19_hs37d5_GRCh37_v2.1.0.tsv"
     Arriba_refdir: "/projects/wp4/nobackup/workspace/jonas_test/Arriba/references2"
 
-
 configfiles:
     multiqc: "DATA/multiqc_config.yaml"
 
@@ -28,19 +27,6 @@ singularity: #Can be a docker container as well. This is converted to a singular
     Fusion_catcher: "docker://olopadelab/fusioncatcher:latest"
     #default_fusioncatcher: "docker://gmsuppsala/twist_rna_fusioncatcher:develop"
     cartool: "/projects/wp2/nobackup/Twist_Myeloid/Containers/CARTools-200206.simg"
-    #execute: "singularity exec -B /data -B /projects -B /scratch "
-    #multiqc: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/multiqc-1.9.simg"
-    #samtools: "/projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg"
-    #picard: "/projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg"
-    #bwa: "/projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg"
-    #fastqc: "/projects/wp2/nobackup/Twist_Myeloid/Containers/fastqc0.11.8.simg"
-    #python: "/projects/wp2/nobackup/Twist_Myeloid/Containers/python3.6.0-pysam-xlsxwriter.simg"
-    #bcftools: "/projects/wp2/nobackup/Twist_Myeloid/Containers/bcftools-1.9--8.simg"
-    #STAR_fusion: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg"
-    #Arriba: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/Arriba.simg"
-    #Fusion_catcher: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/fusioncatcher_1.2.0.simg"
-    #rseqc: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/RSeQC_3.0.1.simg"
-
 
 cartool:
     cov: "100 200 1000"
