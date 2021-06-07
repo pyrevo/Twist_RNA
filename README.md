@@ -14,7 +14,7 @@ git clone https://github.com/clinical-genomics-uppsala/Twist_RNA.git . <br>
 git checkout develop <br> <br>
 Create samples.csv with the following format (fastq-files must be named <sample1>_S1_R1_001.fastq.gz): <br>
 Sample_name1\tPath/to/fastq/sample1_S1_R1_001.fastq.gz\tPath/to/fastq/sample1_S1_R1_001.fastq.gz <br>
-Sample_name2\tPath/to/fastq/sample1_S1_R1_001.fastq.gz\tPath/to/fastq/sample1_S2_R2_001.fastq.gz <br> <br>
+Sample_name2\tPath/to/fastq/sample2_S2_R1_001.fastq.gz\tPath/to/fastq/sample2_S2_R2_001.fastq.gz <br> <br>
 Adapt Config/Pipeline/configdefaults201012.yaml to your system by providing paths to the references needed<br> <br>
 Create Twist_RNA.yaml with the following command:  <br>
 snakemake -p -j 1 --drmaa "-A wp1 -p core -n 1 -t 2:00:00 "  -s ./src/Snakemake/rules/Twist_RNA_yaml/Twist_RNA_yaml_fastq.smk <br> <br>
