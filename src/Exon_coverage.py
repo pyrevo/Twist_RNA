@@ -30,6 +30,8 @@ for line in bedfile :
         coverage = int(line.strip().split("\t")[2])
         coverage_sum += coverage
         coverage_nr_pos += 1
+    if coverage_nr_pos == 0 :
+        coverage_nr_pos = 1
     depthfile.close()
     avg_coverage = 0.0
     if coverage_nr_pos != 0 :
