@@ -11,4 +11,3 @@ for line in sample_file :
     R2 = lline[2]
     subprocess.call("cp " + R1 + " fastq_temp/RNA/" + sample + "_R1.fastq.gz", shell=True)
     subprocess.call("cp " + R2 + " fastq_temp/RNA/" + sample + "_R2.fastq.gz", shell=True)
-subprocess.call("touch fastq_temp/RNA/copy_done.txt", shell=True)
