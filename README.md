@@ -18,7 +18,7 @@ Sample_name2\tPath/to/fastq/R1.fastq.gz\tPath/to/fastq/R2.fastq.gz <br> <br>
 Adapt Config/Pipeline/configdefaults201012.yaml to your system by providing paths to the references needed<br> <br>
 Create Twist_RNA.yaml with the following command:  <br>
 snakemake -p -j 1 --drmaa "-A wp1 -p core -n 1 -t 2:00:00 "  -s ./src/Snakemake/rules/Twist_RNA_yaml/Twist_RNA_yaml_fastq.smk <br> <br>
-Run pipeline with a command similar to this with bind points adapted to your system: #Use screen or similar! <br>
+Run pipeline with a command similar to this with bind points and -A adapted to your system: #Use screen or similar! <br>
 snakemake -p -j 80 --drmaa "-A wp1 -p core -n {cluster.n} -t {cluster.time}" -s ./Twist_RNA.smk --use-singularity --singularity-args "--bind /data --bind /projects --bind /scratch " --cluster-config Config/Slurm/cluster.json <br> <br>
 
 **Reference files: #Or get them directly from us to get exactly the same versions**
