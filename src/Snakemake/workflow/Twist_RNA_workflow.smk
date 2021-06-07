@@ -1,9 +1,9 @@
 
 if config["Demultiplex"] == "True" :
     include: "../rules/Fastq/demultiplex.smk"
-    include: "../rules/Fastq/fix_fastq_RNA.smk"
 else :
     include: "../rules/Fastq/copy_fastq_RNA.smk"
+include: "../rules/Fastq/fix_fastq_RNA.smk"
 include: "../rules/Fusion/Arriba.smk"
 include: "../rules/Fusion/Imbalance.smk"
 #include: "../rules/Fusion/exon_splicing.smk"
