@@ -5,13 +5,12 @@ localrules: all, Create_Twist_RNA_yaml_fastq
 rule all:
     input:
         Twist_RNA_yaml = "Twist_RNA.yaml",
-        TC = "DATA/Tumour_content.txt"
 
 
 rule Create_Twist_RNA_yaml_fastq:
     input:
-        samples = "samples.tsv" #Sample_name\tPath_to_fastq_R1\tPath_to_fastq_R2\n
-        config = "Config/Pipeline/configdefaults201012.yaml"
+        samples = "samples.tsv", #Sample_name\tPath_to_fastq_R1\tPath_to_fastq_R2\n
+        config = "Config/Pipeline/configdefaults201012.yaml",
     output:
         Twist_RNA_yaml = "Twist_RNA.yaml",
     run:
@@ -19,10 +18,11 @@ rule Create_Twist_RNA_yaml_fastq:
         import os
         import subprocess
         subprocess.call("cp " + input.config + " " + output.Twist_RNA_yaml, shell=True)
+        outfile = open(output.Twist_RNA_yaml, "a")
         outfile.write("\nDemultiplex: False\n")
         RNA_sample_list = []
         i = 1
-        infile = open(input.sample)
+        infile = open(input.samples)
         for line in infile:
             lline = line.strip().split("\t")
             sample = lline[0]
