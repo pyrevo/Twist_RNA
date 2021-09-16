@@ -5,7 +5,7 @@ bed_file = open(sys.argv[1])
 junction_file = open(sys.argv[2])
 result_file = open(sys.argv[3], "w")
 
-normal_dict = {"NTRK1_8_10" : "Normal"}
+normal_dict = {"NTRK1_8_10" : "Normal", "ERBB2_1_5" : "Normal", "NTRK1_1_3" : "Normal", "FUS_6_8" : "Normal", "ESR1_6_8" : "Normal"}
 
 gene_dict = {}
 pos_dict = {}
@@ -91,7 +91,7 @@ for unnormal_key in unnormal_junction :
     else :
         continue
         #end_exon = unnormal_junction[unnormal_key][3]
-    if nr_unnormal_reads / float(nr_unnormal_reads + nr_normal_reads) > 0.05 :
+    if nr_unnormal_reads / float(nr_unnormal_reads + nr_normal_reads) > 0.1 and nr_unnormal_reads > 100 :
         key = gene + "_" + start_exon + "_" + end_exon
         if key in normal_dict :
             continue
