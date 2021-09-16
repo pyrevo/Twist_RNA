@@ -68,7 +68,7 @@ for line in junction_file:
     else :
         normal_junction[key1] = [[nr_reads, i_start, i_end, key2]]
 
-result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\n")
+result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\tfraction_skipped_reads\n")
 for unnormal_key in unnormal_junction :
     gene = pos_dict[unnormal_key]
     nr_unnormal_reads = unnormal_junction[unnormal_key][0]
@@ -91,11 +91,12 @@ for unnormal_key in unnormal_junction :
     else :
         continue
         #end_exon = unnormal_junction[unnormal_key][3]
-    if nr_unnormal_reads / float(nr_unnormal_reads + nr_normal_reads) > 0.1 and nr_unnormal_reads > 100 :
+    fraction_skipped_reads = nr_unnormal_reads / float(nr_unnormal_reads + nr_normal_reads)
+    if fraction_skipped_reads > 0.1 and nr_unnormal_reads > 100 :
         key = gene + "_" + start_exon + "_" + end_exon
         if key in normal_dict :
             continue
-        result_file.write(gene + "\t" + start_exon + "\t" + end_exon + "\t" + str(nr_unnormal_reads) + "\t" + str(nr_normal_reads) + "\n")
+        result_file.write(gene + "\t" + start_exon + "\t" + end_exon + "\t" + str(nr_unnormal_reads) + "\t" + str(nr_normal_reads)+ "\t" + str(fraction_skipped_reads) + "\n")
 
 
 result_file.close()
