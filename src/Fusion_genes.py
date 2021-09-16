@@ -114,18 +114,18 @@ for line in input_starfusion :
     predicted_effect = lline[21]
     #Flag fusions with junction_read_count < 10 and Spanning_Frag_count < 2
     confidence = ""
-    if int(Spanning_Frag_count) < 15 :
+    if int(Junction_read_count) < 15 :
         confidence = "Low support"
     #Remove Fusions with very weak read support
-    if int(Spanning_Frag_count) <= 6 and predicted_effect != "INFRAME":
+    if int(Junction_read_count) <= 6 and predicted_effect != "INFRAME":
         continue
-    if int(Spanning_Frag_count) <= 2 :
+    if int(Junction_read_count) <= 2 :
         continue
     #Higher demand of read support for genes with frequent FP, house keeping genes, and pool2 genes without fusion to pool1 gene
     if (((gene1 in artefact_genes and gene2 in artefact_genes[gene1]) or (gene2 in artefact_genes and gene1 in artefact_genes[gene2])) or
         gene1 in housekeeping_genes or gene2 in housekeeping_genes or
         ((gene1 in design_genes_pool2 or gene2 in design_genes_pool2) and not (gene1 in design_genes_pool1 or gene2 in design_genes_pool1))) :
-        if int(Spanning_Frag_count) < 20 :
+        if int(Junction_read_count) < 20 :
             continue
     breakpoint1 = lline[7]
     breakpoint2 = lline[9]
