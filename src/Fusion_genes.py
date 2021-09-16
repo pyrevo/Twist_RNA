@@ -161,7 +161,7 @@ for line in input_starfusion :
         for region in design_genes[gene2] :
             if int(pos2) >= region[1] and int(pos2) >= region[2] :
                 exon2 = region[3]
-    output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t" + Junction_read_count + "\t" + Spanning_Frag_count + "\t" + str(q1) + "\t" + str(q2) + "\n")
+    output_fusions.write("StarFusion\t" + gene1 + "\t" + gene2 + "\t" + exon1 + "\t" + exon2 + "\t" + confidence + "\t" + predicted_effect + "\t" + breakpoint1 + "\t" + breakpoint2 + "\t\t\t" + Spanning_Frag_count + "\t" + Junction_read_count + "\t" + str(q1) + "\t" + str(q2) + "\n")
 
 
 
@@ -188,12 +188,12 @@ for line in input_fusioncatcher :
     predicted_effect = lline[15]
     #Flag fusions with Spanning_reads_unique < 5
     confidence = ""
-    if int(Spanning_reads_unique) < 15:
+    if int(Spanning_pairs) < 15:
         confidence = "Low support"
     #Filter fusions with very low support
-    if int(Spanning_reads_unique) <= 6 and predicted_effect != "in-frame":
+    if int(Spanning_pairs) <= 6 and predicted_effect != "in-frame":
         continue
-    if int(Spanning_reads_unique) <= 3 :
+    if int(Spanning_pairs) <= 3 :
         continue
     #Higher demand of read support for genes with frequent FP, house keeping genes, and pool2 genes without fusion to pool1 gene
     if (((gene1 in artefact_genes and gene2 in artefact_genes[gene1]) or (gene2 in artefact_genes and gene1 in artefact_genes[gene2])) or
@@ -227,8 +227,8 @@ for line in input_fusioncatcher :
         for line in output_coverage :
             cov2 = int(line.strip().split("\t")[2])
         output_coverage.close()
-        q1 = round((cov1 / (float(Spanning_reads_unique) + 0.01)),1)
-        q2 = round((cov2 / (float(Spanning_reads_unique) + 0.01)),1)
+        q1 = round((cov1 / (float(Spanning_pairs) + 0.01)),1)
+        q2 = round((cov2 / (float(Spanning_pairs) + 0.01)),1)
     else :
         q1 = "NA"
         q2 = "NA"
