@@ -28,7 +28,7 @@ for line in bed_file :
     exon = int(exon)
     if gene not in gene_dict :
         gene_dict[gene] = []
-    gene_dict[gene].append([chrom, start_pos, end_pos, exon])
+    gene_dict[gene].append([chrom, start_pos, end_pos, exon, region])
     pos_dict[key1] = gene
     pos_dict[key2] = gene
 
@@ -46,27 +46,32 @@ for line in junction_file:
         continue
     i_start = 100
     i_end = 100
+    i_start_name = ""
+    i_end_name = ""
     for exon in gene_dict[pos_dict[key1]] :
         if exon[2] == start_pos :
             i_start = exon[3]
+            i_start_name = exon[4]
         if exon[1] == end_pos :
             i_end = exon[3]
+            i_end_name = exon[4]
     if i_end == 100 :
         for exon in gene_dict[pos_dict[key1]] :
             if abs(exon[1] - end_pos) < 100 :
                 i_end = exon[3]
+                i_end_name = exon[4]
     #if i_start != 100 and i_end != 100:
     if i_end - i_start > 1 or i_start == 100 or i_end == 100 :
         if nr_reads >= 5 :
             if key1 in unnormal_junction :
                 if nr_reads > unnormal_junction[key1][0] :
-                    unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
+                    unnormal_junction[key1] = [nr_reads, i_start, i_end, key2, i_start_name, i_end_name]
             else :
-                unnormal_junction[key1] = [nr_reads, i_start, i_end, key2]
+                unnormal_junction[key1] = [nr_reads, i_start, i_end, key2, i_start_name, i_end_name]
     if key1 in normal_junction :
-        normal_junction[key1].append([nr_reads, i_start, i_end, key2])
+        normal_junction[key1].append([nr_reads, i_start, i_end, key2, i_start_name, i_end_name])
     else :
-        normal_junction[key1] = [[nr_reads, i_start, i_end, key2]]
+        normal_junction[key1] = [[nr_reads, i_start, i_end, key2, i_start_name, i_end_name]]
 
 result_file.write("Gene\tstart_exon\tend_exon\tsupporting_reads\treads_supporting_normal_splicing\tfraction_skipped_reads\n")
 for unnormal_key in unnormal_junction :
@@ -82,12 +87,18 @@ for unnormal_key in unnormal_junction :
             nr_normal_reads = normal_junction[unnormal_key][0][0]
     i_start = unnormal_junction[unnormal_key][1]
     i_end = unnormal_junction[unnormal_key][2]
+    start_exon = ""
+    end_exon = ""
+    start_exon_name = ""
+    end_exon_name = ""
     if i_start != 100 :
         start_exon = str(i_start)
+        start_exon_name = str(unnormal_junction[unnormal_key][4])
     else :
         start_exon = unnormal_key
     if i_end != 100 :
         end_exon = str(i_end)
+        end_exon_name = str(unnormal_junction[unnormal_key][5])
     else :
         continue
         #end_exon = unnormal_junction[unnormal_key][3]
@@ -96,7 +107,7 @@ for unnormal_key in unnormal_junction :
         key = gene + "_" + start_exon + "_" + end_exon
         if key in normal_dict :
             continue
-        result_file.write(gene + "\t" + start_exon + "\t" + end_exon + "\t" + str(nr_unnormal_reads) + "\t" + str(nr_normal_reads)+ "\t" + str(fraction_skipped_reads) + "\n")
+        result_file.write(gene + "\t" + start_exon_name + "\t" + end_exon_name + "\t" + str(nr_unnormal_reads) + "\t" + str(nr_normal_reads)+ "\t" + str(fraction_skipped_reads) + "\n")
 
 
 result_file.close()
