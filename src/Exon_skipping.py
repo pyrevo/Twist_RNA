@@ -18,7 +18,9 @@ for line in bed_file :
     key2 = chrom + "_" + str(end_pos)
     region = lline[3]
     gene = region.split("_")[0]
-    exon = region.split("_exon_")[1]
+    exon = 0
+    if region.find("exon") != -1:
+        exon = region.split("_exon_")[1]
     if exon == "UTR" :
         exon = 0
     elif len(exon.split("part")) > 1 :
