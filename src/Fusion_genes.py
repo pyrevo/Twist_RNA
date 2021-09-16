@@ -27,7 +27,9 @@ for line in input_bed :
     end = int(lline[2])
     exon = lline[3]
     gene = lline[3].split("_")[0]
-    pool = lline[4]
+    pool = "1"
+    if len(gene) > 4 :
+        pool = lline[4]
     if gene in design_genes :
         design_genes[gene].append([chrom, start, end, exon])
     else :
