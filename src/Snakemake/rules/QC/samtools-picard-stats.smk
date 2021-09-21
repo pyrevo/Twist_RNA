@@ -62,18 +62,19 @@ rule PicardAlignmentSummaryMetrics:
     shell:
         "(picard CollectAlignmentSummaryMetrics INPUT={input.bam} R={input.ref} OUTPUT={output}) &> {log}"
 
-rule Coverage_CV :
-    input:
-        bed = config["bed"]["exonbed"],
-        coverage = "qc/{sample}/{sample}_coverage.tsv",
-    output:
-        CV = "qc/{sample}/{sample}_avg_CV_genes_over_500X.txt",
-    log:
-        "logs/qc/picard/AlignmentSummaryMetrics/{sample}.log"
-    container:
-        config["singularity"].get("python", config["singularity"].get("default", ""))
-    shell:
-        "(python src/Coverage_CV.py {input.bed} {input.coverage} {output.CV}) &> {log}"
+
+# rule Coverage_CV :
+#     input:
+#         bed = config["bed"]["exonbed"],
+#         coverage = "qc/{sample}/{sample}_coverage.tsv",
+#     output:
+#         CV = "qc/{sample}/{sample}_avg_CV_genes_over_500X.txt",
+#     log:
+#         "logs/qc/picard/AlignmentSummaryMetrics/{sample}.log"
+#     container:
+#         config["singularity"].get("python", config["singularity"].get("default", ""))
+#     shell:
+#         "(python src/Coverage_CV.py {input.bed} {input.coverage} {output.CV}) &> {log}"
 
 
 rule touchBatch:
@@ -93,9 +94,9 @@ rule getStatsforMqc:
         picardMet2 = "qc/{sample}/{sample}.insert_size_metrics.txt",
         picardMet3 = "qc/{sample}/{sample}.alignment_summary_metrics.txt",
         samtools = "qc/{sample}/{sample}.samtools-stats.txt",
-        CV = "qc/{sample}/{sample}_avg_CV_genes_over_500X.txt",
+        #CV = "qc/{sample}/{sample}_avg_CV_genes_over_500X.txt",
         multiQCheader = "DATA/multiqc-header.txt",
-        cartool = "qc/{sample}/{sample}_Log.csv",
+        #cartool = "qc/{sample}/{sample}_Log.csv",
         batch =  "qc/batchQC_stats_unsorted.csv",
     output:
         batchTmp = temp("qc/{sample}/{sample}_batchStats.done"),
@@ -105,7 +106,7 @@ rule getStatsforMqc:
     container:
         config["singularity"].get("python", config["singularity"].get("default", ""))
     shell:
-        "(python src/get_stats.py {input.picardMet1} {input.picardMet2} {input.picardMet3} {input.samtools} {input.CV} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
+        "(python src/get_stats.py {input.picardMet1} {input.picardMet2} {input.picardMet3} {input.samtools} {input.multiQCheader} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
 
 
 rule sortBatchStats:

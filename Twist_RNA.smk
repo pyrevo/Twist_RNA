@@ -11,7 +11,7 @@ def get_input():
         '''Fusions'''
         input_list.append(["STAR/" + s + "_Aligned.sortedByCoord.out.bam" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/Fusions/Arriba.fusions.tsv" for s in config["RNA_Samples"]])
-        input_list.append(["Results/RNA/" + s + "/Fusions/Arriba.fusions.pdf" for s in config["RNA_Samples"]])
+        #input_list.append(["Results/RNA/" + s + "/Fusions/Arriba.fusions.pdf" for s in config["RNA_Samples"]])
         input_list.append(["STAR2/" + s + "_Chimeric.out.junction" for s in config["RNA_Samples"]])
         input_list.append(["STAR2/" + s + "_Aligned.sortedByCoord.out.bam.bai" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/Fusions/star-fusion.fusion_predictions.abridged.coding_effect.tsv" for s in config["RNA_Samples"]])
@@ -35,7 +35,8 @@ def get_input():
         #input_list.append(["Results/RNA/" + s + "/QC/RSeQC.FPKM.xls" for s in config["RNA_Samples"]])
 
         '''QC2'''
-        input_list.append(["qc/" + s + "/" + s + "_Stat_table.csv" for s in config["RNA_Samples"]])
+        #input_list.append(["qc/" + s + "/" + s + "_Stat_table.csv" for s in config["RNA_Samples"]])
+        input_list.append(["qc/" + s + "/" + s + ".regions.bed.gz" for s in config["RNA_Samples"]])
         input_list.append(["qc/" + s + "/" + s + "_Aligned.sortedByCoord.out_fastqc.html" for s in config["RNA_Samples"]])
         input_list.append(["qc/" + s + "/" + s + "_Aligned.sortedByCoord.out_fastqc.zip" for s in config["RNA_Samples"]])
         input_list.append(["qc/" + s + "/" + s + ".samtools-stats.txt" for s in config["RNA_Samples"]])
@@ -46,7 +47,7 @@ def get_input():
         input_list.append("Results/RNA/MultiQC.html")
         input_list.append(["qc/" + s + "/" + s + ".insert_size_metrics.txt" for s in config["RNA_Samples"]])
         input_list.append(["qc/" + s + "/" + s + ".alignment_summary_metrics.txt" for s in config["RNA_Samples"]])
-        input_list.append(["qc/" + s + "/" + s + "_avg_CV_genes_over_500X.txt" for s in config["RNA_Samples"]])
+        #input_list.append(["qc/" + s + "/" + s + "_avg_CV_genes_over_500X.txt" for s in config["RNA_Samples"]])
 
 
     return input_list
