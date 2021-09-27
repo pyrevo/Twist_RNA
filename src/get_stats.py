@@ -11,9 +11,9 @@ samtools = sys.argv[4]
 #CV = open(sys.argv[5])
 multiQCheader = sys.argv[5]
 #cartoolLog = sys.argv[7]
-sample = sys.argv[7]
-outFile = sys.argv[8]
-batchFile = sys.argv[9]
+sample = sys.argv[6]
+outFile = sys.argv[7]
+batchFile = sys.argv[8]
 
 metCmd='grep -A1 BAIT_SET '+picardMet1
 met = subprocess.run(metCmd, stdout=subprocess.PIPE,shell = 'TRUE').stdout.decode('utf-8')
