@@ -27,7 +27,7 @@ def get_input():
         input_list.append(["Results/RNA/" + s + "/Fusions/" + s + "_exon_skipping.txt" for s in config["RNA_Samples"]])
 
         '''ID_SNPs'''
-        input_list.append("ID_SNPs/" + s + ".vcf.gz" for s in config["RNA_Samples"]])
+        input_list.append(["ID_SNPs/" + s + ".vcf.gz" for s in config["RNA_Samples"]])
 
         '''QC'''
         input_list.append(["Results/RNA/" + s + "/QC/Housekeeping_gene_coverage.txt" for s in config["RNA_Samples"]])
