@@ -62,7 +62,7 @@ rule Haplotypecaller:
         bam="ID_SNPs/{sample}_Aligned.sortedByCoord.dedup.splitN.bam",
         bai="ID_SNPs/{sample}_Aligned.sortedByCoord.dedup.splitN.bam.bai",
         bed=config["bed"]["ID_SNPs"],
-        reference=config["reference"]["ref"],
+        reference=config["reference"]["picard_ref"],
     output:
         vcf="ID_SNPs/{sample}.vcf.gz",
         vcf_tbi="ID_SNPs/{sample}.vcf.gz.tbi",
