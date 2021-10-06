@@ -6,7 +6,7 @@ rule ID_SNP_pileup:
         bed=config["bed"]["ID_SNPs"],
         ref=config["reference"]["ref"],
     output:
-        vcf="ID_SNPs/{sample}_ID_SNPs.vcf,
+        vcf="ID_SNPs/{sample}_ID_SNPs.vcf",
     log:
         "logs/ID_SNPs/ID_SNP_pileup/{sample}.log",
     container:
