@@ -1,8 +1,8 @@
 
 rule ID_SNP_pileup:
     input:
-        bam="ID_SNPs/{sample}_Aligned.sortedByCoord.dedup.bam",
-        bai="ID_SNPs/{sample}_Aligned.sortedByCoord.dedup.bam.bai",
+        bam="STAR2/{sample}_Aligned.sortedByCoord.out.bam",
+        bai="STAR2/{sample}_Aligned.sortedByCoord.out.bam.bai",
         bed=config["bed"]["ID_SNPs"],
         ref=config["reference"]["ref"],
     output:
