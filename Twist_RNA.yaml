@@ -1,0 +1,37 @@
+reference:
+    #ref: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta"
+    ref: "/mnt/WD1/ref/AWS/hg19/genome.fa"
+    STAR: "/home/massi/Documents/GMS_RNA/Twist_RNA/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Apr032020.plug-n-play/ctat_genome_lib_build_dir/ref_genome.fa.star.idx"
+    picard_ref: "/home/massi/Documents/GMS_RNA/Twist_RNA/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Apr032020.plug-n-play/ctat_genome_lib_build_dir/ref_genome.fa"
+    STAR_fusion: "/home/massi/Documents/GMS_RNA/Twist_RNA/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Apr032020.plug-n-play/ctat_genome_lib_build_dir"
+    Fusion_catcher: "/home/massi/Documents/GMS_RNA/Twist_RNA/human_v98"
+    Arriba_index: "/home/massi/Documents/GMS_RNA/Twist_RNA/references2/STAR_index_GRCh37_RefSeq_hg19"
+    Arriba_ref: "/home/massi/Documents/GMS_RNA/Twist_RNA/references2/GRCh37.fa"
+    Arriba_gtf: "/home/massi/Documents/GMS_RNA/Twist_RNA/references2/RefSeq_hg19.gtf"
+    Arriba_blacklist: "/home/massi/Documents/GMS_RNA/Twist_RNA/references2/blacklist_hg19_hs37d5_GRCh37_v2.1.0.tsv"
+    Arriba_refdir: "/home/massi/Documents/GMS_RNA/Twist_RNA/references2"
+
+configfiles:
+    multiqc: "DATA/multiqc_config.yaml"
+
+bed:
+    bedfile: "DATA/Twist_RNA_Large_Design_sorted_merged.annotated.bed"
+    intervals: "DATA/Twist_RNA_Large_Design_sorted_merged.annotated.interval_list"
+    exonbed: "DATA/Twist_RNA_Large_Design_sorted_merged.annotated.bed"
+    fpkm: "DATA/hg19_RefSeq.bed"
+    ID_SNPs: "DATA/ID_SNPs.bed"
+
+singularity: #Can be a docker container as well. This is converted to a singularity on the fly
+    # default: "docker://gmsuppsala/twist_rna:develop"
+    default: "docker://gmsuppsala/somatic:develop"
+    default_arriba: "docker://gmsuppsala/twist_rna_arriba:develop"
+    default_starfusion: "docker://gmsuppsala/twist_rna_starfusion:develop"
+    Fusion_catcher: "docker://olopadelab/fusioncatcher:latest"
+    # default_fusioncatcher: "docker://gmsuppsala/twist_rna_fusioncatcher:develop"
+    # cartool: "/projects/wp2/nobackup/Twist_Myeloid/Containers/CARTools-200206.simg"
+    mosdepth: "/mnt/WD2/GMS_RNA/mosdepth_0.3.2--h01d7912_0.sif"
+
+Demultiplex: False
+
+RNA_Samples:
+  SeraSeq_Fusionv4-Pool1: "S1"
